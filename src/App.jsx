@@ -16,6 +16,7 @@ import Leagues from '@/pages/Leagues';
 import Profile from '@/pages/Profile';
 import Settings from '@/pages/Settings';
 import Onboarding from '@/pages/Onboarding';
+import Present from '@/pages/Present';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -47,6 +48,7 @@ const AuthenticatedApp = () => {
       <Route path="/learn/lesson/:lessonId" element={<Lesson />} />
       <Route path="/trade/stock/:ticker" element={<StockDetail />} />
       <Route path="/settings" element={<Settings />} />
+      <Route path="/present" element={<Present />} />
       <Route element={<AppLayout />}>
         <Route path="/home" element={<Home />} />
         <Route path="/learn" element={<Learn />} />
