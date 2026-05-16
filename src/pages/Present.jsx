@@ -144,12 +144,12 @@ function SlideProblem() {
     { emoji: "📉", stat: "3 in 4", text: "people who start investing quit within 90 days" },
   ];
   return (
-    <div className="flex flex-col h-full px-16 py-6">
+    <div className="flex flex-col h-full px-16 py-8 justify-center gap-4">
       <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }}>
         <span className="text-[#00FF87] font-black text-sm tracking-widest uppercase">The Problem</span>
         <h2 className="text-5xl font-black text-white mt-1 mb-4">Most people are <span className="text-red-400">scared</span> of investing.</h2>
       </motion.div>
-      <div className="grid grid-cols-2 gap-4 flex-1">
+      <div className="grid grid-cols-2 gap-4">
         {problems.map((p, i) => (
           <motion.div key={i} initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 + i * 0.15 }}
             className="bg-white/5 border border-white/10 rounded-3xl p-6 flex flex-col justify-between">
@@ -191,7 +191,7 @@ function SlideBigStat() {
 
 function SlideSolution() {
   return (
-    <div className="flex flex-col h-full px-16 py-6">
+    <div className="flex flex-col h-full px-16 py-8 justify-center gap-4">
       <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }}>
         <span className="text-[#00FF87] font-black text-sm tracking-widest uppercase">The Solution</span>
         <h2 className="text-5xl font-black text-white mt-1 mb-2">We made investing <span className="text-[#00FF87]">feel like a game.</span></h2>
@@ -223,12 +223,12 @@ function SlideHowItWorks() {
     { n: "04", icon: "🏆", title: "Compete", desc: "Weekly leagues, leaderboards, and challenges with friends keep you coming back." },
   ];
   return (
-    <div className="flex flex-col h-full px-16 py-6">
+    <div className="flex flex-col h-full px-16 py-8 justify-center gap-4">
       <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
         <span className="text-[#00FF87] font-black text-sm tracking-widest uppercase">How It Works</span>
         <h2 className="text-5xl font-black text-white mt-1 mb-4">Four steps to <span className="text-[#00FF87]">financial confidence.</span></h2>
       </motion.div>
-      <div className="flex gap-4 flex-1">
+      <div className="flex gap-4">
         {steps.map((s, i) => (
           <motion.div key={i} initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 + i * 0.15 }}
             className="flex-1 relative bg-white/5 border border-white/10 rounded-3xl p-6 flex flex-col">
@@ -412,12 +412,12 @@ function SlideAiConvo() {
 
 function SlideGamification() {
   return (
-    <div className="flex flex-col h-full px-16 py-6">
+    <div className="flex flex-col h-full px-16 py-8 justify-center gap-4">
       <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
         <span className="text-[#00FF87] font-black text-sm tracking-widest uppercase">Retention Engine</span>
         <h2 className="text-5xl font-black text-white mt-1 mb-4">The same psychology that made<br/>Duolingo worth <span className="text-[#00FF87]">$7 billion.</span></h2>
       </motion.div>
-      <div className="grid grid-cols-4 gap-4 flex-1">
+      <div className="grid grid-cols-4 gap-4">
         {[
           { icon: "🔥", title: "Daily Streaks", desc: "Miss a day, lose your streak. Users open the app to protect it.", colour: "text-orange-400", bg: "bg-orange-500/10 border-orange-500/20" },
           { icon: "⚡", title: "XP & Levels", desc: "50 levels from Market Newbie to Market Legend. Clear progression arc.", colour: "text-yellow-400", bg: "bg-yellow-500/10 border-yellow-500/20" },
@@ -442,12 +442,12 @@ function SlideGamification() {
 
 function SlideTraction() {
   return (
-    <div className="flex flex-col h-full px-16 py-6">
+    <div className="flex flex-col h-full px-16 py-8 justify-center gap-4">
       <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
         <span className="text-[#00FF87] font-black text-sm tracking-widest uppercase">Why Now</span>
         <h2 className="text-5xl font-black text-white mt-1 mb-4">The moment has arrived.</h2>
       </motion.div>
-      <div className="grid grid-cols-2 gap-6 flex-1">
+      <div className="grid grid-cols-2 gap-6">
         {[
           { icon: "📱", title: "Mobile-first generation", desc: "Gen Z and Millennials manage everything from their phone. Financial education needs to meet them there.", stat: "94%", statLabel: "of 18-35s own a smartphone" },
           { icon: "📰", title: "GameStop changed everything", desc: "Retail investing went mainstream. People WANT to understand markets — they just need the right tool.", stat: "10M+", statLabel: "new retail investors since 2020" },
@@ -474,12 +474,12 @@ function SlideTraction() {
 
 function SlideBizModel() {
   return (
-    <div className="flex flex-col h-full px-16 py-6">
+    <div className="flex flex-col h-full px-16 py-8 justify-center gap-4">
       <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
         <span className="text-[#00FF87] font-black text-sm tracking-widest uppercase">Business Model</span>
         <h2 className="text-5xl font-black text-white mt-1 mb-4">Three clear revenue streams.</h2>
       </motion.div>
-      <div className="grid grid-cols-3 gap-6 flex-1">
+      <div className="grid grid-cols-3 gap-6">
         {[
           { icon: "🆓", tier: "Free", price: "£0/mo", colour: "border-white/20", dot: "bg-white/30", desc: "Core lessons, basic paper trading, 5 hearts/day, public league", highlight: false },
           { icon: "⚡", tier: "Pro", price: "£6.99/mo", colour: "border-[#00FF87]/40", dot: "bg-[#00FF87]", desc: "Unlimited hearts, advanced lessons, portfolio analytics, AI tutor, ad-free", highlight: true },
