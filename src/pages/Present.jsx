@@ -117,13 +117,13 @@ function SlideTitle() {
         backgroundSize: "60px 60px"
       }} />
       <motion.div initial={{ scale: 0.5, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} transition={{ delay: 0.2, type: "spring" }}
-        className="text-8xl mb-6">📈</motion.div>
+        className="text-7xl mb-3">📈</motion.div>
       <motion.h1 initial={{ y: 40, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.4 }}
-        className="text-7xl font-black text-white mb-4 tracking-tight">
+        className="text-7xl font-black text-white mb-2 tracking-tight">
         V<span className="text-[#00FF87]">stock</span>
       </motion.h1>
       <motion.p initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.6 }}
-        className="text-2xl font-medium text-white/70 mb-10">
+        className="text-2xl font-medium text-white/70 mb-5">
         The Duolingo of investing. Turn confusion into confidence.
       </motion.p>
       <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1 }}
@@ -144,12 +144,12 @@ function SlideProblem() {
     { emoji: "📉", stat: "3 in 4", text: "people who start investing quit within 90 days" },
   ];
   return (
-    <div className="flex flex-col h-full px-16 py-12">
+    <div className="flex flex-col h-full px-16 py-6">
       <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }}>
         <span className="text-[#00FF87] font-black text-sm tracking-widest uppercase">The Problem</span>
-        <h2 className="text-5xl font-black text-white mt-2 mb-10">Most people are <span className="text-red-400">scared</span> of investing.</h2>
+        <h2 className="text-5xl font-black text-white mt-1 mb-4">Most people are <span className="text-red-400">scared</span> of investing.</h2>
       </motion.div>
-      <div className="grid grid-cols-2 gap-5 flex-1">
+      <div className="grid grid-cols-2 gap-4 flex-1">
         {problems.map((p, i) => (
           <motion.div key={i} initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 + i * 0.15 }}
             className="bg-white/5 border border-white/10 rounded-3xl p-6 flex flex-col justify-between">
@@ -168,16 +168,16 @@ function SlideProblem() {
 function SlideBigStat() {
   return (
     <div className="flex flex-col items-center justify-center h-full text-center px-12">
-      <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-[#00FF87] font-black text-sm tracking-widest uppercase mb-6">The Opportunity</motion.p>
+      <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-[#00FF87] font-black text-sm tracking-widest uppercase mb-3">The Opportunity</motion.p>
       <motion.div initial={{ scale: 0.6, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} transition={{ type: "spring", stiffness: 100 }}>
-        <p className="text-[9rem] font-black text-white leading-none">$4.8<span className="text-[#00FF87]">B</span></p>
+        <p className="text-[8rem] font-black text-white leading-none">$4.8<span className="text-[#00FF87]">B</span></p>
       </motion.div>
       <motion.p initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.5 }}
-        className="text-2xl text-white/70 mt-4 max-w-2xl">
+        className="text-2xl text-white/70 mt-3 max-w-2xl">
         Global financial education market — growing at <span className="text-white font-bold">18% per year</span>
       </motion.p>
       <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.9 }}
-        className="flex gap-8 mt-10">
+        className="flex gap-8 mt-5">
         {[["40M+", "Millennials with no investing experience"], ["£850B", "UK retail investment opportunity"], ["2026", "The year investing goes mainstream"]].map(([v, l]) => (
           <div key={v} className="text-center">
             <p className="text-3xl font-black text-[#00FF87]">{v}</p>
@@ -191,11 +191,11 @@ function SlideBigStat() {
 
 function SlideSolution() {
   return (
-    <div className="flex flex-col h-full px-16 py-12">
+    <div className="flex flex-col h-full px-16 py-6">
       <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }}>
         <span className="text-[#00FF87] font-black text-sm tracking-widest uppercase">The Solution</span>
-        <h2 className="text-5xl font-black text-white mt-2 mb-3">We made investing <span className="text-[#00FF87]">feel like a game.</span></h2>
-        <p className="text-white/60 text-lg mb-8">Duolingo proved people will form daily habits around learning if you make it fun. We're doing the same for finance — and we call it Vstock.</p>
+        <h2 className="text-5xl font-black text-white mt-1 mb-2">We made investing <span className="text-[#00FF87]">feel like a game.</span></h2>
+        <p className="text-white/60 text-lg mb-4">Duolingo proved people will form daily habits around learning if you make it fun. We're doing the same for finance — and we call it Vstock.</p>
       </motion.div>
       <div className="grid grid-cols-3 gap-4">
         {[
@@ -223,10 +223,10 @@ function SlideHowItWorks() {
     { n: "04", icon: "🏆", title: "Compete", desc: "Weekly leagues, leaderboards, and challenges with friends keep you coming back." },
   ];
   return (
-    <div className="flex flex-col h-full px-16 py-12">
+    <div className="flex flex-col h-full px-16 py-6">
       <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
         <span className="text-[#00FF87] font-black text-sm tracking-widest uppercase">How It Works</span>
-        <h2 className="text-5xl font-black text-white mt-2 mb-10">Four steps to <span className="text-[#00FF87]">financial confidence.</span></h2>
+        <h2 className="text-5xl font-black text-white mt-1 mb-4">Four steps to <span className="text-[#00FF87]">financial confidence.</span></h2>
       </motion.div>
       <div className="flex gap-4 flex-1">
         {steps.map((s, i) => (
@@ -248,12 +248,12 @@ function SlideHowItWorks() {
 
 function SlideDemo() {
   return (
-    <div className="flex h-full px-16 py-12 gap-12 items-center">
+    <div className="flex h-full px-16 py-6 gap-10 items-center">
       <div className="flex-1">
         <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }}>
           <span className="text-[#00FF87] font-black text-sm tracking-widest uppercase">App Demo · Home</span>
-          <h2 className="text-5xl font-black text-white mt-2 mb-6">Your daily dashboard.<br/>Built for engagement.</h2>
-          <div className="space-y-4">
+          <h2 className="text-5xl font-black text-white mt-1 mb-4">Your daily dashboard.<br/>Built for engagement.</h2>
+          <div className="space-y-3">
             {[
               ["🔥", "Streak Flame", "Animated daily streak — identical psychology to Duolingo"],
               ["⚡", "XP + Daily Goal Ring", "Visual progress ring resets daily, drives return visits"],
@@ -285,12 +285,12 @@ function SlideDemo() {
 
 function SlideDemo2() {
   return (
-    <div className="flex h-full px-16 py-12 gap-12 items-center">
+    <div className="flex h-full px-16 py-6 gap-10 items-center">
       <div className="flex-1">
         <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }}>
           <span className="text-[#00FF87] font-black text-sm tracking-widest uppercase">App Demo · Learn</span>
-          <h2 className="text-5xl font-black text-white mt-2 mb-6">A curriculum that<br/>actually sticks.</h2>
-          <div className="space-y-4">
+          <h2 className="text-5xl font-black text-white mt-1 mb-4">A curriculum that<br/>actually sticks.</h2>
+          <div className="space-y-3">
             {[
               ["🌱", "5 Units, 25+ Lessons", "Scaffolded from absolute basics to advanced strategy"],
               ["❓", "Interactive Quizzes", "Multiple choice, true/false, fill-the-blank — all with instant feedback"],
@@ -321,12 +321,12 @@ function SlideDemo2() {
 
 function SlideDemo3() {
   return (
-    <div className="flex h-full px-16 py-12 gap-12 items-center">
+    <div className="flex h-full px-16 py-6 gap-10 items-center">
       <div className="flex-1">
         <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }}>
           <span className="text-[#00FF87] font-black text-sm tracking-widest uppercase">App Demo · Markets</span>
-          <h2 className="text-5xl font-black text-white mt-2 mb-6">A paper market that<br/>feels completely real.</h2>
-          <div className="space-y-4">
+          <h2 className="text-5xl font-black text-white mt-1 mb-4">A paper market that<br/>feels completely real.</h2>
+          <div className="space-y-3">
             {[
               ["📊", "50+ Stocks", "US + UK markets, real sector data, P/E, EPS, dividends, beta"],
               ["💰", "£10K Starting Balance", "Persistent forever. No resets. Real portfolio building."],
@@ -365,12 +365,12 @@ function SlideAiConvo() {
     { from: "ai", text: "Let's look at Nvidia (NVDA). Its P/E is 61×. Sounds expensive! But it's growing 200% per year. So investors are paying for FUTURE earnings. Compare that to a bank with a P/E of 8× — cheap, but slow growth. Both can be great buys for different reasons! 💡" },
   ];
   return (
-    <div className="flex h-full px-16 py-12 gap-12 items-center">
+    <div className="flex h-full px-16 py-6 gap-10 items-center">
       <div className="flex-1">
         <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }}>
           <span className="text-[#00FF87] font-black text-sm tracking-widest uppercase">Bruno the Bull · AI Tutor</span>
-          <h2 className="text-5xl font-black text-white mt-2 mb-4">Finance explained the way<br/>your smartest friend would.</h2>
-          <p className="text-white/60 text-lg mb-6">Powered by GPT-4. Responds in plain English. Never condescending. Always encouraging.</p>
+          <h2 className="text-5xl font-black text-white mt-1 mb-2">Finance explained the way<br/>your smartest friend would.</h2>
+          <p className="text-white/60 text-lg mb-4">Powered by GPT-4. Responds in plain English. Never condescending. Always encouraging.</p>
           <div className="flex gap-6">
             {[["🧠", "Explains any concept"], ["📈", "Analyses your portfolio"], ["🎯", "Personalised tips"]].map(([e, t]) => (
               <div key={t} className="flex items-center gap-2">
@@ -412,10 +412,10 @@ function SlideAiConvo() {
 
 function SlideGamification() {
   return (
-    <div className="flex flex-col h-full px-16 py-12">
+    <div className="flex flex-col h-full px-16 py-6">
       <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
         <span className="text-[#00FF87] font-black text-sm tracking-widest uppercase">Retention Engine</span>
-        <h2 className="text-5xl font-black text-white mt-2 mb-8">The same psychology that made<br/>Duolingo worth <span className="text-[#00FF87]">$7 billion.</span></h2>
+        <h2 className="text-5xl font-black text-white mt-1 mb-4">The same psychology that made<br/>Duolingo worth <span className="text-[#00FF87]">$7 billion.</span></h2>
       </motion.div>
       <div className="grid grid-cols-4 gap-4 flex-1">
         {[
@@ -442,10 +442,10 @@ function SlideGamification() {
 
 function SlideTraction() {
   return (
-    <div className="flex flex-col h-full px-16 py-12">
+    <div className="flex flex-col h-full px-16 py-6">
       <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
         <span className="text-[#00FF87] font-black text-sm tracking-widest uppercase">Why Now</span>
-        <h2 className="text-5xl font-black text-white mt-2 mb-10">The moment has arrived.</h2>
+        <h2 className="text-5xl font-black text-white mt-1 mb-4">The moment has arrived.</h2>
       </motion.div>
       <div className="grid grid-cols-2 gap-6 flex-1">
         {[
@@ -474,10 +474,10 @@ function SlideTraction() {
 
 function SlideBizModel() {
   return (
-    <div className="flex flex-col h-full px-16 py-12">
+    <div className="flex flex-col h-full px-16 py-6">
       <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
         <span className="text-[#00FF87] font-black text-sm tracking-widest uppercase">Business Model</span>
-        <h2 className="text-5xl font-black text-white mt-2 mb-10">Three clear revenue streams.</h2>
+        <h2 className="text-5xl font-black text-white mt-1 mb-4">Three clear revenue streams.</h2>
       </motion.div>
       <div className="grid grid-cols-3 gap-6 flex-1">
         {[
@@ -511,10 +511,10 @@ function SlideVision() {
   return (
     <div className="flex flex-col items-center justify-center h-full text-center px-16">
       <motion.div initial={{ scale: 0.7, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} transition={{ type: "spring" }}
-        className="text-7xl mb-6">🌍</motion.div>
+        className="text-6xl mb-2">🌍</motion.div>
       <motion.div initial={{ y: 30, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.3 }}>
         <span className="text-[#00FF87] font-black text-sm tracking-widest uppercase">The Vision</span>
-        <h2 className="text-6xl font-black text-white mt-3 mb-5 leading-tight">
+        <h2 className="text-6xl font-black text-white mt-2 mb-3 leading-tight">
           A generation of people who<br/>understand their money.
         </h2>
         <p className="text-xl text-white/60 max-w-3xl mx-auto leading-relaxed">
@@ -523,7 +523,7 @@ function SlideVision() {
         </p>
       </motion.div>
       <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.8 }}
-        className="flex gap-10 mt-10">
+        className="flex gap-10 mt-5">
         {[["Year 1", "100K users", "£1M ARR"], ["Year 2", "500K users", "£5M ARR"], ["Year 3", "2M users", "Launch US"]].map(([yr, users, rev]) => (
           <div key={yr} className="text-center">
             <p className="text-[#00FF87] font-black text-sm mb-1">{yr}</p>
@@ -544,15 +544,15 @@ function SlideCta() {
       }} />
       <motion.div initial={{ y: 30, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.2 }}>
         <span className="text-[#00FF87] font-black text-sm tracking-widest uppercase">The Ask</span>
-        <h2 className="text-6xl font-black text-white mt-4 mb-4 leading-tight">
+        <h2 className="text-6xl font-black text-white mt-2 mb-2 leading-tight">
           Join us in making the<br/>world financially literate.
         </h2>
-        <p className="text-xl text-white/60 mb-10 max-w-2xl mx-auto">
+        <p className="text-xl text-white/60 mb-5 max-w-2xl mx-auto">
           We're raising <span className="text-white font-bold">£500K seed</span> to build the team, grow user base, and launch the Pro tier.
         </p>
       </motion.div>
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }}
-        className="grid grid-cols-3 gap-6 mb-10 max-w-2xl">
+        className="grid grid-cols-3 gap-4 mb-5 max-w-2xl">
         {[
           ["🏗️", "Product", "Full curriculum, real broker integration, team leagues"],
           ["🚀", "Growth", "Paid acquisition, influencer partnerships, school pilots"],
