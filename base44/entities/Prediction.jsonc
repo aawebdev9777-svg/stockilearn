@@ -1,0 +1,43 @@
+{
+  "name": "Prediction",
+  "type": "object",
+  "properties": {
+    "ticker": {
+      "type": "string"
+    },
+    "direction": {
+      "type": "string",
+      "enum": [
+        "up",
+        "down"
+      ]
+    },
+    "prediction_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "result_direction": {
+      "type": "string",
+      "enum": [
+        "up",
+        "down"
+      ]
+    },
+    "is_correct": {
+      "type": "boolean"
+    },
+    "xp_awarded": {
+      "type": "number",
+      "default": 0
+    },
+    "is_resolved": {
+      "type": "boolean",
+      "default": false
+    }
+  },
+  "required": [
+    "ticker",
+    "direction",
+    "prediction_date"
+  ]
+}

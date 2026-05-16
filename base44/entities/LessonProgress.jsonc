@@ -1,0 +1,43 @@
+{
+  "name": "LessonProgress",
+  "type": "object",
+  "properties": {
+    "lesson_id": {
+      "type": "string",
+      "description": "Lesson identifier e.g. 1.1"
+    },
+    "unit_id": {
+      "type": "number",
+      "description": "Unit number 1-5"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "locked",
+        "in_progress",
+        "complete"
+      ],
+      "default": "locked"
+    },
+    "score_percent": {
+      "type": "number",
+      "default": 0
+    },
+    "xp_earned": {
+      "type": "number",
+      "default": 0
+    },
+    "completed_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "attempts_count": {
+      "type": "number",
+      "default": 0
+    }
+  },
+  "required": [
+    "lesson_id",
+    "unit_id"
+  ]
+}

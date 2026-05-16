@@ -1,0 +1,12 @@
+{
+  "name": "Watchlist",
+  "type": "object",
+  "properties": {
+    "ticker": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "ticker"
+  ]
+}

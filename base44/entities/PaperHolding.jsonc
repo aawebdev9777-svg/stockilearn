@@ -1,0 +1,20 @@
+{
+  "name": "PaperHolding",
+  "type": "object",
+  "properties": {
+    "ticker": {
+      "type": "string"
+    },
+    "shares": {
+      "type": "number"
+    },
+    "avg_buy_price": {
+      "type": "number"
+    }
+  },
+  "required": [
+    "ticker",
+    "shares",
+    "avg_buy_price"
+  ]
+}

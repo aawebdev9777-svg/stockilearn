@@ -1,0 +1,19 @@
+{
+  "name": "PaperPortfolio",
+  "type": "object",
+  "properties": {
+    "cash_balance": {
+      "type": "number",
+      "default": 10000
+    },
+    "total_value": {
+      "type": "number",
+      "default": 10000
+    },
+    "deposits_used": {
+      "type": "number",
+      "default": 0
+    }
+  },
+  "required": []
+}

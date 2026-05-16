@@ -1,0 +1,44 @@
+{
+  "name": "PaperTrade",
+  "type": "object",
+  "properties": {
+    "ticker": {
+      "type": "string"
+    },
+    "action": {
+      "type": "string",
+      "enum": [
+        "buy",
+        "sell"
+      ]
+    },
+    "shares": {
+      "type": "number"
+    },
+    "price_at_trade": {
+      "type": "number"
+    },
+    "total_value": {
+      "type": "number"
+    },
+    "realised_pnl": {
+      "type": "number",
+      "default": 0
+    },
+    "order_type": {
+      "type": "string",
+      "enum": [
+        "market",
+        "limit",
+        "stop"
+      ],
+      "default": "market"
+    }
+  },
+  "required": [
+    "ticker",
+    "action",
+    "shares",
+    "price_at_trade"
+  ]
+}
