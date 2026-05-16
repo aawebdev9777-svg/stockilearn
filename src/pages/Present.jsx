@@ -120,7 +120,7 @@ function SlideTitle() {
         className="text-8xl mb-6">📈</motion.div>
       <motion.h1 initial={{ y: 40, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.4 }}
         className="text-7xl font-black text-white mb-4 tracking-tight">
-        Stock<span className="text-[#00FF87]">Mark</span>
+        V<span className="text-[#00FF87]">stock</span>
       </motion.h1>
       <motion.p initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.6 }}
         className="text-2xl font-medium text-white/70 mb-10">
@@ -195,7 +195,7 @@ function SlideSolution() {
       <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }}>
         <span className="text-[#00FF87] font-black text-sm tracking-widest uppercase">The Solution</span>
         <h2 className="text-5xl font-black text-white mt-2 mb-3">We made investing <span className="text-[#00FF87]">feel like a game.</span></h2>
-        <p className="text-white/60 text-lg mb-8">Duolingo proved people will form daily habits around learning if you make it fun. We're doing the same for finance.</p>
+        <p className="text-white/60 text-lg mb-8">Duolingo proved people will form daily habits around learning if you make it fun. We're doing the same for finance — and we call it Vstock.</p>
       </motion.div>
       <div className="grid grid-cols-3 gap-4">
         {[
@@ -518,7 +518,7 @@ function SlideVision() {
           A generation of people who<br/>understand their money.
         </h2>
         <p className="text-xl text-white/60 max-w-3xl mx-auto leading-relaxed">
-          In 10 years, we want every 18-year-old to start their financial journey with StockMark.
+          In 10 years, we want every 18-year-old to start their financial journey with Vstock.
           We won't just teach investing — we'll change the relationship people have with money.
         </p>
       </motion.div>
@@ -568,7 +568,7 @@ function SlideCta() {
       <motion.div initial={{ scale: 0.8, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} transition={{ delay: 0.9 }}
         className="flex flex-col items-center gap-3">
         <div className="text-5xl font-black text-white">Let's talk. <span className="text-[#00FF87]">📈</span></div>
-        <p className="text-white/40 text-sm">hello@stockmark.app · stockmark.app</p>
+        <p className="text-white/40 text-sm">hello@vstock.app · vstock.app</p>
       </motion.div>
     </div>
   );
