@@ -5,10 +5,35 @@ import { base44 } from "@/api/base44Client";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { ArrowLeft, Star, StarOff } from "lucide-react";
-import { getStock, getStockHistory } from "@/lib/stockData";
+import { ArrowLeft, Star, Info } from "lucide-react";
+import { getStock, getStockHistory, formatPrice } from "@/lib/stockData";
 import StockChart from "@/components/trade/StockChart";
 import TradeModal from "@/components/trade/TradeModal";
+
+const KEY_STATS = [
+  { key: "mcap", label: "Market Cap", tip: "Total value of all shares. Bigger = more established company." },
+  { key: "pe", label: "P/E Ratio", tip: "Price ÷ Earnings. Shows how expensive the stock is vs profits. Lower can mean cheaper." },
+  { key: "eps", label: "EPS", tip: "Earnings Per Share. How much profit per share. Higher is generally better." },
+  { key: "div", label: "Dividend Yield", tip: "Annual cash paid to you as a % of share price. 0 means no dividend." },
+  { key: "high52", label: "52W High", tip: "Highest price in the last 52 weeks. Useful context for current price." },
+  { key: "low52", label: "52W Low", tip: "Lowest price in the last 52 weeks." },
+  { key: "beta", label: "Beta", tip: "Volatility vs the market. >1 = more volatile, <1 = calmer. 1.5 means 50% more movement than the market." },
+  { key: "sector", label: "Sector", tip: "The industry this company operates in. Useful for diversification." },
+];
+
+const AI_INSIGHTS = {
+  AAPL: "Apple is the world's most valuable company, making iPhones, Macs, and services like the App Store. It has been on a strong multi-year run driven by its services revenue growth. Risk: heavy dependence on iPhone sales (over 50% of revenue). Opportunity: AI integration into devices could unlock a new upgrade cycle.",
+  MSFT: "Microsoft is a cloud and software giant powering everything from Windows to Azure cloud services. Its recent AI partnerships and Copilot integration have been a major catalyst. Risk: cloud growth is slowing as the market matures. Opportunity: AI-enhanced productivity suite adoption is accelerating.",
+  NVDA: "NVIDIA makes the GPUs powering the AI revolution. Demand has been explosive from data centres. Risk: extremely high valuation and potential cyclicality if AI investment slows. Opportunity: the GPU compute market is structurally growing for years ahead.",
+  TSLA: "Tesla is the dominant electric vehicle maker but faces growing competition from Chinese rivals. Risk: margin pressure from price cuts and competition. Opportunity: energy storage and Full Self-Driving could become major new revenue streams.",
+  AMZN: "Amazon dominates e-commerce and cloud computing via AWS, its most profitable division. Risk: regulatory scrutiny and high capex requirements. Opportunity: AWS AI services and advertising are growing fast.",
+  GOOGL: "Alphabet owns Google Search, YouTube, and Google Cloud. Risk: AI chatbots could threaten core search ad revenue. Opportunity: its own AI models (Gemini) and cloud growth offer strong upside.",
+};
+
+function getAiInsight(ticker, stock) {
+  if (AI_INSIGHTS[ticker]) return AI_INSIGHTS[ticker];
+  return `${stock.name} operates in the ${stock.sector} sector. It is currently trading ${stock.change >= 0 ? "up" : "down"} ${Math.abs(stock.change).toFixed(2)}% today. ${stock.beta >= 1.5 ? "This is a higher-volatility stock — expect larger price swings." : "This is a relatively stable stock."} ${stock.div > 0 ? `It pays a ${stock.div}% dividend yield.` : "It does not currently pay a dividend."}`;
+}
 
 export default function StockDetail() {
   const navigate = useNavigate();
@@ -16,7 +41,8 @@ export default function StockDetail() {
   const ticker = window.location.pathname.split("/stock/")[1];
   const stock = useMemo(() => getStock(ticker), [ticker]);
   const [timeRange, setTimeRange] = useState("1M");
-  const [tradeAction, setTradeAction] = useState(null); // 'buy' | 'sell' | null
+  const [tradeAction, setTradeAction] = useState(null);
+  const [tipVisible, setTipVisible] = useState(null);
 
   const { data: watchlist = [] } = useQuery({
     queryKey: ["watchlist"],
@@ -56,42 +82,55 @@ export default function StockDetail() {
     queryClient.invalidateQueries({ queryKey: ["watchlist"] });
   };
 
+  const holdingValue = holding ? holding.shares * stock.current_price : 0;
+  const holdingCost = holding ? holding.avg_buy_price * holding.shares : 0;
+  const holdingPnl = holdingValue - holdingCost;
+  const holdingPnlPct = holdingCost > 0 ? (holdingPnl / holdingCost) * 100 : 0;
+
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
-      <div className="sticky top-0 z-40 bg-background/90 backdrop-blur-md px-4 py-3 flex items-center justify-between">
-        <button onClick={() => navigate(-1)} className="text-foreground">
+      <div className="sticky top-0 z-40 bg-background/90 backdrop-blur-md px-4 py-3 flex items-center justify-between border-b border-border/50">
+        <button onClick={() => navigate(-1)} className="text-foreground p-1 -ml-1">
           <ArrowLeft className="w-5 h-5" />
         </button>
-        <h2 className="text-sm font-bold text-foreground">{ticker}</h2>
-        <button onClick={toggleWatchlist}>
-          {isWatchlisted ? (
-            <Star className="w-5 h-5 fill-amber-400 text-amber-400" />
-          ) : (
-            <StarOff className="w-5 h-5 text-muted-foreground" />
-          )}
+        <div className="text-center">
+          <p className="text-sm font-black text-foreground">{ticker}</p>
+          <p className="text-[9px] text-muted-foreground">{stock.sector}</p>
+        </div>
+        <button onClick={toggleWatchlist} className="p-1 -mr-1">
+          <Star className={`w-5 h-5 ${isWatchlisted ? "fill-amber-400 text-amber-400" : "text-muted-foreground"}`} />
         </button>
       </div>
 
-      <div className="px-4 pb-32 space-y-5">
-        {/* Price */}
-        <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
-          <p className="text-xs text-muted-foreground">{stock.name}</p>
-          <p className="text-3xl font-black text-foreground">${stock.current_price.toFixed(2)}</p>
-          <p className={`text-sm font-bold ${isUp ? "text-green-400" : "text-red-400"}`}>
-            {isUp ? "+" : ""}{stock.change.toFixed(2)}% today
+      <div className="px-4 pb-32 space-y-4 pt-3">
+        {/* Price section */}
+        <motion.div initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }}>
+          <p className="text-sm text-muted-foreground">{stock.name}</p>
+          <div className="flex items-end gap-3 mt-0.5">
+            <p className="text-4xl font-black text-foreground">
+              {formatPrice(stock.current_price, stock.currency)}
+            </p>
+            {holding && (
+              <span className="text-[10px] font-bold px-2 py-1 rounded-full bg-green-500/10 text-green-400 mb-1">
+                YOU OWN {holding.shares} SHARES
+              </span>
+            )}
+          </div>
+          <p className={`text-sm font-bold mt-0.5 ${isUp ? "text-green-400" : "text-red-400"}`}>
+            {isUp ? "▲ +" : "▼ "}{Math.abs(stock.change).toFixed(2)}% today
           </p>
         </motion.div>
 
         {/* Chart */}
         <div>
           <StockChart data={history} isUp={isUp} />
-          <div className="flex gap-2 mt-3 justify-center">
+          <div className="flex gap-1.5 mt-3 justify-center">
             {["1D", "1W", "1M", "3M", "1Y", "ALL"].map(r => (
               <button
                 key={r}
                 onClick={() => setTimeRange(r)}
-                className={`text-xs font-bold px-2.5 py-1 rounded-full ${
+                className={`text-xs font-bold px-2.5 py-1 rounded-full transition-all ${
                   timeRange === r ? "bg-primary text-primary-foreground" : "text-muted-foreground"
                 }`}
               >
@@ -101,15 +140,29 @@ export default function StockDetail() {
           </div>
         </div>
 
-        {/* Holding info */}
+        {/* Your Position */}
         {holding && (
-          <Card className="p-3 bg-primary/5 border-primary/20">
-            <p className="text-xs text-muted-foreground font-medium">Your Position</p>
-            <div className="flex items-center justify-between mt-1">
-              <span className="text-sm font-bold text-foreground">{holding.shares} shares</span>
-              <span className="text-sm font-bold text-foreground">
-                Avg ${holding.avg_buy_price.toFixed(2)}
-              </span>
+          <Card className="p-4 bg-primary/5 border-primary/20">
+            <p className="text-xs font-bold text-muted-foreground mb-2">YOUR POSITION</p>
+            <div className="grid grid-cols-2 gap-2 text-sm">
+              <div>
+                <p className="text-[10px] text-muted-foreground">Shares owned</p>
+                <p className="font-bold text-foreground">{holding.shares}</p>
+              </div>
+              <div>
+                <p className="text-[10px] text-muted-foreground">Avg buy price</p>
+                <p className="font-bold text-foreground">${holding.avg_buy_price.toFixed(2)}</p>
+              </div>
+              <div>
+                <p className="text-[10px] text-muted-foreground">Current value</p>
+                <p className="font-bold text-foreground">${holdingValue.toFixed(2)}</p>
+              </div>
+              <div>
+                <p className="text-[10px] text-muted-foreground">Unrealised P&L</p>
+                <p className={`font-bold ${holdingPnl >= 0 ? "text-green-400" : "text-red-400"}`}>
+                  {holdingPnl >= 0 ? "+" : ""}${holdingPnl.toFixed(2)} ({holdingPnlPct >= 0 ? "+" : ""}{holdingPnlPct.toFixed(2)}%)
+                </p>
+              </div>
             </div>
           </Card>
         )}
@@ -117,56 +170,73 @@ export default function StockDetail() {
         {/* Key Stats */}
         <Card className="p-4 bg-card/80 border-border/50">
           <h3 className="text-sm font-bold text-foreground mb-3">Key Stats</h3>
-          <div className="grid grid-cols-2 gap-3">
-            {[
-              { label: "Sector", value: stock.sector },
-              { label: "Price", value: `$${stock.current_price.toFixed(2)}` },
-              { label: "Change", value: `${isUp ? "+" : ""}${stock.change.toFixed(2)}%` },
-              { label: "Ticker", value: stock.ticker },
-            ].map(stat => (
-              <div key={stat.label}>
-                <p className="text-[10px] text-muted-foreground font-medium">{stat.label}</p>
-                <p className="text-sm font-bold text-foreground">{stat.value}</p>
-              </div>
-            ))}
+          <div className="grid grid-cols-2 gap-x-4 gap-y-3">
+            {KEY_STATS.map(stat => {
+              const val = stat.key === "sector" ? stock.sector
+                : stat.key === "div" ? (stock.div ? `${stock.div}%` : "—")
+                : stat.key === "pe" ? (stock.pe ? `${stock.pe}×` : "N/A")
+                : stat.key === "high52" || stat.key === "low52" ? formatPrice(stock[stat.key] || 0, stock.currency)
+                : stock[stat.key] || "—";
+              return (
+                <div key={stat.key}>
+                  <div className="flex items-center gap-1 mb-0.5">
+                    <p className="text-[10px] text-muted-foreground font-medium">{stat.label}</p>
+                    <button
+                      onClick={() => setTipVisible(tipVisible === stat.key ? null : stat.key)}
+                      className="text-muted-foreground/40"
+                    >
+                      <Info className="w-3 h-3" />
+                    </button>
+                  </div>
+                  {tipVisible === stat.key && (
+                    <p className="text-[9px] text-amber-400 bg-amber-400/5 rounded-lg p-1.5 mb-1 leading-relaxed">
+                      🐂 {stat.tip}
+                    </p>
+                  )}
+                  <p className="text-sm font-bold text-foreground">{val}</p>
+                </div>
+              );
+            })}
           </div>
         </Card>
 
-        {/* AI Summary */}
-        <Card className="p-4 bg-card/80 border-border/50">
+        {/* AI Insight */}
+        <Card className="p-4 bg-gradient-to-br from-primary/5 to-card border-primary/10">
           <div className="flex items-center gap-2 mb-2">
-            <span className="text-sm">📊</span>
-            <h3 className="text-sm font-bold text-foreground">StockMark AI says:</h3>
+            <span className="text-lg">🐂</span>
+            <div>
+              <p className="text-xs font-black text-foreground">Bruno's Market Insight</p>
+              <p className="text-[9px] text-muted-foreground">AI-generated · educational only</p>
+            </div>
           </div>
           <p className="text-xs text-muted-foreground leading-relaxed">
-            {stock.name} is a {stock.sector.toLowerCase()} company currently trading at ${stock.current_price.toFixed(2)}.
-            The stock is {isUp ? "up" : "down"} {Math.abs(stock.change).toFixed(2)}% today.
-            {isUp ? " The positive momentum suggests continued investor interest." : " Consider monitoring for potential entry points."}
+            {getAiInsight(ticker, stock)}
           </p>
-          <p className="text-[10px] text-amber-400 mt-2">⚠️ Not financial advice. Educational only.</p>
+          <p className="text-[9px] text-amber-400 mt-2 font-medium">
+            📋 Not financial advice. For learning only.
+          </p>
         </Card>
       </div>
 
-      {/* Buy/Sell Buttons */}
-      <div className="fixed bottom-20 left-0 right-0 px-4 py-3 bg-background/90 backdrop-blur-md border-t border-border">
+      {/* Sticky Buy/Sell */}
+      <div className="fixed bottom-20 left-0 right-0 px-4 py-3 bg-background/90 backdrop-blur-md border-t border-border/50">
         <div className="flex gap-3 max-w-lg mx-auto">
           <Button
             onClick={() => setTradeAction("buy")}
-            className="flex-1 h-12 rounded-2xl text-base font-bold bg-green-500 hover:bg-green-600 text-white"
+            className="flex-1 h-12 rounded-2xl text-base font-black bg-green-500 hover:bg-green-600 text-white gap-2"
           >
-            BUY
+            ▲ BUY
           </Button>
           <Button
             onClick={() => setTradeAction("sell")}
             disabled={!holding}
-            className="flex-1 h-12 rounded-2xl text-base font-bold bg-red-500 hover:bg-red-600 text-white disabled:opacity-30"
+            className="flex-1 h-12 rounded-2xl text-base font-black bg-red-500 hover:bg-red-600 text-white disabled:opacity-30 gap-2"
           >
-            SELL
+            ▼ SELL
           </Button>
         </div>
       </div>
 
-      {/* Trade Modal */}
       {tradeAction && (
         <TradeModal
           action={tradeAction}
