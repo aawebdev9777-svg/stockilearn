@@ -21,7 +21,7 @@ export default function QuizQuestion({ question, onAnswer, index, total }) {
       isCorrect = (selected === 0) === question.answer;
     }
 
-    setTimeout(() => onAnswer(isCorrect), 600);
+    setTimeout(() => onAnswer(isCorrect), 200);
   };
 
   const options = question.type === "true_false"

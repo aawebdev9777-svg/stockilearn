@@ -73,7 +73,7 @@ export default function Lesson() {
         // Save progress
         saveProgress(scorePercent, earned);
       }
-    }, 1200);
+    }, 500);
   };
 
   const saveProgress = async (score, xp) => {
@@ -151,6 +151,7 @@ export default function Lesson() {
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
               exit={{ scale: 0 }}
+              transition={{ duration: 0.12, type: "spring", stiffness: 400, damping: 20 }}
               className={`w-20 h-20 rounded-full flex items-center justify-center ${
                 showFeedback === "correct" ? "bg-green-500" : "bg-red-500"
               }`}
