@@ -2,43 +2,64 @@ import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useDemo } from "@/lib/DemoContext";
 import { useNavigate } from "react-router-dom";
-import { base44 } from "@/api/base44Client";
 
 export default function DemoLogin() {
-  const { loginDemo } = useDemo();
+  const { loginDemo, signupDemo } = useDemo();
   const navigate = useNavigate();
-  const [tab, setTab] = useState("signin"); // "signin" | "signup"
+  const [tab, setTab] = useState("signin");
 
   // Sign-in state
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
-  const [shaking, setShaking] = useState(false);
+  const [siUsername, setSiUsername] = useState("");
+  const [siPassword, setSiPassword] = useState("");
+  const [siError, setSiError] = useState("");
+  const [siShaking, setSiShaking] = useState(false);
 
   // Sign-up state
-  const [signupEmail, setSignupEmail] = useState("");
-  const [signupSent, setSignupSent] = useState(false);
+  const [suName, setSuName] = useState("");
+  const [suPassword, setSuPassword] = useState("");
+  const [suPassword2, setSuPassword2] = useState("");
+  const [suError, setSuError] = useState("");
 
   const handleSignIn = (e) => {
     e.preventDefault();
-    const ok = loginDemo(username, password);
-    if (ok) {
-      navigate("/home");
+    const result = loginDemo(siUsername, siPassword);
+    if (result.ok) {
+      navigate(result.needsOnboarding ? "/onboarding" : "/home");
     } else {
-      setError("Wrong username or password. Try again.");
-      setShaking(true);
-      setTimeout(() => setShaking(false), 500);
+      setSiError("Wrong username or password.");
+      setSiShaking(true);
+      setTimeout(() => setSiShaking(false), 500);
     }
   };
 
   const handleSignUp = (e) => {
     e.preventDefault();
-    // Redirect to platform registration
-    base44.auth.redirectToLogin("/onboarding");
+    if (!suName.trim() || !suPassword.trim()) {
+      setSuError("Please fill in all fields.");
+      return;
+    }
+    if (suName.trim().length < 3) {
+      setSuError("Username must be at least 3 characters.");
+      return;
+    }
+    if (suPassword.length < 4) {
+      setSuError("Password must be at least 4 characters.");
+      return;
+    }
+    if (suPassword !== suPassword2) {
+      setSuError("Passwords don't match.");
+      return;
+    }
+    const result = signupDemo(suName.trim(), suPassword);
+    if (result.ok) {
+      navigate("/onboarding");
+    } else {
+      setSuError(result.error);
+    }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background px-4">
+    <div className="min-h-screen flex flex-col items-center justify-center bg-background px-4">
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
@@ -58,7 +79,7 @@ export default function DemoLogin() {
           {["signin", "signup"].map((t) => (
             <button
               key={t}
-              onClick={() => { setTab(t); setError(""); }}
+              onClick={() => { setTab(t); setSiError(""); setSuError(""); }}
               className={`flex-1 py-2 rounded-xl text-sm font-bold transition-all ${
                 tab === t
                   ? "bg-card text-foreground shadow-sm"
@@ -75,19 +96,18 @@ export default function DemoLogin() {
             <motion.form
               key="signin"
               initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
+              animate={siShaking ? { x: [-8, 8, -8, 8, 0], opacity: 1 } : { opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: 20 }}
               transition={{ duration: 0.2 }}
               onSubmit={handleSignIn}
-              animate={shaking ? { x: [-8, 8, -8, 8, 0] } : { opacity: 1, x: 0 }}
               className="bg-card border border-border rounded-2xl p-6 shadow-sm space-y-4"
             >
               <div className="space-y-1">
                 <label className="text-xs font-bold text-muted-foreground uppercase tracking-wide">Username</label>
                 <input
                   type="text"
-                  value={username}
-                  onChange={e => { setUsername(e.target.value); setError(""); }}
+                  value={siUsername}
+                  onChange={e => { setSiUsername(e.target.value); setSiError(""); }}
                   placeholder="Enter username"
                   className="w-full px-4 py-3 rounded-xl border border-border bg-background text-foreground text-sm font-medium focus:outline-none focus:ring-2 focus:ring-primary/40"
                   autoComplete="username"
@@ -98,17 +118,15 @@ export default function DemoLogin() {
                 <label className="text-xs font-bold text-muted-foreground uppercase tracking-wide">Password</label>
                 <input
                   type="password"
-                  value={password}
-                  onChange={e => { setPassword(e.target.value); setError(""); }}
+                  value={siPassword}
+                  onChange={e => { setSiPassword(e.target.value); setSiError(""); }}
                   placeholder="Enter password"
                   className="w-full px-4 py-3 rounded-xl border border-border bg-background text-foreground text-sm font-medium focus:outline-none focus:ring-2 focus:ring-primary/40"
                   autoComplete="current-password"
                 />
               </div>
 
-              {error && (
-                <p className="text-xs text-destructive font-semibold">{error}</p>
-              )}
+              {siError && <p className="text-xs text-destructive font-semibold">{siError}</p>}
 
               <button
                 type="submit"
@@ -122,48 +140,74 @@ export default function DemoLogin() {
               </p>
             </motion.form>
           ) : (
-            <motion.div
+            <motion.form
               key="signup"
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: -20 }}
               transition={{ duration: 0.2 }}
-              className="bg-card border border-border rounded-2xl p-6 shadow-sm space-y-5"
+              onSubmit={handleSignUp}
+              className="bg-card border border-border rounded-2xl p-6 shadow-sm space-y-4"
             >
-              <div className="text-center space-y-1">
+              <div className="text-center space-y-1 mb-2">
                 <div className="text-4xl">🚀</div>
-                <h2 className="font-black text-lg text-foreground">Start your journey</h2>
-                <p className="text-xs text-muted-foreground">Create a free account and start learning to invest in minutes.</p>
+                <h2 className="font-black text-lg text-foreground">Create your account</h2>
+                <p className="text-xs text-muted-foreground">Free forever. Start investing smarter today.</p>
               </div>
 
-              <div className="space-y-2 text-sm">
-                {["📈 25+ interactive lessons","🏆 Gamified streaks & leagues","💰 £10K paper trading portfolio","🤖 AI tutor — Bruno the Bull"].map(f => (
-                  <div key={f} className="flex items-center gap-2 text-muted-foreground">
-                    <span>{f}</span>
-                  </div>
-                ))}
+              <div className="space-y-1">
+                <label className="text-xs font-bold text-muted-foreground uppercase tracking-wide">Username</label>
+                <input
+                  type="text"
+                  value={suName}
+                  onChange={e => { setSuName(e.target.value); setSuError(""); }}
+                  placeholder="Choose a username"
+                  className="w-full px-4 py-3 rounded-xl border border-border bg-background text-foreground text-sm font-medium focus:outline-none focus:ring-2 focus:ring-primary/40"
+                  autoComplete="username"
+                />
               </div>
+
+              <div className="space-y-1">
+                <label className="text-xs font-bold text-muted-foreground uppercase tracking-wide">Password</label>
+                <input
+                  type="password"
+                  value={suPassword}
+                  onChange={e => { setSuPassword(e.target.value); setSuError(""); }}
+                  placeholder="Choose a password"
+                  className="w-full px-4 py-3 rounded-xl border border-border bg-background text-foreground text-sm font-medium focus:outline-none focus:ring-2 focus:ring-primary/40"
+                  autoComplete="new-password"
+                />
+              </div>
+
+              <div className="space-y-1">
+                <label className="text-xs font-bold text-muted-foreground uppercase tracking-wide">Confirm Password</label>
+                <input
+                  type="password"
+                  value={suPassword2}
+                  onChange={e => { setSuPassword2(e.target.value); setSuError(""); }}
+                  placeholder="Repeat password"
+                  className="w-full px-4 py-3 rounded-xl border border-border bg-background text-foreground text-sm font-medium focus:outline-none focus:ring-2 focus:ring-primary/40"
+                  autoComplete="new-password"
+                />
+              </div>
+
+              {suError && <p className="text-xs text-destructive font-semibold">{suError}</p>}
 
               <button
-                onClick={handleSignUp}
+                type="submit"
                 className="w-full h-12 rounded-xl bg-primary text-primary-foreground font-black text-base hover:opacity-90 transition-opacity"
               >
-                Create Free Account
+                Create Account 🚀
               </button>
 
               <p className="text-center text-xs text-muted-foreground">
                 Already have an account?{" "}
-                <button onClick={() => setTab("signin")} className="text-primary font-bold">Sign in</button>
+                <button type="button" onClick={() => setTab("signin")} className="text-primary font-bold">Sign in</button>
               </p>
-            </motion.div>
+            </motion.form>
           )}
         </AnimatePresence>
       </motion.div>
-
-      {/* Footer */}
-      <p className="text-center text-[11px] text-muted-foreground mt-8 pb-4">
-        Created by <span className="font-bold text-foreground">Ahmetzhan</span> · Vstock © 2026
-      </p>
     </div>
   );
 }

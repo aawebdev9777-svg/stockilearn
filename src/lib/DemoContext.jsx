@@ -89,21 +89,83 @@ export const DEMO_BADGES = [
 const DemoContext = createContext(null);
 
 const STORAGE_KEY = "vstock_demo_session";
+const USERS_KEY = "vstock_users";
+
+function getStoredUsers() {
+  try { return JSON.parse(localStorage.getItem(USERS_KEY) || "[]"); } catch { return []; }
+}
+
+function buildUserProfile(username) {
+  return {
+    id: `user-${username.toLowerCase()}-${Date.now()}`,
+    full_name: username,
+    email: `${username.toLowerCase()}@vstock.app`,
+    role: "user",
+    xp_total: 0,
+    level: 1,
+    streak_current: 0,
+    streak_longest: 0,
+    hearts_current: 5,
+    gems: 0,
+    daily_xp_earned_today: 0,
+    daily_goal_xp: 50,
+    league_tier: 1,
+    league_xp: 0,
+    goals: [],
+    knowledge_level: "beginner",
+    daily_time: "10_mins",
+    preferred_currency: "GBP",
+    onboarding_complete: false,
+  };
+}
 
 export function DemoProvider({ children }) {
   const [isDemoMode, setIsDemoMode] = useState(() => {
-    return localStorage.getItem(STORAGE_KEY) === "dragons";
+    return !!localStorage.getItem(STORAGE_KEY);
   });
-  const [demoUser, setDemoUser] = useState(isDemoMode ? DEMO_USER : null);
+  const [demoUser, setDemoUser] = useState(() => {
+    const session = localStorage.getItem(STORAGE_KEY);
+    if (!session) return null;
+    if (session === "dragons") return DEMO_USER;
+    try { return JSON.parse(session); } catch { return null; }
+  });
 
   const loginDemo = (username, password) => {
+    // Built-in demo account
     if (username.toLowerCase() === DEMO_CREDENTIALS.username.toLowerCase() && password === DEMO_CREDENTIALS.password) {
       localStorage.setItem(STORAGE_KEY, "dragons");
       setIsDemoMode(true);
       setDemoUser(DEMO_USER);
-      return true;
+      return { ok: true };
     }
-    return false;
+    // Custom registered accounts
+    const users = getStoredUsers();
+    const found = users.find(u => u.username.toLowerCase() === username.toLowerCase() && u.password === password);
+    if (found) {
+      const profile = found.profile;
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(profile));
+      setIsDemoMode(true);
+      setDemoUser(profile);
+      return { ok: true, needsOnboarding: !profile.onboarding_complete };
+    }
+    return { ok: false };
+  };
+
+  const signupDemo = (username, password) => {
+    const users = getStoredUsers();
+    const exists = users.some(u => u.username.toLowerCase() === username.toLowerCase());
+    if (exists) return { ok: false, error: "Username already taken. Try another." };
+    // Also block the demo username
+    if (username.toLowerCase() === DEMO_CREDENTIALS.username.toLowerCase()) {
+      return { ok: false, error: "Username already taken. Try another." };
+    }
+    const profile = buildUserProfile(username);
+    users.push({ username, password, profile });
+    localStorage.setItem(USERS_KEY, JSON.stringify(users));
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(profile));
+    setIsDemoMode(true);
+    setDemoUser(profile);
+    return { ok: true };
   };
 
   const logoutDemo = () => {
@@ -113,7 +175,7 @@ export function DemoProvider({ children }) {
   };
 
   return (
-    <DemoContext.Provider value={{ isDemoMode, demoUser, loginDemo, logoutDemo }}>
+    <DemoContext.Provider value={{ isDemoMode, demoUser, loginDemo, signupDemo, logoutDemo }}>
       {children}
     </DemoContext.Provider>
   );
