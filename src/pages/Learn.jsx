@@ -1,15 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { base44 } from "@/api/base44Client";
 import { useQuery } from "@tanstack/react-query";
+import { useDemo, DEMO_LESSON_PROGRESS } from "@/lib/DemoContext";
 import { motion } from "framer-motion";
 import { UNITS, LESSONS, getLessonsForUnit } from "@/lib/lessonData";
 import SkillNode from "@/components/learn/SkillNode";
 
 export default function Learn() {
+  const { isDemoMode } = useDemo();
   const { data: progressData = [] } = useQuery({
     queryKey: ["lesson-progress"],
-    queryFn: () => base44.entities.LessonProgress.list(),
-    initialData: [],
+    queryFn: () => isDemoMode ? Promise.resolve(DEMO_LESSON_PROGRESS) : base44.entities.LessonProgress.list(),
+    initialData: isDemoMode ? DEMO_LESSON_PROGRESS : [],
   });
 
   const completedIds = progressData.filter(p => p.status === "complete").map(p => p.lesson_id);

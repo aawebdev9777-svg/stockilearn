@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
+import { useDemo, DEMO_USER } from "@/lib/DemoContext";
 import { Card } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
 import { Button } from "@/components/ui/button";
@@ -8,13 +9,16 @@ import { ArrowLeft, LogOut } from "lucide-react";
 
 export default function Settings() {
   const navigate = useNavigate();
-  const [user, setUser] = useState(null);
+  const { isDemoMode, logoutDemo } = useDemo();
+  const [user, setUser] = useState(isDemoMode ? DEMO_USER : null);
 
   useEffect(() => {
+    if (isDemoMode) return;
     base44.auth.me().then(setUser).catch(() => {});
-  }, []);
+  }, [isDemoMode]);
 
   const handleToggle = async (field, value) => {
+    if (isDemoMode) { setUser(prev => ({ ...prev, [field]: value })); return; }
     await base44.auth.updateMe({ [field]: value });
     setUser(prev => ({ ...prev, [field]: value }));
   };
@@ -77,7 +81,7 @@ export default function Settings() {
 
         <Button
           variant="outline"
-          onClick={() => base44.auth.logout()}
+          onClick={() => { if (isDemoMode) { logoutDemo(); navigate("/login"); } else { base44.auth.logout(); } }}
           className="w-full gap-2 text-destructive border-destructive/20"
         >
           <LogOut className="w-4 h-4" /> Sign Out

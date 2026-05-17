@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { base44 } from "@/api/base44Client";
+import { useDemo, DEMO_USER, DEMO_BADGES, DEMO_LESSON_PROGRESS } from "@/lib/DemoContext";
 import { motion } from "framer-motion";
 import { Card } from "@/components/ui/card";
 import { useQuery } from "@tanstack/react-query";
@@ -11,23 +12,25 @@ import HeartsDisplay from "@/components/gamification/HeartsDisplay";
 import { Progress } from "@/components/ui/progress";
 
 export default function Profile() {
-  const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const { isDemoMode } = useDemo();
+  const [user, setUser] = useState(isDemoMode ? DEMO_USER : null);
+  const [loading, setLoading] = useState(!isDemoMode);
 
   useEffect(() => {
+    if (isDemoMode) return;
     base44.auth.me().then(u => { setUser(u); setLoading(false); }).catch(() => setLoading(false));
-  }, []);
+  }, [isDemoMode]);
 
   const { data: userBadges = [] } = useQuery({
     queryKey: ["user-badges"],
-    queryFn: () => base44.entities.UserBadge.list(),
-    initialData: [],
+    queryFn: () => isDemoMode ? Promise.resolve(DEMO_BADGES) : base44.entities.UserBadge.list(),
+    initialData: isDemoMode ? DEMO_BADGES : [],
   });
 
   const { data: lessonProgress = [] } = useQuery({
     queryKey: ["lesson-progress-profile"],
-    queryFn: () => base44.entities.LessonProgress.list(),
-    initialData: [],
+    queryFn: () => isDemoMode ? Promise.resolve(DEMO_LESSON_PROGRESS) : base44.entities.LessonProgress.list(),
+    initialData: isDemoMode ? DEMO_LESSON_PROGRESS : [],
   });
 
   if (loading) {

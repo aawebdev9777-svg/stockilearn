@@ -1,6 +1,7 @@
 import React, { useState, useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { base44 } from "@/api/base44Client";
+import { useDemo, DEMO_PORTFOLIO, DEMO_HOLDINGS, DEMO_TRADES } from "@/lib/DemoContext";
 import { Card } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { getStock, generateSparkline, getSectorBreakdown, formatPrice } from "@/lib/stockData";
@@ -13,30 +14,33 @@ import { motion, AnimatePresence } from "framer-motion";
 const DONUT_COLORS = ["#00FF87","#38BDF8","#FFB800","#7C3AED","#FF4B4B","#F97316","#EC4899","#14B8A6","#84CC16","#6366F1"];
 
 export default function PortfolioTab({ onNavigateToMarket }) {
+  const { isDemoMode } = useDemo();
   const [expandedHolding, setExpandedHolding] = useState(null);
   const [sortBy, setSortBy] = useState("value");
 
   const { data: portfolio } = useQuery({
     queryKey: ["portfolio"],
     queryFn: async () => {
+      if (isDemoMode) return DEMO_PORTFOLIO;
       const portfolios = await base44.entities.PaperPortfolio.list();
       if (portfolios.length === 0) {
         return await base44.entities.PaperPortfolio.create({ cash_balance: 10000, total_value: 10000 });
       }
       return portfolios[0];
     },
+    initialData: isDemoMode ? DEMO_PORTFOLIO : undefined,
   });
 
   const { data: holdings = [] } = useQuery({
     queryKey: ["holdings"],
-    queryFn: () => base44.entities.PaperHolding.list(),
-    initialData: [],
+    queryFn: () => isDemoMode ? Promise.resolve(DEMO_HOLDINGS) : base44.entities.PaperHolding.list(),
+    initialData: isDemoMode ? DEMO_HOLDINGS : [],
   });
 
   const { data: allTrades = [] } = useQuery({
     queryKey: ["trades"],
-    queryFn: () => base44.entities.PaperTrade.list(),
-    initialData: [],
+    queryFn: () => isDemoMode ? Promise.resolve(DEMO_TRADES) : base44.entities.PaperTrade.list(),
+    initialData: isDemoMode ? DEMO_TRADES : [],
   });
 
   const cashBalance = portfolio?.cash_balance ?? 10000;

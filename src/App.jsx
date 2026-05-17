@@ -5,6 +5,8 @@ import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-d
 import PageNotFound from './lib/PageNotFound';
 import { AuthProvider, useAuth } from '@/lib/AuthContext';
 import UserNotRegisteredError from '@/components/UserNotRegisteredError';
+import { DemoProvider, useDemo } from '@/lib/DemoContext';
+import DemoLogin from '@/pages/DemoLogin';
 
 import AppLayout from '@/components/layout/AppLayout';
 import Home from '@/pages/Home';
@@ -20,6 +22,30 @@ import Present from '@/pages/Present';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
+  const { isDemoMode } = useDemo();
+
+  // If demo mode is active, skip platform auth entirely
+  if (isDemoMode) {
+    return (
+      <Routes>
+        <Route path="/" element={<Navigate to="/home" replace />} />
+        <Route path="/login" element={<Navigate to="/home" replace />} />
+        <Route path="/onboarding" element={<Onboarding />} />
+        <Route path="/learn/lesson/:lessonId" element={<Lesson />} />
+        <Route path="/trade/stock/:ticker" element={<StockDetail />} />
+        <Route path="/settings" element={<Settings />} />
+        <Route path="/present" element={<Present />} />
+        <Route element={<AppLayout />}>
+          <Route path="/home" element={<Home />} />
+          <Route path="/learn" element={<Learn />} />
+          <Route path="/trade" element={<Trade />} />
+          <Route path="/leagues" element={<Leagues />} />
+          <Route path="/profile" element={<Profile />} />
+        </Route>
+        <Route path="*" element={<PageNotFound />} />
+      </Routes>
+    );
+  }
 
   if (isLoadingPublicSettings || isLoadingAuth) {
     return (
@@ -36,15 +62,20 @@ const AuthenticatedApp = () => {
     if (authError.type === 'user_not_registered') {
       return <UserNotRegisteredError />;
     } else if (authError.type === 'auth_required') {
-      navigateToLogin();
-      return null;
+      // Show demo login instead of redirecting to platform auth
+      return (
+        <Routes>
+          <Route path="*" element={<DemoLogin />} />
+        </Routes>
+      );
     }
   }
 
   return (
     <Routes>
-      <Route path="/" element={<Navigate to="/home" replace />} />
-      <Route path="/onboarding" element={<Onboarding />} />
+    <Route path="/" element={<Navigate to="/home" replace />} />
+    <Route path="/login" element={<DemoLogin />} />
+    <Route path="/onboarding" element={<Onboarding />} />
       <Route path="/learn/lesson/:lessonId" element={<Lesson />} />
       <Route path="/trade/stock/:ticker" element={<StockDetail />} />
       <Route path="/settings" element={<Settings />} />
@@ -63,16 +94,18 @@ const AuthenticatedApp = () => {
 
 function App() {
   return (
-    <AuthProvider>
-      <QueryClientProvider client={queryClientInstance}>
-        <Router>
-          <div>
-            <AuthenticatedApp />
-          </div>
-        </Router>
-        <Toaster />
-      </QueryClientProvider>
-    </AuthProvider>
+    <DemoProvider>
+      <AuthProvider>
+        <QueryClientProvider client={queryClientInstance}>
+          <Router>
+            <div>
+              <AuthenticatedApp />
+            </div>
+          </Router>
+          <Toaster />
+        </QueryClientProvider>
+      </AuthProvider>
+    </DemoProvider>
   )
 }
 
