@@ -19,6 +19,7 @@ import Profile from '@/pages/Profile';
 import Settings from '@/pages/Settings';
 import Onboarding from '@/pages/Onboarding';
 import Present from '@/pages/Present';
+import Landing from '@/pages/Landing';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -28,7 +29,7 @@ const AuthenticatedApp = () => {
   if (isDemoMode) {
     return (
       <Routes>
-        <Route path="/" element={<Navigate to="/home" replace />} />
+        <Route path="/" element={<Landing />} />
         <Route path="/login" element={<Navigate to="/home" replace />} />
         <Route path="/onboarding" element={<Onboarding />} />
         <Route path="/learn/lesson/:lessonId" element={<Lesson />} />
@@ -73,7 +74,7 @@ const AuthenticatedApp = () => {
 
   return (
     <Routes>
-    <Route path="/" element={<Navigate to="/home" replace />} />
+    <Route path="/" element={<Landing />} />
     <Route path="/login" element={<DemoLogin />} />
     <Route path="/onboarding" element={<Onboarding />} />
       <Route path="/learn/lesson/:lessonId" element={<Lesson />} />
