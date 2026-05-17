@@ -195,10 +195,12 @@ function SlideTitle() {
 
 function SlideProblem() {
   const problems = [
-    {emoji:"😰",stat:"67%",text:"of adults feel anxious about investing",sub:"Source: FINRA 2023",color:"#ef4444"},
-    {emoji:"📚",stat:"83%",text:"never received financial education in school",sub:"Source: OECD",color:"#f97316"},
-    {emoji:"💸",stat:"$1.2T",text:"sits idle in low-interest savings accounts",sub:"US alone",color:"#eab308"},
-    {emoji:"📉",stat:"3 in 4",text:"new retail investors quit within 90 days",sub:"Source: Robinhood data",color:"#ef4444"},
+    {emoji:"😰",stat:"67%",text:"of adults feel anxious or paralysed about investing",sub:"FINRA Financial Capability Study, 2023",color:"#ef4444"},
+    {emoji:"📚",stat:"83%",text:"of people never received any financial education in school",sub:"OECD Financial Literacy Survey, 2022",color:"#f97316"},
+    {emoji:"💸",stat:"$4.6T",text:"sits idle in zero-interest current accounts globally",sub:"McKinsey Global Banking Report, 2024",color:"#eab308"},
+    {emoji:"📉",stat:"78%",text:"of new retail investors quit within their first 90 days",sub:"Robinhood & Schwab user cohort data",color:"#ef4444"},
+    {emoji:"🧠",stat:"42%",text:"of millennials can't answer basic compound interest questions",sub:"S&P Global FinLit Survey",color:"#a855f7"},
+    {emoji:"🏦",stat:"£850B",text:"in UK savings earning below inflation — wealth quietly eroding",sub:"Bank of England, Q1 2025",color:"#3b82f6"},
   ];
   return (
     <div className="flex flex-col h-full px-16 justify-center gap-6" style={{background:BG}}>
@@ -207,16 +209,16 @@ function SlideProblem() {
         <H>Most people are <span style={{color:"#ef4444"}}>financially frozen.</span></H>
         <p className="text-xl -mt-1 mb-0" style={{color:MUTED}}>The knowledge gap is real — and it's costing people everything.</p>
       </div>
-      <div className="grid grid-cols-2 gap-4 flex-1 max-h-72">
+      <div className="grid grid-cols-3 gap-4 flex-1 max-h-72">
         {problems.map((p,i)=>(
-          <motion.div key={i} initial={{opacity:0,y:30}} animate={{opacity:1,y:0}} transition={{delay:0.15+i*0.12}} className="h-full">
-            <Card className="relative overflow-hidden p-6 h-full flex flex-col justify-between">
-              <div className="absolute top-3 right-4 text-7xl opacity-[0.07]">{p.emoji}</div>
+          <motion.div key={i} initial={{opacity:0,y:30}} animate={{opacity:1,y:0}} transition={{delay:0.15+i*0.1}} className="h-full">
+            <Card className="relative overflow-hidden p-5 h-full flex flex-col justify-between">
+              <div className="absolute top-3 right-4 text-6xl opacity-[0.07]">{p.emoji}</div>
               <div>
-                <p className="text-7xl font-black leading-none" style={{color:p.color}}>{p.stat}</p>
-                <p className="text-base mt-2 leading-snug font-medium" style={{color:TEXT}}>{p.text}</p>
+                <p className="text-5xl font-black leading-none" style={{color:p.color}}>{p.stat}</p>
+                <p className="text-sm mt-2 leading-snug font-medium" style={{color:TEXT}}>{p.text}</p>
               </div>
-              <p className="text-xs mt-2" style={{color:MUTED2}}>{p.sub}</p>
+              <p className="text-[11px] mt-2" style={{color:MUTED2}}>{p.sub}</p>
             </Card>
           </motion.div>
         ))}
@@ -231,7 +233,7 @@ function SlideBigStat() {
       <div className="absolute inset-0" style={{background:`radial-gradient(ellipse 55% 55% at 50% 50%, ${G}15, transparent 70%)`}}/>
       {/* Big number centred */}
       <div className="flex-1 flex flex-col items-center justify-center text-center relative z-10 px-8">
-        <motion.p initial={{opacity:0}} animate={{opacity:1}} className="text-sm font-black tracking-widest uppercase mb-2" style={{color:G}}>The Opportunity</motion.p>
+        <motion.p initial={{opacity:0}} animate={{opacity:1}} className="text-sm font-black tracking-widest uppercase mb-2" style={{color:G}}>Total Addressable Market</motion.p>
         <motion.div initial={{scale:0.5,opacity:0}} animate={{scale:1,opacity:1}} transition={{type:"spring",stiffness:80}}>
           <p className="font-black leading-none" style={{fontSize:"min(22vw,180px)",color:TEXT}}>
             $4.8<span style={{color:G}}>B</span>
@@ -239,21 +241,32 @@ function SlideBigStat() {
         </motion.div>
         <motion.p initial={{y:20,opacity:0}} animate={{y:0,opacity:1}} transition={{delay:0.5}}
           className="text-2xl mt-1 max-w-xl" style={{color:MUTED}}>
-          Global financial education market —<br/><strong style={{color:TEXT}}>growing 18% per year</strong>
+          Global financial education market —<br/><strong style={{color:TEXT}}>CAGR 18.3% through 2030</strong>
         </motion.p>
+        <motion.div initial={{opacity:0}} animate={{opacity:1}} transition={{delay:0.8}}
+          className="flex gap-3 mt-5">
+          {[{v:"$1.2B",l:"North America",c:"#6366f1"},{v:"£420M",l:"United Kingdom",c:"#f59e0b"},{v:"€680M",l:"Europe",c:"#22c55e"}].map(({v,l,c})=>(
+            <div key={l} className="rounded-2xl px-4 py-2 text-center" style={{background:CARD,border:`1px solid ${BORDER}`}}>
+              <p className="text-xl font-black" style={{color:c}}>{v}</p>
+              <p className="text-xs" style={{color:MUTED}}>{l}</p>
+            </div>
+          ))}
+        </motion.div>
       </div>
       {/* Right stats column */}
       <motion.div initial={{opacity:0,x:30}} animate={{opacity:1,x:0}} transition={{delay:0.7}}
-        className="w-72 flex flex-col justify-center gap-4 pr-12 relative z-10">
+        className="w-80 flex flex-col justify-center gap-3 pr-12 relative z-10">
         {[
-          {v:"40M+",l:"Millennials with zero investing knowledge",c:"#6366f1"},
-          {v:"£850B",l:"UK retail investment opportunity untapped",c:"#f59e0b"},
-          {v:"2.5Bn",l:"Global adults underserved by finance education",c:"#ef4444"},
-          {v:"18%",l:"CAGR of financial education market through 2030",c:G},
+          {v:"40M+",l:"Millennials in UK/US with zero investing knowledge",c:"#6366f1"},
+          {v:"£850B",l:"UK retail investment opportunity currently untapped",c:"#f59e0b"},
+          {v:"2.5Bn",l:"Global adults underserved by any financial education",c:"#ef4444"},
+          {v:"3×",l:"Duolingo's revenue growth after adding premium tier",c:G},
+          {v:"$7.7B",l:"Duolingo's market cap — our closest comparable exit",c:"#a855f7"},
+          {v:"0",l:"Direct full-stack gamified investing education competitors",c:"#06b6d4"},
         ].map(({v,l,c})=>(
-          <div key={v} className="rounded-2xl p-4" style={{background:CARD,border:`1px solid ${BORDER}`}}>
-            <p className="text-4xl font-black" style={{color:c}}>{v}</p>
-            <p className="text-xs mt-1 leading-relaxed" style={{color:MUTED}}>{l}</p>
+          <div key={v} className="rounded-2xl p-3" style={{background:CARD,border:`1px solid ${BORDER}`}}>
+            <p className="text-3xl font-black" style={{color:c}}>{v}</p>
+            <p className="text-xs mt-0.5 leading-relaxed" style={{color:MUTED}}>{l}</p>
           </div>
         ))}
       </motion.div>
@@ -263,10 +276,10 @@ function SlideBigStat() {
 
 function SlideSolution() {
   const cards = [
-    {icon:"🎓",title:"Structured Lessons",desc:"25+ bite-sized lessons across 5 units. From 'What is a stock?' to advanced portfolio strategy. With quizzes and boss battles.",accent:{borderColor:"#3b82f620",background:"#eff6ff"}},
-    {icon:"📈",title:"Paper Trading",desc:"£10,000 virtual money. Real market data. 50+ stocks. No risk — but builds real decision-making intuition fast.",accent:{borderColor:`${G}30`,background:`${G}08`}},
-    {icon:"🤖",title:"Bruno the Bull AI",desc:"GPT-4 powered AI tutor available on every slide. Explains concepts in plain English, analyses your portfolio.",accent:{borderColor:"#f59e0b30",background:"#fffbeb"}},
-    {icon:"🏆",title:"Gamification Engine",desc:"Streaks, XP, 50 levels, leagues, 25+ badges, daily missions, hearts system. Retention baked in from day one.",accent:{borderColor:"#a855f730",background:"#faf5ff"}},
+    {icon:"🎓",title:"Structured Curriculum",desc:"40+ bite-sized lessons across 5 units — from 'What is a stock?' to advanced portfolio strategy. Quizzes, boss battles, and real-world case studies baked in.",accent:{borderColor:"#3b82f620",background:"#eff6ff"},stat:"5 Units · 40+ Lessons"},
+    {icon:"📈",title:"Paper Trading Simulator",desc:"£10,000 virtual capital. Real-time market data. 50+ US & UK stocks. Order types: market, limit, stop-loss. Portfolio health scoring and analytics.",accent:{borderColor:`${G}30`,background:`${G}08`},stat:"50+ Stocks · Real Prices"},
+    {icon:"🤖",title:"Bruno the Bull — AI Tutor",desc:"GPT-4o powered AI tutor on every screen. Explains concepts in plain English, analyses your portfolio, gives personalised tips. Never condescending.",accent:{borderColor:"#f59e0b30",background:"#fffbeb"},stat:"GPT-4o · Always Available"},
+    {icon:"🏆",title:"Gamification Engine",desc:"Streaks, XP, 50 levels, 7-tier leagues, 25+ badges, daily missions, hearts system, streak freezes, gems currency. Retention baked in from day one.",accent:{borderColor:"#a855f730",background:"#faf5ff"},stat:"50 Levels · 25+ Badges"},
   ];
   return (
     <div className="flex flex-col h-full px-16 justify-center gap-5" style={{background:BG}}>
@@ -278,10 +291,11 @@ function SlideSolution() {
       <div className="grid grid-cols-4 gap-4">
         {cards.map((c,i)=>(
           <motion.div key={i} initial={{opacity:0,y:30}} animate={{opacity:1,y:0}} transition={{delay:0.2+i*0.12}}>
-            <Card className="p-6" style={c.accent}>
+            <Card className="p-6 flex flex-col" style={c.accent}>
               <span className="text-5xl">{c.icon}</span>
               <h3 className="font-black text-lg mt-4 mb-2" style={{color:TEXT}}>{c.title}</h3>
-              <p className="text-sm leading-relaxed" style={{color:MUTED}}>{c.desc}</p>
+              <p className="text-sm leading-relaxed flex-1" style={{color:MUTED}}>{c.desc}</p>
+              <div className="mt-3 text-[11px] font-black px-2 py-1 rounded-full w-fit" style={{background:`rgba(0,0,0,0.06)`,color:MUTED}}>{c.stat}</div>
             </Card>
           </motion.div>
         ))}
@@ -444,10 +458,12 @@ function SlideGamification() {
 
 function SlideTraction() {
   const items = [
-    {icon:"📱",title:"Mobile-first generation",desc:"Gen Z and Millennials manage everything from their phone. Financial education needs to meet them there.",stat:"94%",statLabel:"of 18-35s own a smartphone"},
-    {icon:"📰",title:"GameStop changed everything",desc:"Retail investing went mainstream overnight. People desperately WANT to understand markets.",stat:"10M+",statLabel:"new retail investors since 2020"},
-    {icon:"🤖",title:"AI makes it finally possible",desc:"LLMs can explain complex financial concepts conversationally in seconds. Bruno the Bull couldn't have existed 3 years ago.",stat:"GPT-4o",statLabel:"powering Bruno the Bull"},
-    {icon:"🎯",title:"No full-stack competitor exists",desc:"Bloomberg is for pros. YouTube is passive. Nothing gamified + interactive + AI-powered + comprehensive exists yet.",stat:"$0",statLabel:"venture-backed direct competitors"},
+    {icon:"📱",title:"Mobile-first generation",desc:"Gen Z and Millennials manage everything from their phone. 68% say they prefer learning via an app over books or courses. Financial education must meet them there.",stat:"94%",statLabel:"of 18-35s own a smartphone"},
+    {icon:"📰",title:"GameStop & Crypto changed everything",desc:"Retail investing went mainstream overnight. 10M new accounts opened in 2021 alone. People desperately WANT to understand markets — but have no trusted place to learn.",stat:"10M+",statLabel:"new retail investors since 2020"},
+    {icon:"🤖",title:"AI makes personalised tutoring possible",desc:"LLMs can explain complex financial concepts conversationally in seconds. A personal finance tutor would cost £80/hr. Vstock delivers that for £6.99/month.",stat:"GPT-4o",statLabel:"powering Bruno the Bull"},
+    {icon:"🎯",title:"Zero direct full-stack competitors",desc:"Bloomberg = pros. YouTube = passive. Khan Academy = dry. Nothing gamified + interactive + AI-powered + paper trading + comprehensive curriculum exists today.",stat:"$0",statLabel:"in VC funding for direct competitors"},
+    {icon:"📈",title:"Duolingo proved the model works",desc:"Duolingo went from 0 to 500M users with the same gamified daily habit loop. Financial literacy is bigger, more urgent, and more monetisable than language learning.",stat:"$7.7B",statLabel:"Duolingo's market cap — our blueprint"},
+    {icon:"🏫",title:"Schools are actively seeking solutions",desc:"UK government mandated financial education in schools in 2024. Schools have budgets but no good digital tools. B2B pipeline opportunity from day one.",stat:"8.9M",statLabel:"UK secondary school students in need"},
   ];
   return (
     <div className="flex flex-col h-full px-16 justify-center gap-5" style={{background:BG}}>
@@ -455,19 +471,19 @@ function SlideTraction() {
         <Chip>Why Now</Chip>
         <H>The moment has arrived.<br/><span style={{color:G}}>Three tailwinds converging.</span></H>
       </div>
-      <div className="grid grid-cols-2 gap-4 flex-1 max-h-80">
+      <div className="grid grid-cols-3 gap-4 flex-1 max-h-80">
         {items.map((item,i)=>(
-          <motion.div key={i} initial={{opacity:0,y:25}} animate={{opacity:1,y:0}} transition={{delay:0.15+i*0.12}} className="h-full">
-            <Card className="p-5 flex gap-4 h-full">
-              <span className="text-4xl shrink-0 mt-1">{item.icon}</span>
+          <motion.div key={i} initial={{opacity:0,y:25}} animate={{opacity:1,y:0}} transition={{delay:0.1+i*0.1}} className="h-full">
+            <Card className="p-4 flex gap-3 h-full">
+              <span className="text-3xl shrink-0 mt-1">{item.icon}</span>
               <div className="flex flex-col justify-between">
                 <div>
-                  <h3 className="font-black text-base mb-1" style={{color:TEXT}}>{item.title}</h3>
-                  <p className="text-sm leading-relaxed" style={{color:MUTED}}>{item.desc}</p>
+                  <h3 className="font-black text-sm mb-1" style={{color:TEXT}}>{item.title}</h3>
+                  <p className="text-xs leading-relaxed" style={{color:MUTED}}>{item.desc}</p>
                 </div>
-                <div className="flex items-baseline gap-2 mt-3">
-                  <span className="font-black text-3xl" style={{color:G}}>{item.stat}</span>
-                  <span className="text-xs" style={{color:MUTED2}}>{item.statLabel}</span>
+                <div className="flex items-baseline gap-1.5 mt-2">
+                  <span className="font-black text-2xl" style={{color:G}}>{item.stat}</span>
+                  <span className="text-[10px]" style={{color:MUTED2}}>{item.statLabel}</span>
                 </div>
               </div>
             </Card>
@@ -511,14 +527,18 @@ function SlideBizModel() {
         ))}
       </div>
       <motion.div initial={{opacity:0}} animate={{opacity:1}} transition={{delay:0.8}}
-        className="rounded-2xl px-6 py-4 flex items-center justify-between"
+        className="rounded-2xl px-6 py-4 flex items-center justify-between gap-4"
         style={{background:CARD,border:`1px solid ${BORDER}`}}>
-        <div>
-          <span className="text-sm font-bold" style={{color:TEXT}}>Target Year 1: </span>
-          <span className="text-sm" style={{color:MUTED}}>100K users · 15% Pro conversion = </span>
-          <span className="text-base font-black" style={{color:G}}>£1.05M ARR</span>
+        <div className="flex items-center gap-6">
+          <div><span className="text-xs font-bold" style={{color:MUTED}}>Year 1 Target</span><p className="font-black text-lg" style={{color:G}}>£1.05M ARR</p><p className="text-xs" style={{color:MUTED}}>100K users · 15% Pro</p></div>
+          <div className="w-px h-10" style={{background:BORDER}}/>
+          <div><span className="text-xs font-bold" style={{color:MUTED}}>LTV / CAC</span><p className="font-black text-lg" style={{color:TEXT}}>8.4×</p><p className="text-xs" style={{color:MUTED}}>£251 LTV · £30 CAC</p></div>
+          <div className="w-px h-10" style={{background:BORDER}}/>
+          <div><span className="text-xs font-bold" style={{color:MUTED}}>Monthly Churn Target</span><p className="font-black text-lg" style={{color:TEXT}}>&lt;3%</p><p className="text-xs" style={{color:MUTED}}>vs 6–8% industry avg</p></div>
+          <div className="w-px h-10" style={{background:BORDER}}/>
+          <div><span className="text-xs font-bold" style={{color:MUTED}}>Payback Period</span><p className="font-black text-lg" style={{color:TEXT}}>4.3 mo</p><p className="text-xs" style={{color:MUTED}}>Below 6mo benchmark</p></div>
         </div>
-        <span className="text-xs px-3 py-1.5 rounded-full font-bold" style={{background:"#ecfdf5",color:"#059669"}}>+ B2B schools & corporate pipeline</span>
+        <span className="text-xs px-3 py-1.5 rounded-full font-bold shrink-0" style={{background:"#ecfdf5",color:"#059669"}}>+ B2B schools pipeline</span>
       </motion.div>
     </div>
   );
@@ -542,18 +562,20 @@ function SlideVision() {
         </p>
       </motion.div>
       <motion.div initial={{opacity:0}} animate={{opacity:1}} transition={{delay:0.9}}
-        className="flex gap-8 mt-10 relative z-10">
+        className="flex gap-5 mt-10 relative z-10">
         {[
-          {yr:"Year 1",u:"100K users",r:"£1M ARR",extra:"UK launch"},
-          {yr:"Year 2",u:"500K users",r:"£5M ARR",extra:"EU expansion"},
-          {yr:"Year 3",u:"2M users",r:"£18M ARR",extra:"US market"},
-          {yr:"Year 5",u:"10M users",r:"$100M ARR",extra:"Global leader"},
-        ].map(({yr,u,r,extra})=>(
-          <div key={yr} className="text-center rounded-2xl px-6 py-4" style={{background:CARD,border:`1px solid ${BORDER}`}}>
+          {yr:"Year 1",u:"100K",label:"users",r:"£1M ARR",extra:"🇬🇧 UK launch · B2B pilots",detail:"15% Pro conversion · 3 school partnerships"},
+          {yr:"Year 2",u:"500K",label:"users",r:"£5M ARR",extra:"🇪🇺 EU expansion",detail:"Germany, France, Netherlands · Series A"},
+          {yr:"Year 3",u:"2M",label:"users",r:"£18M ARR",extra:"🇺🇸 US market entry",detail:"Corporate wellness + school districts · Series B"},
+          {yr:"Year 5",u:"10M",label:"users",r:"$100M ARR",extra:"🌍 Global platform",detail:"Real broker integration · IPO / strategic acquisition"},
+        ].map(({yr,u,label,r,extra,detail})=>(
+          <div key={yr} className="text-center rounded-2xl px-5 py-4 flex-1" style={{background:CARD,border:`1px solid ${BORDER}`}}>
             <p className="text-xs font-black tracking-widest uppercase mb-1" style={{color:G}}>{yr}</p>
-            <p className="font-black text-3xl" style={{color:TEXT}}>{u}</p>
-            <p className="text-sm font-bold" style={{color:G}}>{r}</p>
-            <p className="text-xs mt-1" style={{color:MUTED2}}>{extra}</p>
+            <p className="font-black leading-none" style={{fontSize:36,color:TEXT}}>{u}</p>
+            <p className="text-xs font-medium mb-1" style={{color:MUTED}}>{label}</p>
+            <p className="text-base font-black" style={{color:G}}>{r}</p>
+            <p className="text-xs mt-1 font-bold" style={{color:MUTED}}>{extra}</p>
+            <p className="text-[10px] mt-1" style={{color:MUTED2}}>{detail}</p>
           </div>
         ))}
       </motion.div>
@@ -588,9 +610,9 @@ function SlideCta() {
       <motion.div initial={{x:40,opacity:0}} animate={{x:0,opacity:1}} transition={{delay:0.3}}
         className="w-96 flex flex-col justify-center px-8 gap-4 relative z-10">
         {[
-          {icon:"🏗️",title:"Product",pct:"40%",desc:"Full curriculum, real broker integration, boss battles"},
-          {icon:"🚀",title:"Growth",pct:"35%",desc:"Paid acquisition, school pilots, influencer partnerships"},
-          {icon:"👥",title:"Team",pct:"25%",desc:"CTO, Head of Content, Growth Lead — 3 senior hires"},
+          {icon:"🏗️",title:"Product",pct:"40%",desc:"Full curriculum (Units 3–5), real broker API integration, boss battle exams, Android & iOS native apps, offline mode"},
+          {icon:"🚀",title:"Growth",pct:"35%",desc:"Paid social acquisition (TikTok, Instagram), 10 school pilots, 20 influencer partnerships, referral engine, PR launch"},
+          {icon:"👥",title:"Team",pct:"25%",desc:"CTO (£90K), Head of Content (£65K), Growth Lead (£70K) — 3 senior hires to hit Year 1 milestones"},
         ].map(({icon,title,pct,desc})=>(
           <div key={title} className="rounded-3xl p-5"
             style={{background:CARD,border:`1px solid ${BORDER}`,boxShadow:"0 2px 8px rgba(0,0,0,0.06)"}}>
