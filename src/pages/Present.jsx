@@ -181,7 +181,7 @@ function SlideTitle() {
       </motion.h1>
       <motion.p initial={{y:20,opacity:0}} animate={{y:0,opacity:1}} transition={{delay:0.55}}
         className="text-2xl mt-3 mb-8 relative z-10" style={{color:MUTED}}>
-        The Duolingo of investing. Turn confusion into confidence.
+        Building money-confident kids. The Duolingo of investing for the next generation.
       </motion.p>
       <motion.div initial={{opacity:0,y:10}} animate={{opacity:1,y:0}} transition={{delay:0.85}}
         className="flex items-center gap-4 relative z-10">
@@ -195,19 +195,19 @@ function SlideTitle() {
 
 function SlideProblem() {
   const problems = [
-    {emoji:"😰",stat:"67%",text:"of adults feel anxious or paralysed about investing",sub:"FINRA Financial Capability Study, 2023",color:"#ef4444"},
-    {emoji:"📚",stat:"83%",text:"of people never received any financial education in school",sub:"OECD Financial Literacy Survey, 2022",color:"#f97316"},
-    {emoji:"💸",stat:"$4.6T",text:"sits idle in zero-interest current accounts globally",sub:"McKinsey Global Banking Report, 2024",color:"#eab308"},
-    {emoji:"📉",stat:"78%",text:"of new retail investors quit within their first 90 days",sub:"Robinhood & Schwab user cohort data",color:"#ef4444"},
-    {emoji:"🧠",stat:"42%",text:"of millennials can't answer basic compound interest questions",sub:"S&P Global FinLit Survey",color:"#a855f7"},
-    {emoji:"🏦",stat:"£850B",text:"in UK savings earning below inflation — wealth quietly eroding",sub:"Bank of England, Q1 2025",color:"#3b82f6"},
+    {emoji:"🏫",stat:"94%",text:"of UK schools offer no meaningful financial education — it's not on the curriculum",sub:"Money and Pensions Service, 2024",color:"#ef4444"},
+    {emoji:"🧠",stat:"Only 1 in 5",text:"teenagers can explain what a stock or share is",sub:"Young Enterprise Financial Literacy Report, 2023",color:"#f97316"},
+    {emoji:"💸",stat:"£9,000",text:"average student debt before a young person earns their first salary",sub:"Student Loans Company, 2024",color:"#eab308"},
+    {emoji:"📉",stat:"67%",text:"of 18–24 year olds say they feel 'completely lost' when it comes to money",sub:"FINRA Financial Capability Study, 2023",color:"#ef4444"},
+    {emoji:"⏳",stat:"10 years",text:"of compound growth missed if you start investing at 28 instead of 18",sub:"Based on 8% average annual market return",color:"#a855f7"},
+    {emoji:"🎮",stat:"4.5 hrs/day",text:"teens spend gaming — but zero hours learning the skills that will define their wealth",sub:"Ofcom Children & Media Report, 2024",color:"#3b82f6"},
   ];
   return (
     <div className="flex flex-col h-full px-16 justify-center gap-6" style={{background:BG}}>
       <div>
         <Chip>The Problem</Chip>
-        <H>Most people are <span style={{color:"#ef4444"}}>financially frozen.</span></H>
-        <p className="text-xl -mt-1 mb-0" style={{color:MUTED}}>The knowledge gap is real — and it's costing people everything.</p>
+        <H>Young people are leaving school <span style={{color:"#ef4444"}}>financially blind.</span></H>
+        <p className="text-xl -mt-1 mb-0" style={{color:MUTED}}>The system isn't teaching the most important life skill. We're fixing that.</p>
       </div>
       <div className="grid grid-cols-3 gap-4 flex-1 max-h-72">
         {problems.map((p,i)=>(
@@ -241,11 +241,11 @@ function SlideBigStat() {
         </motion.div>
         <motion.p initial={{y:20,opacity:0}} animate={{y:0,opacity:1}} transition={{delay:0.5}}
           className="text-2xl mt-1 max-w-xl" style={{color:MUTED}}>
-          Global financial education market —<br/><strong style={{color:TEXT}}>CAGR 18.3% through 2030</strong>
+          Global youth financial education market —<br/><strong style={{color:TEXT}}>CAGR 18.3% through 2030</strong>
         </motion.p>
         <motion.div initial={{opacity:0}} animate={{opacity:1}} transition={{delay:0.8}}
           className="flex gap-3 mt-5">
-          {[{v:"$1.2B",l:"North America",c:"#6366f1"},{v:"£420M",l:"United Kingdom",c:"#f59e0b"},{v:"€680M",l:"Europe",c:"#22c55e"}].map(({v,l,c})=>(
+          {[{v:"£420M",l:"United Kingdom",c:"#f59e0b"},{v:"$1.2B",l:"North America",c:"#6366f1"},{v:"€680M",l:"Europe",c:"#22c55e"}].map(({v,l,c})=>(
             <div key={l} className="rounded-2xl px-4 py-2 text-center" style={{background:CARD,border:`1px solid ${BORDER}`}}>
               <p className="text-xl font-black" style={{color:c}}>{v}</p>
               <p className="text-xs" style={{color:MUTED}}>{l}</p>
@@ -257,12 +257,12 @@ function SlideBigStat() {
       <motion.div initial={{opacity:0,x:30}} animate={{opacity:1,x:0}} transition={{delay:0.7}}
         className="w-80 flex flex-col justify-center gap-3 pr-12 relative z-10">
         {[
-          {v:"40M+",l:"Millennials in UK/US with zero investing knowledge",c:"#6366f1"},
-          {v:"£850B",l:"UK retail investment opportunity currently untapped",c:"#f59e0b"},
-          {v:"2.5Bn",l:"Global adults underserved by any financial education",c:"#ef4444"},
-          {v:"3×",l:"Duolingo's revenue growth after adding premium tier",c:G},
-          {v:"$7.7B",l:"Duolingo's market cap — our closest comparable exit",c:"#a855f7"},
-          {v:"0",l:"Direct full-stack gamified investing education competitors",c:"#06b6d4"},
+          {v:"8.9M",l:"UK secondary school students with no financial curriculum",c:"#6366f1"},
+          {v:"£9K",l:"average student debt before age 21 — before they ever invest a penny",c:"#f59e0b"},
+          {v:"10 yrs",l:"of compound growth lost starting at 28 vs 18 (at 8% avg return)",c:"#ef4444"},
+          {v:"3×",l:"Duolingo's revenue growth after adding premium tier — our model",c:G},
+          {v:"$7.7B",l:"Duolingo's market cap — the closest comparable exit",c:"#a855f7"},
+          {v:"0",l:"Gamified investing-education apps built specifically for under-18s",c:"#06b6d4"},
         ].map(({v,l,c})=>(
           <div key={v} className="rounded-2xl p-3" style={{background:CARD,border:`1px solid ${BORDER}`}}>
             <p className="text-3xl font-black" style={{color:c}}>{v}</p>
@@ -286,7 +286,7 @@ function SlideSolution() {
       <div>
         <Chip>The Solution</Chip>
         <H>We made investing <span style={{color:G}}>feel like a game.</span></H>
-        <p className="text-xl -mt-1" style={{color:MUTED}}>Duolingo proved people form daily habits if you make learning fun. We're doing the same for finance.</p>
+        <p className="text-xl -mt-1" style={{color:MUTED}}>Duolingo proved teens form daily habits if you make learning fun. We're doing the same for money.</p>
       </div>
       <div className="grid grid-cols-4 gap-4">
         {cards.map((c,i)=>(
@@ -458,18 +458,18 @@ function SlideGamification() {
 
 function SlideTraction() {
   const items = [
-    {icon:"📱",title:"Mobile-first generation",desc:"Gen Z and Millennials manage everything from their phone. 68% say they prefer learning via an app over books or courses. Financial education must meet them there.",stat:"94%",statLabel:"of 18-35s own a smartphone"},
-    {icon:"📰",title:"GameStop & Crypto changed everything",desc:"Retail investing went mainstream overnight. 10M new accounts opened in 2021 alone. People desperately WANT to understand markets — but have no trusted place to learn.",stat:"10M+",statLabel:"new retail investors since 2020"},
-    {icon:"🤖",title:"AI makes personalised tutoring possible",desc:"LLMs can explain complex financial concepts conversationally in seconds. A personal finance tutor would cost £80/hr. Vstock delivers that for £6.99/month.",stat:"GPT-4o",statLabel:"powering Bruno the Bull"},
-    {icon:"🎯",title:"Zero direct full-stack competitors",desc:"Bloomberg = pros. YouTube = passive. Khan Academy = dry. Nothing gamified + interactive + AI-powered + paper trading + comprehensive curriculum exists today.",stat:"$0",statLabel:"in VC funding for direct competitors"},
-    {icon:"📈",title:"Duolingo proved the model works",desc:"Duolingo went from 0 to 500M users with the same gamified daily habit loop. Financial literacy is bigger, more urgent, and more monetisable than language learning.",stat:"$7.7B",statLabel:"Duolingo's market cap — our blueprint"},
-    {icon:"🏫",title:"Schools are actively seeking solutions",desc:"UK government mandated financial education in schools in 2024. Schools have budgets but no good digital tools. B2B pipeline opportunity from day one.",stat:"8.9M",statLabel:"UK secondary school students in need"},
+    {icon:"📱",title:"Gen Z lives on their phone",desc:"Teenagers spend 4–6 hours a day on screens. They already learn everything via apps — language, music, fitness. Money is the last gap. We meet them where they are.",stat:"94%",statLabel:"of under-18s own a smartphone (Ofcom 2024)"},
+    {icon:"🏫",title:"Schools are legally required to act",desc:"The UK government mandated personal finance on the curriculum in 2024 — but gave schools no good digital tools. We are the solution they're actively searching for.",stat:"8.9M",statLabel:"UK secondary school students"},
+    {icon:"🤖",title:"AI makes a personal tutor affordable",desc:"A private finance tutor costs £80/hr. Bruno the Bull — our GPT-4o AI — does it for £6.99/month. Every teen can now have a world-class financial coach in their pocket.",stat:"GPT-4o",statLabel:"powering Bruno the Bull"},
+    {icon:"🎮",title:"Gamification works on teenagers",desc:"Duolingo's entire growth was driven by teenagers forming daily habits. We use the same streak, XP, and league mechanics — but for money education, not vocabulary.",stat:"$7.7B",statLabel:"Duolingo's market cap — our blueprint"},
+    {icon:"⏳",title:"Starting early is the whole point",desc:"A teen who invests £50/month from age 16 has £87K more by 40 than one who starts at 25 (at 8% avg). The earlier we reach them, the bigger the life impact.",stat:"£87K",statLabel:"extra wealth from starting 9 years earlier"},
+    {icon:"🎯",title:"Zero competitors in this space",desc:"Existing apps target adults. Schools use worksheets. Nothing gamified + AI-powered + paper trading + curriculum-aligned exists for under-18s today. The gap is wide open.",stat:"0",statLabel:"under-18 focused investing-education apps"},
   ];
   return (
     <div className="flex flex-col h-full px-16 justify-center gap-5" style={{background:BG}}>
       <div>
         <Chip>Why Now</Chip>
-        <H>The moment has arrived.<br/><span style={{color:G}}>Three tailwinds converging.</span></H>
+        <H>The moment has arrived.<br/><span style={{color:G}}>Six reasons why now.</span></H>
       </div>
       <div className="grid grid-cols-3 gap-4 flex-1 max-h-80">
         {items.map((item,i)=>(
@@ -498,7 +498,7 @@ function SlideBizModel() {
   const tiers = [
     {icon:"🆓",tier:"Free",price:"£0/mo",style:{border:`2px solid ${BORDER}`,background:CARD},priceColor:MUTED,features:["Core lessons (Units 1–2)","Basic paper trading","5 hearts/day","Public league","Bruno AI (limited)"],highlight:false},
     {icon:"⚡",tier:"Pro",price:"£6.99/mo",style:{border:`2px solid ${G}`,background:`${G}06`},priceColor:G,features:["All 5 units + advanced content","Unlimited hearts","Full Bruno AI tutor","Advanced analytics","Ad-free"],highlight:true},
-    {icon:"👑",tier:"Premium",price:"£14.99/mo",style:{border:"2px solid #f59e0b",background:"#fffbeb"},priceColor:"#d97706",features:["Everything in Pro","Real broker integration","Financial advisor access","Team leagues","Family plan (5 users)"],highlight:false},
+    {icon:"🏫",tier:"School / Family",price:"£299/yr",style:{border:"2px solid #f59e0b",background:"#fffbeb"},priceColor:"#d97706",features:["Up to 30 students or 5 kids","Teacher / parent dashboard","Progress & curriculum reports","Class leaderboards","Priority support"],highlight:false},
   ];
   return (
     <div className="flex flex-col h-full px-16 justify-center gap-5" style={{background:BG}}>
@@ -538,7 +538,7 @@ function SlideBizModel() {
           <div className="w-px h-10" style={{background:BORDER}}/>
           <div><span className="text-xs font-bold" style={{color:MUTED}}>Payback Period</span><p className="font-black text-lg" style={{color:TEXT}}>4.3 mo</p><p className="text-xs" style={{color:MUTED}}>Below 6mo benchmark</p></div>
         </div>
-        <span className="text-xs px-3 py-1.5 rounded-full font-bold shrink-0" style={{background:"#ecfdf5",color:"#059669"}}>+ B2B schools pipeline</span>
+        <span className="text-xs px-3 py-1.5 rounded-full font-bold shrink-0" style={{background:"#ecfdf5",color:"#059669"}}>+ B2B schools & parental upsell</span>
       </motion.div>
     </div>
   );
@@ -554,20 +554,20 @@ function SlideVision() {
       <motion.div initial={{y:30,opacity:0}} animate={{y:0,opacity:1}} transition={{delay:0.3}} className="relative z-10">
         <Chip>The Vision</Chip>
         <h2 className="text-7xl font-black leading-tight mb-4" style={{color:TEXT}}>
-          A generation that actually<br/>understands their money.
+          The first generation that starts<br/>adult life <span style={{color:G}}>financially confident.</span>
         </h2>
         <p className="text-xl max-w-3xl mx-auto leading-relaxed" style={{color:MUTED}}>
-          In 10 years, every 18-year-old starts their financial life with Vstock.
-          We won't just teach investing — we'll <strong style={{color:TEXT}}>change people's relationship with money.</strong>
+          In 10 years, every 16-year-old opens Vstock the same way they open Duolingo.
+          We won't just teach investing — we'll <strong style={{color:TEXT}}>give the next generation a 10-year head start.</strong>
         </p>
       </motion.div>
       <motion.div initial={{opacity:0}} animate={{opacity:1}} transition={{delay:0.9}}
         className="flex gap-5 mt-10 relative z-10">
         {[
-          {yr:"Year 1",u:"100K",label:"users",r:"£1M ARR",extra:"🇬🇧 UK launch · B2B pilots",detail:"15% Pro conversion · 3 school partnerships"},
-          {yr:"Year 2",u:"500K",label:"users",r:"£5M ARR",extra:"🇪🇺 EU expansion",detail:"Germany, France, Netherlands · Series A"},
-          {yr:"Year 3",u:"2M",label:"users",r:"£18M ARR",extra:"🇺🇸 US market entry",detail:"Corporate wellness + school districts · Series B"},
-          {yr:"Year 5",u:"10M",label:"users",r:"$100M ARR",extra:"🌍 Global platform",detail:"Real broker integration · IPO / strategic acquisition"},
+          {yr:"Year 1",u:"100K",label:"users",r:"£1M ARR",extra:"🇬🇧 UK launch · school pilots",detail:"15% Pro · 10 school B2B deals · parental plans"},
+          {yr:"Year 2",u:"500K",label:"users",r:"£5M ARR",extra:"🇪🇺 EU expansion",detail:"Germany, France, Netherlands · Series A · 100 schools"},
+          {yr:"Year 3",u:"2M",label:"users",r:"£18M ARR",extra:"🇺🇸 US market entry",detail:"US school districts · under-18 broker API · Series B"},
+          {yr:"Year 5",u:"10M",label:"users",r:"$100M ARR",extra:"🌍 Global platform",detail:"Standard curriculum tool in 1,000+ schools · IPO"},
         ].map(({yr,u,label,r,extra,detail})=>(
           <div key={yr} className="text-center rounded-2xl px-5 py-4 flex-1" style={{background:CARD,border:`1px solid ${BORDER}`}}>
             <p className="text-xs font-black tracking-widest uppercase mb-1" style={{color:G}}>{yr}</p>
@@ -596,10 +596,10 @@ function SlideCta() {
         className="flex-1 flex flex-col justify-center px-16 relative z-10">
         <Chip>The Ask</Chip>
         <h2 className="text-7xl font-black leading-tight mb-4" style={{color:TEXT}}>
-          Let's make the<br/>world <span style={{color:G}}>financially<br/>literate.</span>
+          Let's give the next<br/>generation a <span style={{color:G}}>10-year<br/>head start.</span>
         </h2>
         <p className="text-xl mb-8 max-w-lg" style={{color:MUTED}}>
-          Raising <strong style={{color:TEXT,fontSize:"1.3em"}}>£500K seed</strong> to build the team, grow users, and launch Pro.
+          Raising <strong style={{color:TEXT,fontSize:"1.3em"}}>£500K seed</strong> to build the team, reach schools, and launch Pro.
         </p>
         <div className="flex flex-col items-start gap-2">
           <div className="text-3xl font-black" style={{color:TEXT}}>Let's talk. <span style={{color:G}}>📈</span></div>
