@@ -159,6 +159,11 @@ export default function DemoLogin() {
           )}
         </AnimatePresence>
       </motion.div>
+
+      {/* Footer */}
+      <p className="text-center text-[11px] text-muted-foreground mt-8 pb-4">
+        Created by <span className="font-bold text-foreground">Ahmetzhan</span> · Vstock © 2026
+      </p>
     </div>
   );
 }
