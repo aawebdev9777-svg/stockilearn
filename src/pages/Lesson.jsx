@@ -9,10 +9,11 @@ import { X, ArrowRight, Check, Heart } from "lucide-react";
 import LessonSlide from "@/components/lesson/LessonSlide";
 import QuizQuestion from "@/components/lesson/QuizQuestion";
 import LessonComplete from "@/components/lesson/LessonComplete";
+import { useDemo } from "@/lib/DemoContext";
 
 export default function Lesson() {
   const navigate = useNavigate();
-  const urlParams = new URLSearchParams(window.location.search);
+  const { isDemoMode } = useDemo();
   const lessonId = window.location.pathname.split("/lesson/")[1] || "1.1";
   const lesson = getLesson(lessonId);
 
@@ -77,8 +78,8 @@ export default function Lesson() {
   };
 
   const saveProgress = async (score, xp) => {
+    if (isDemoMode) return; // Demo mode — skip all DB writes
     try {
-      // Check if progress exists
       const existing = await base44.entities.LessonProgress.filter({ lesson_id: lessonId });
       if (existing.length > 0) {
         await base44.entities.LessonProgress.update(existing[0].id, {
@@ -99,7 +100,6 @@ export default function Lesson() {
           attempts_count: 1,
         });
       }
-      // Update user XP
       const user = await base44.auth.me();
       if (user) {
         const today = new Date().toISOString().split("T")[0];

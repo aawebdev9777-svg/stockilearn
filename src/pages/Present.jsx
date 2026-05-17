@@ -37,7 +37,7 @@ const Chip = ({ children }) => (
   </span>
 );
 const H = ({ children, className = "" }) => (
-  <h2 className={`text-5xl font-black leading-tight mb-5 ${className}`} style={{ color: TEXT }}>{children}</h2>
+  <h2 className={`text-6xl font-black leading-tight mb-4 ${className}`} style={{ color: TEXT }}>{children}</h2>
 );
 const Card = ({ children, className = "", style = {} }) => (
   <div className={`rounded-3xl border ${className}`}
@@ -195,24 +195,28 @@ function SlideTitle() {
 
 function SlideProblem() {
   const problems = [
-    {emoji:"😰",stat:"67%",text:"of adults feel anxious about investing",color:"#ef4444"},
-    {emoji:"📚",stat:"83%",text:"never learned finance in school",color:"#f97316"},
-    {emoji:"💸",stat:"$1.2T",text:"sits idle in low-interest savings accounts",color:"#eab308"},
-    {emoji:"📉",stat:"3 in 4",text:"new investors quit within 90 days",color:"#ef4444"},
+    {emoji:"😰",stat:"67%",text:"of adults feel anxious about investing",sub:"Source: FINRA 2023",color:"#ef4444"},
+    {emoji:"📚",stat:"83%",text:"never received financial education in school",sub:"Source: OECD",color:"#f97316"},
+    {emoji:"💸",stat:"$1.2T",text:"sits idle in low-interest savings accounts",sub:"US alone",color:"#eab308"},
+    {emoji:"📉",stat:"3 in 4",text:"new retail investors quit within 90 days",sub:"Source: Robinhood data",color:"#ef4444"},
   ];
   return (
-    <div className="flex flex-col h-full px-20 justify-center gap-8" style={{background:BG}}>
+    <div className="flex flex-col h-full px-16 justify-center gap-6" style={{background:BG}}>
       <div>
         <Chip>The Problem</Chip>
         <H>Most people are <span style={{color:"#ef4444"}}>financially frozen.</span></H>
+        <p className="text-xl -mt-1 mb-0" style={{color:MUTED}}>The knowledge gap is real — and it's costing people everything.</p>
       </div>
-      <div className="grid grid-cols-2 gap-5">
+      <div className="grid grid-cols-2 gap-4 flex-1 max-h-72">
         {problems.map((p,i)=>(
-          <motion.div key={i} initial={{opacity:0,y:30}} animate={{opacity:1,y:0}} transition={{delay:0.15+i*0.12}}>
-            <Card className="relative overflow-hidden p-7">
-              <div className="absolute top-4 right-5 text-6xl opacity-8">{p.emoji}</div>
-              <p className="text-6xl font-black" style={{color:p.color}}>{p.stat}</p>
-              <p className="text-base mt-2 leading-snug" style={{color:MUTED}}>{p.text}</p>
+          <motion.div key={i} initial={{opacity:0,y:30}} animate={{opacity:1,y:0}} transition={{delay:0.15+i*0.12}} className="h-full">
+            <Card className="relative overflow-hidden p-6 h-full flex flex-col justify-between">
+              <div className="absolute top-3 right-4 text-7xl opacity-[0.07]">{p.emoji}</div>
+              <div>
+                <p className="text-7xl font-black leading-none" style={{color:p.color}}>{p.stat}</p>
+                <p className="text-base mt-2 leading-snug font-medium" style={{color:TEXT}}>{p.text}</p>
+              </div>
+              <p className="text-xs mt-2" style={{color:MUTED2}}>{p.sub}</p>
             </Card>
           </motion.div>
         ))}
@@ -223,25 +227,33 @@ function SlideProblem() {
 
 function SlideBigStat() {
   return (
-    <div className="flex flex-col items-center justify-center h-full text-center px-20 relative overflow-hidden"
-      style={{background:"#ffffff"}}>
-      <div className="absolute inset-0" style={{background:`radial-gradient(ellipse 55% 55% at 50% 50%, ${G}18, transparent 70%)`}}/>
-      <motion.p initial={{opacity:0}} animate={{opacity:1}} className="text-sm font-black tracking-widest uppercase mb-4 relative z-10" style={{color:G}}>The Opportunity</motion.p>
-      <motion.div initial={{scale:0.5,opacity:0}} animate={{scale:1,opacity:1}} transition={{type:"spring",stiffness:80}} className="relative z-10">
-        <p className="font-black leading-none" style={{fontSize:"min(20vw,160px)",color:TEXT}}>
-          $4.8<span style={{color:G}}>B</span>
-        </p>
-      </motion.div>
-      <motion.p initial={{y:20,opacity:0}} animate={{y:0,opacity:1}} transition={{delay:0.5}}
-        className="text-2xl mt-2 max-w-2xl relative z-10" style={{color:MUTED}}>
-        Global financial education market — growing at <strong style={{color:TEXT}}>18% per year</strong>
-      </motion.p>
-      <motion.div initial={{opacity:0}} animate={{opacity:1}} transition={{delay:0.9}}
-        className="flex gap-12 mt-10 relative z-10">
-        {[["40M+","Millennials with no investing experience"],["£850B","UK retail investment opportunity"],["2026","The year investing goes mainstream"]].map(([v,l])=>(
-          <div key={v} className="text-center">
-            <p className="text-4xl font-black" style={{color:G}}>{v}</p>
-            <p className="text-xs mt-1 max-w-[120px] leading-relaxed" style={{color:MUTED2}}>{l}</p>
+    <div className="flex h-full relative overflow-hidden" style={{background:"#ffffff"}}>
+      <div className="absolute inset-0" style={{background:`radial-gradient(ellipse 55% 55% at 50% 50%, ${G}15, transparent 70%)`}}/>
+      {/* Big number centred */}
+      <div className="flex-1 flex flex-col items-center justify-center text-center relative z-10 px-8">
+        <motion.p initial={{opacity:0}} animate={{opacity:1}} className="text-sm font-black tracking-widest uppercase mb-2" style={{color:G}}>The Opportunity</motion.p>
+        <motion.div initial={{scale:0.5,opacity:0}} animate={{scale:1,opacity:1}} transition={{type:"spring",stiffness:80}}>
+          <p className="font-black leading-none" style={{fontSize:"min(22vw,180px)",color:TEXT}}>
+            $4.8<span style={{color:G}}>B</span>
+          </p>
+        </motion.div>
+        <motion.p initial={{y:20,opacity:0}} animate={{y:0,opacity:1}} transition={{delay:0.5}}
+          className="text-2xl mt-1 max-w-xl" style={{color:MUTED}}>
+          Global financial education market —<br/><strong style={{color:TEXT}}>growing 18% per year</strong>
+        </motion.p>
+      </div>
+      {/* Right stats column */}
+      <motion.div initial={{opacity:0,x:30}} animate={{opacity:1,x:0}} transition={{delay:0.7}}
+        className="w-72 flex flex-col justify-center gap-4 pr-12 relative z-10">
+        {[
+          {v:"40M+",l:"Millennials with zero investing knowledge",c:"#6366f1"},
+          {v:"£850B",l:"UK retail investment opportunity untapped",c:"#f59e0b"},
+          {v:"2.5Bn",l:"Global adults underserved by finance education",c:"#ef4444"},
+          {v:"18%",l:"CAGR of financial education market through 2030",c:G},
+        ].map(({v,l,c})=>(
+          <div key={v} className="rounded-2xl p-4" style={{background:CARD,border:`1px solid ${BORDER}`}}>
+            <p className="text-4xl font-black" style={{color:c}}>{v}</p>
+            <p className="text-xs mt-1 leading-relaxed" style={{color:MUTED}}>{l}</p>
           </div>
         ))}
       </motion.div>
@@ -251,23 +263,24 @@ function SlideBigStat() {
 
 function SlideSolution() {
   const cards = [
-    {icon:"🎓",title:"Structured Lessons",desc:"20+ bite-sized lessons across 5 units. From 'What is a stock?' to advanced portfolio strategy.",accent:{borderColor:"#3b82f620",background:"#eff6ff"}},
-    {icon:"📈",title:"Paper Trading",desc:"£10,000 virtual money. Real market mechanics. No risk — but builds real intuition.",accent:{borderColor:`${G}30`,background:`${G}08`}},
-    {icon:"🏆",title:"Gamification Engine",desc:"Streaks, XP, leagues, badges, daily missions. Retention baked in from day one.",accent:{borderColor:"#a855f730",background:"#faf5ff"}},
+    {icon:"🎓",title:"Structured Lessons",desc:"25+ bite-sized lessons across 5 units. From 'What is a stock?' to advanced portfolio strategy. With quizzes and boss battles.",accent:{borderColor:"#3b82f620",background:"#eff6ff"}},
+    {icon:"📈",title:"Paper Trading",desc:"£10,000 virtual money. Real market data. 50+ stocks. No risk — but builds real decision-making intuition fast.",accent:{borderColor:`${G}30`,background:`${G}08`}},
+    {icon:"🤖",title:"Bruno the Bull AI",desc:"GPT-4 powered AI tutor available on every slide. Explains concepts in plain English, analyses your portfolio.",accent:{borderColor:"#f59e0b30",background:"#fffbeb"}},
+    {icon:"🏆",title:"Gamification Engine",desc:"Streaks, XP, 50 levels, leagues, 25+ badges, daily missions, hearts system. Retention baked in from day one.",accent:{borderColor:"#a855f730",background:"#faf5ff"}},
   ];
   return (
-    <div className="flex flex-col h-full px-20 justify-center gap-8" style={{background:BG}}>
+    <div className="flex flex-col h-full px-16 justify-center gap-5" style={{background:BG}}>
       <div>
         <Chip>The Solution</Chip>
         <H>We made investing <span style={{color:G}}>feel like a game.</span></H>
-        <p className="text-lg -mt-2" style={{color:MUTED}}>Duolingo proved people form daily habits if you make learning fun. We're doing the same for finance.</p>
+        <p className="text-xl -mt-1" style={{color:MUTED}}>Duolingo proved people form daily habits if you make learning fun. We're doing the same for finance.</p>
       </div>
-      <div className="grid grid-cols-3 gap-5">
+      <div className="grid grid-cols-4 gap-4">
         {cards.map((c,i)=>(
-          <motion.div key={i} initial={{opacity:0,y:30}} animate={{opacity:1,y:0}} transition={{delay:0.2+i*0.15}}>
-            <Card className="p-7" style={c.accent}>
+          <motion.div key={i} initial={{opacity:0,y:30}} animate={{opacity:1,y:0}} transition={{delay:0.2+i*0.12}}>
+            <Card className="p-6" style={c.accent}>
               <span className="text-5xl">{c.icon}</span>
-              <h3 className="font-black text-xl mt-5 mb-2" style={{color:TEXT}}>{c.title}</h3>
+              <h3 className="font-black text-lg mt-4 mb-2" style={{color:TEXT}}>{c.title}</h3>
               <p className="text-sm leading-relaxed" style={{color:MUTED}}>{c.desc}</p>
             </Card>
           </motion.div>
@@ -279,28 +292,29 @@ function SlideSolution() {
 
 function SlideHowItWorks() {
   const steps = [
-    {n:"01",icon:"🐣",title:"Onboard",desc:"Set your goal, experience level, and daily target. Personalised from minute one."},
-    {n:"02",icon:"📚",title:"Learn",desc:"Interactive lessons with quizzes, scenarios, and Bruno the AI Bull as your tutor."},
-    {n:"03",icon:"📈",title:"Trade",desc:"Apply knowledge in a real-feeling paper market. 50+ stocks, live simulated prices."},
-    {n:"04",icon:"🏆",title:"Compete",desc:"Weekly leagues, leaderboards, and challenges with friends keep you coming back."},
+    {n:"01",icon:"🐣",title:"Onboard",desc:"Set your goal, experience level, and daily XP target. Personalised curriculum from minute one.",sub:"2 minutes to set up"},
+    {n:"02",icon:"📚",title:"Learn",desc:"Interactive lessons with quizzes, real examples, and Bruno the AI Bull as your personal tutor.",sub:"~4 mins per lesson"},
+    {n:"03",icon:"📈",title:"Trade",desc:"Apply knowledge immediately in a real-feeling paper market. 50+ stocks, real sector data.",sub:"£10,000 virtual capital"},
+    {n:"04",icon:"🏆",title:"Compete",desc:"Weekly leagues, leaderboards, and daily missions keep you returning. Identical to Duolingo's loop.",sub:"Lose your streak? You'll be back"},
   ];
   return (
-    <div className="flex flex-col h-full px-20 justify-center gap-8" style={{background:BG}}>
+    <div className="flex flex-col h-full px-16 justify-center gap-6" style={{background:BG}}>
       <div>
         <Chip>How It Works</Chip>
         <H>Four steps to <span style={{color:G}}>financial confidence.</span></H>
       </div>
-      <div className="flex gap-4">
+      <div className="flex gap-4 flex-1 max-h-64">
         {steps.map((s,i)=>(
           <motion.div key={i} initial={{opacity:0,y:40}} animate={{opacity:1,y:0}} transition={{delay:0.1+i*0.13}} className="flex-1 relative">
-            <Card className="p-6 overflow-hidden h-full">
-              <span className="absolute -top-2 -right-1 text-8xl font-black leading-none select-none" style={{color:`${G}15`}}>{s.n}</span>
-              <span className="text-4xl">{s.icon}</span>
-              <div className="mt-4 flex items-center gap-2">
-                <div className="w-1 h-6 rounded-full" style={{background:G}}/>
+            <Card className="p-6 overflow-hidden h-full flex flex-col">
+              <span className="absolute -top-2 -right-1 text-9xl font-black leading-none select-none" style={{color:`${G}12`}}>{s.n}</span>
+              <span className="text-4xl mb-3">{s.icon}</span>
+              <div className="flex items-center gap-2 mb-2">
+                <div className="w-1 h-6 rounded-full shrink-0" style={{background:G}}/>
                 <h3 className="font-black text-xl" style={{color:TEXT}}>{s.title}</h3>
               </div>
-              <p className="text-sm leading-relaxed mt-2" style={{color:MUTED}}>{s.desc}</p>
+              <p className="text-sm leading-relaxed flex-1" style={{color:MUTED}}>{s.desc}</p>
+              <p className="text-xs font-bold mt-3 px-2 py-1 rounded-full w-fit" style={{background:`${G}15`,color:G}}>{s.sub}</p>
             </Card>
             {i < steps.length-1 && (
               <div className="absolute -right-3 top-1/2 -translate-y-1/2 z-10 text-2xl font-black" style={{color:MUTED2}}>›</div>
@@ -314,27 +328,29 @@ function SlideHowItWorks() {
 
 function DemoSlide({chip,title,points,mock}) {
   return (
-    <div className="flex h-full px-20 items-center gap-16" style={{background:BG}}>
+    <div className="flex h-full px-16 items-center gap-12" style={{background:BG}}>
       <div className="flex-1">
         <Chip>{chip}</Chip>
         <H>{title}</H>
-        <div className="space-y-4">
+        <div className="space-y-3 mt-2">
           {points.map(([icon,t,d])=>(
             <motion.div key={t} initial={{opacity:0,x:-20}} animate={{opacity:1,x:0}}
-              className="flex items-start gap-4">
+              className="flex items-start gap-4 rounded-2xl p-3"
+              style={{background:CARD,border:`1px solid ${BORDER}`}}>
               <div className="w-10 h-10 rounded-2xl flex items-center justify-center shrink-0 text-xl"
                 style={{background:`${G}15`,border:`1px solid ${G}30`}}>
                 {icon}
               </div>
               <div>
-                <p className="font-bold text-sm" style={{color:TEXT}}>{t}</p>
+                <p className="font-black text-sm" style={{color:TEXT}}>{t}</p>
                 <p className="text-xs mt-0.5 leading-relaxed" style={{color:MUTED}}>{d}</p>
               </div>
             </motion.div>
           ))}
         </div>
       </div>
-      <motion.div initial={{opacity:0,x:50,scale:0.92}} animate={{opacity:1,x:0,scale:1}} transition={{delay:0.3}}>
+      <motion.div initial={{opacity:0,x:50,scale:0.92}} animate={{opacity:1,x:0,scale:1}} transition={{delay:0.3}}
+        className="shrink-0">
         <Phone>{mock}</Phone>
       </motion.div>
     </div>
@@ -397,28 +413,28 @@ function SlideAiConvo() {
 
 function SlideGamification() {
   const items = [
-    {icon:"🔥",title:"Daily Streaks",desc:"Miss a day, lose your streak. Users open the app to protect it.",c:"#f97316",bg:{background:"#fff7ed",borderColor:"#fed7aa"}},
-    {icon:"⚡",title:"XP & Levels",desc:"50 levels from Market Newbie to Market Legend.",c:"#eab308",bg:{background:"#fefce8",borderColor:"#fde68a"}},
-    {icon:"🏆",title:"Weekly Leagues",desc:"Compete vs 20 players. Top 5 promote. Bottom 5 demote.",c:"#3b82f6",bg:{background:"#eff6ff",borderColor:"#bfdbfe"}},
-    {icon:"💎",title:"25+ Badges",desc:"From 'First Trade' to 'Wolf Badge'. Collectible. Shareable.",c:"#a855f7",bg:{background:"#faf5ff",borderColor:"#e9d5ff"}},
-    {icon:"🎯",title:"Daily Missions",desc:"Randomised objectives drive variety, prevent boredom.",c:G,bg:{background:`${G}10`,borderColor:`${G}40`}},
-    {icon:"❤️",title:"Hearts System",desc:"5 lives per day. Lose one on wrong answers. Creates stakes.",c:"#ef4444",bg:{background:"#fff1f2",borderColor:"#fecdd3"}},
-    {icon:"💰",title:"Portfolio Milestones",desc:"XP rewards for 5%, 10%, 25%, 50%, 100% portfolio growth.",c:"#10b981",bg:{background:"#ecfdf5",borderColor:"#a7f3d0"}},
-    {icon:"📊",title:"Portfolio Score",desc:"Live health score 0–100 grades diversification and risk.",c:"#06b6d4",bg:{background:"#ecfeff",borderColor:"#a5f3fc"}},
+    {icon:"🔥",title:"Daily Streaks",desc:"Miss a day, lose it. Users open the app just to protect their streak.",c:"#f97316",bg:{background:"#fff7ed",borderColor:"#fed7aa"}},
+    {icon:"⚡",title:"XP & 50 Levels",desc:"From Market Newbie → Market Legend. Each level = more features unlocked.",c:"#eab308",bg:{background:"#fefce8",borderColor:"#fde68a"}},
+    {icon:"🏆",title:"Weekly Leagues",desc:"7 tiers. Compete vs 20 players. Top 5 promote. Bottom 5 demote.",c:"#3b82f6",bg:{background:"#eff6ff",borderColor:"#bfdbfe"}},
+    {icon:"💎",title:"25+ Badges",desc:"First Trade, Bull Rider, Diamond Hands, Market Legend. All collectible.",c:"#a855f7",bg:{background:"#faf5ff",borderColor:"#e9d5ff"}},
+    {icon:"🎯",title:"Daily Missions",desc:"3 fresh objectives every day. Drives variety, prevents boredom.",c:G,bg:{background:`${G}10`,borderColor:`${G}40`}},
+    {icon:"❤️",title:"Hearts System",desc:"5 lives per day. Wrong answer = lose a heart. Creates real stakes.",c:"#ef4444",bg:{background:"#fff1f2",borderColor:"#fecdd3"}},
+    {icon:"🔮",title:"Streak Freezes",desc:"Spend gems to protect your streak on off days. Converts loss aversion to purchase.",c:"#7c3aed",bg:{background:"#faf5ff",borderColor:"#e9d5ff"}},
+    {icon:"📊",title:"Portfolio Score",desc:"Live health score 0–100 grades diversification, risk, and performance.",c:"#06b6d4",bg:{background:"#ecfeff",borderColor:"#a5f3fc"}},
   ];
   return (
-    <div className="flex flex-col h-full px-20 justify-center gap-6" style={{background:BG}}>
+    <div className="flex flex-col h-full px-16 pt-8 pb-4 gap-5" style={{background:BG}}>
       <div>
         <Chip>Retention Engine</Chip>
         <H>The same psychology that made<br/>Duolingo worth <span style={{color:G}}>$7 billion.</span></H>
       </div>
-      <div className="grid grid-cols-4 gap-3">
+      <div className="grid grid-cols-4 gap-3 flex-1">
         {items.map((item,i)=>(
           <motion.div key={i} initial={{opacity:0,scale:0.85}} animate={{opacity:1,scale:1}} transition={{delay:0.05+i*0.07}}
-            className="border rounded-2xl p-4" style={item.bg}>
-            <span className="text-3xl">{item.icon}</span>
-            <p className="font-black text-sm mt-2 mb-1" style={{color:item.c}}>{item.title}</p>
-            <p className="text-[11px] leading-snug" style={{color:MUTED}}>{item.desc}</p>
+            className="border rounded-2xl p-4 flex flex-col" style={item.bg}>
+            <span className="text-4xl mb-2">{item.icon}</span>
+            <p className="font-black text-base mb-1" style={{color:item.c}}>{item.title}</p>
+            <p className="text-xs leading-snug flex-1" style={{color:MUTED}}>{item.desc}</p>
           </motion.div>
         ))}
       </div>
@@ -429,26 +445,28 @@ function SlideGamification() {
 function SlideTraction() {
   const items = [
     {icon:"📱",title:"Mobile-first generation",desc:"Gen Z and Millennials manage everything from their phone. Financial education needs to meet them there.",stat:"94%",statLabel:"of 18-35s own a smartphone"},
-    {icon:"📰",title:"GameStop changed everything",desc:"Retail investing went mainstream. People WANT to understand markets — they need the right tool.",stat:"10M+",statLabel:"new retail investors since 2020"},
-    {icon:"🤖",title:"AI makes it possible",desc:"LLMs can explain complex financial concepts in seconds. Bruno the Bull couldn't exist three years ago.",stat:"GPT-4",statLabel:"powering the AI tutor"},
-    {icon:"🎯",title:"No real competitor",desc:"Bloomberg is for pros. YouTube is passive. Nothing gamified + interactive + comprehensive exists yet.",stat:"Zero",statLabel:"direct full-stack competitors"},
+    {icon:"📰",title:"GameStop changed everything",desc:"Retail investing went mainstream overnight. People desperately WANT to understand markets.",stat:"10M+",statLabel:"new retail investors since 2020"},
+    {icon:"🤖",title:"AI makes it finally possible",desc:"LLMs can explain complex financial concepts conversationally in seconds. Bruno the Bull couldn't have existed 3 years ago.",stat:"GPT-4o",statLabel:"powering Bruno the Bull"},
+    {icon:"🎯",title:"No full-stack competitor exists",desc:"Bloomberg is for pros. YouTube is passive. Nothing gamified + interactive + AI-powered + comprehensive exists yet.",stat:"$0",statLabel:"venture-backed direct competitors"},
   ];
   return (
-    <div className="flex flex-col h-full px-20 justify-center gap-6" style={{background:BG}}>
+    <div className="flex flex-col h-full px-16 justify-center gap-5" style={{background:BG}}>
       <div>
         <Chip>Why Now</Chip>
-        <H>The moment has arrived.</H>
+        <H>The moment has arrived.<br/><span style={{color:G}}>Three tailwinds converging.</span></H>
       </div>
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-2 gap-4 flex-1 max-h-80">
         {items.map((item,i)=>(
-          <motion.div key={i} initial={{opacity:0,y:25}} animate={{opacity:1,y:0}} transition={{delay:0.15+i*0.12}}>
-            <Card className="p-6 flex gap-5">
-              <span className="text-4xl shrink-0">{item.icon}</span>
-              <div>
-                <h3 className="font-black text-base mb-1" style={{color:TEXT}}>{item.title}</h3>
-                <p className="text-sm leading-relaxed mb-3" style={{color:MUTED}}>{item.desc}</p>
-                <div className="flex items-baseline gap-2">
-                  <span className="font-black text-2xl" style={{color:G}}>{item.stat}</span>
+          <motion.div key={i} initial={{opacity:0,y:25}} animate={{opacity:1,y:0}} transition={{delay:0.15+i*0.12}} className="h-full">
+            <Card className="p-5 flex gap-4 h-full">
+              <span className="text-4xl shrink-0 mt-1">{item.icon}</span>
+              <div className="flex flex-col justify-between">
+                <div>
+                  <h3 className="font-black text-base mb-1" style={{color:TEXT}}>{item.title}</h3>
+                  <p className="text-sm leading-relaxed" style={{color:MUTED}}>{item.desc}</p>
+                </div>
+                <div className="flex items-baseline gap-2 mt-3">
+                  <span className="font-black text-3xl" style={{color:G}}>{item.stat}</span>
                   <span className="text-xs" style={{color:MUTED2}}>{item.statLabel}</span>
                 </div>
               </div>
@@ -462,37 +480,45 @@ function SlideTraction() {
 
 function SlideBizModel() {
   const tiers = [
-    {icon:"🆓",tier:"Free",price:"£0/mo",style:{border:`2px solid ${BORDER}`,background:CARD},priceColor:MUTED,desc:"Core lessons, basic trading, 5 hearts/day, public league",highlight:false},
-    {icon:"⚡",tier:"Pro",price:"£6.99/mo",style:{border:`2px solid ${G}`,background:`${G}08`},priceColor:G,desc:"Unlimited hearts, advanced lessons, analytics, AI tutor, ad-free",highlight:true},
-    {icon:"👑",tier:"Premium",price:"£14.99/mo",style:{border:"2px solid #f59e0b",background:"#fffbeb"},priceColor:"#d97706",desc:"Everything in Pro + real broker integration, advisor access, team leagues",highlight:false},
+    {icon:"🆓",tier:"Free",price:"£0/mo",style:{border:`2px solid ${BORDER}`,background:CARD},priceColor:MUTED,features:["Core lessons (Units 1–2)","Basic paper trading","5 hearts/day","Public league","Bruno AI (limited)"],highlight:false},
+    {icon:"⚡",tier:"Pro",price:"£6.99/mo",style:{border:`2px solid ${G}`,background:`${G}06`},priceColor:G,features:["All 5 units + advanced content","Unlimited hearts","Full Bruno AI tutor","Advanced analytics","Ad-free"],highlight:true},
+    {icon:"👑",tier:"Premium",price:"£14.99/mo",style:{border:"2px solid #f59e0b",background:"#fffbeb"},priceColor:"#d97706",features:["Everything in Pro","Real broker integration","Financial advisor access","Team leagues","Family plan (5 users)"],highlight:false},
   ];
   return (
-    <div className="flex flex-col h-full px-20 justify-center gap-6" style={{background:BG}}>
+    <div className="flex flex-col h-full px-16 justify-center gap-5" style={{background:BG}}>
       <div>
         <Chip>Business Model</Chip>
-        <H>Three clear revenue streams.</H>
+        <H>Freemium → Pro conversion.<br/><span style={{color:G}}>Proven playbook.</span></H>
       </div>
-      <div className="grid grid-cols-3 gap-5">
+      <div className="grid grid-cols-3 gap-5 flex-1 max-h-72">
         {tiers.map((t,i)=>(
           <motion.div key={i} initial={{opacity:0,y:40}} animate={{opacity:1,y:0}} transition={{delay:0.2+i*0.18}}
-            className="relative rounded-3xl p-8 flex flex-col" style={t.style}>
+            className="relative rounded-3xl p-6 flex flex-col" style={t.style}>
             {t.highlight && (
-              <div className="absolute -top-3 left-1/2 -translate-x-1/2 text-white text-[10px] font-black px-3 py-1 rounded-full" style={{background:G}}>
-                MOST POPULAR
-              </div>
+              <div className="absolute -top-3 left-1/2 -translate-x-1/2 text-white text-[10px] font-black px-3 py-1 rounded-full" style={{background:G}}>MOST POPULAR</div>
             )}
-            <span className="text-4xl mb-4">{t.icon}</span>
-            <h3 className="font-black text-2xl" style={{color:TEXT}}>{t.tier}</h3>
-            <p className="font-black text-3xl mt-1 mb-4" style={{color:t.priceColor}}>{t.price}</p>
-            <p className="text-sm leading-relaxed flex-1" style={{color:MUTED}}>{t.desc}</p>
+            <span className="text-3xl mb-3">{t.icon}</span>
+            <h3 className="font-black text-xl" style={{color:TEXT}}>{t.tier}</h3>
+            <p className="font-black text-3xl mt-0.5 mb-3" style={{color:t.priceColor}}>{t.price}</p>
+            <ul className="space-y-1 flex-1">
+              {t.features.map(f=>(
+                <li key={f} className="flex items-center gap-2 text-xs" style={{color:MUTED}}>
+                  <span style={{color:t.highlight?G:"#94a3b8"}}>✓</span>{f}
+                </li>
+              ))}
+            </ul>
           </motion.div>
         ))}
       </div>
       <motion.div initial={{opacity:0}} animate={{opacity:1}} transition={{delay:0.8}}
-        className="rounded-2xl px-6 py-3 flex items-center justify-between"
+        className="rounded-2xl px-6 py-4 flex items-center justify-between"
         style={{background:CARD,border:`1px solid ${BORDER}`}}>
-        <span className="text-sm" style={{color:MUTED}}>Target: 100K users Year 1 · 15% Pro conversion = <strong style={{color:G}}>£1.05M ARR</strong></span>
-        <span className="text-xs" style={{color:MUTED2}}>+B2B schools & corporate training pipeline</span>
+        <div>
+          <span className="text-sm font-bold" style={{color:TEXT}}>Target Year 1: </span>
+          <span className="text-sm" style={{color:MUTED}}>100K users · 15% Pro conversion = </span>
+          <span className="text-base font-black" style={{color:G}}>£1.05M ARR</span>
+        </div>
+        <span className="text-xs px-3 py-1.5 rounded-full font-bold" style={{background:"#ecfdf5",color:"#059669"}}>+ B2B schools & corporate pipeline</span>
       </motion.div>
     </div>
   );
@@ -500,28 +526,34 @@ function SlideBizModel() {
 
 function SlideVision() {
   return (
-    <div className="flex flex-col items-center justify-center h-full text-center px-20 relative overflow-hidden"
+    <div className="flex flex-col items-center justify-center h-full text-center px-16 relative overflow-hidden"
       style={{background:"#ffffff"}}>
       <div className="absolute inset-0" style={{background:`radial-gradient(ellipse 70% 60% at 50% 50%, ${G}15, transparent 70%)`}}/>
       <motion.div initial={{scale:0.6,opacity:0}} animate={{scale:1,opacity:1}} transition={{type:"spring"}}
-        className="text-7xl mb-3 relative z-10">🌍</motion.div>
+        className="text-8xl mb-2 relative z-10">🌍</motion.div>
       <motion.div initial={{y:30,opacity:0}} animate={{y:0,opacity:1}} transition={{delay:0.3}} className="relative z-10">
         <Chip>The Vision</Chip>
-        <h2 className="text-6xl font-black leading-tight mb-4" style={{color:TEXT}}>
+        <h2 className="text-7xl font-black leading-tight mb-4" style={{color:TEXT}}>
           A generation that actually<br/>understands their money.
         </h2>
         <p className="text-xl max-w-3xl mx-auto leading-relaxed" style={{color:MUTED}}>
-          In 10 years, we want every 18-year-old to start their financial life with Vstock.
-          We won't just teach investing — we'll change people's relationship with money.
+          In 10 years, every 18-year-old starts their financial life with Vstock.
+          We won't just teach investing — we'll <strong style={{color:TEXT}}>change people's relationship with money.</strong>
         </p>
       </motion.div>
       <motion.div initial={{opacity:0}} animate={{opacity:1}} transition={{delay:0.9}}
-        className="flex gap-16 mt-10 relative z-10">
-        {[["Year 1","100K users","£1M ARR"],["Year 2","500K users","£5M ARR"],["Year 3","2M users","Launch US"]].map(([yr,u,r])=>(
-          <div key={yr} className="text-center">
+        className="flex gap-8 mt-10 relative z-10">
+        {[
+          {yr:"Year 1",u:"100K users",r:"£1M ARR",extra:"UK launch"},
+          {yr:"Year 2",u:"500K users",r:"£5M ARR",extra:"EU expansion"},
+          {yr:"Year 3",u:"2M users",r:"£18M ARR",extra:"US market"},
+          {yr:"Year 5",u:"10M users",r:"$100M ARR",extra:"Global leader"},
+        ].map(({yr,u,r,extra})=>(
+          <div key={yr} className="text-center rounded-2xl px-6 py-4" style={{background:CARD,border:`1px solid ${BORDER}`}}>
             <p className="text-xs font-black tracking-widest uppercase mb-1" style={{color:G}}>{yr}</p>
-            <p className="font-black text-2xl" style={{color:TEXT}}>{u}</p>
-            <p className="text-sm" style={{color:MUTED2}}>{r}</p>
+            <p className="font-black text-3xl" style={{color:TEXT}}>{u}</p>
+            <p className="text-sm font-bold" style={{color:G}}>{r}</p>
+            <p className="text-xs mt-1" style={{color:MUTED2}}>{extra}</p>
           </div>
         ))}
       </motion.div>
@@ -531,37 +563,50 @@ function SlideVision() {
 
 function SlideCta() {
   return (
-    <div className="flex flex-col items-center justify-center h-full text-center px-20 relative overflow-hidden"
-      style={{background:"#ffffff"}}>
+    <div className="flex h-full relative overflow-hidden" style={{background:"#ffffff"}}>
       <div className="absolute inset-0" style={{
-        backgroundImage:`linear-gradient(${G}15 1px,transparent 1px),linear-gradient(90deg,${G}15 1px,transparent 1px)`,
+        backgroundImage:`linear-gradient(${G}12 1px,transparent 1px),linear-gradient(90deg,${G}12 1px,transparent 1px)`,
         backgroundSize:"80px 80px"
       }}/>
-      <div className="absolute inset-0" style={{background:`radial-gradient(ellipse 70% 60% at 50% 50%, ${G}20, transparent 70%)`}}/>
-      <motion.div initial={{y:30,opacity:0}} animate={{y:0,opacity:1}} transition={{delay:0.2}} className="relative z-10">
+      <div className="absolute inset-0" style={{background:`radial-gradient(ellipse 60% 80% at 30% 50%, ${G}18, transparent 65%)`}}/>
+      {/* Left panel */}
+      <motion.div initial={{x:-40,opacity:0}} animate={{x:0,opacity:1}} transition={{delay:0.1}}
+        className="flex-1 flex flex-col justify-center px-16 relative z-10">
         <Chip>The Ask</Chip>
-        <h2 className="text-6xl font-black leading-tight mb-3" style={{color:TEXT}}>
-          Join us in making the world<br/><span style={{color:G}}>financially literate.</span>
+        <h2 className="text-7xl font-black leading-tight mb-4" style={{color:TEXT}}>
+          Let's make the<br/>world <span style={{color:G}}>financially<br/>literate.</span>
         </h2>
-        <p className="text-xl mb-8 max-w-2xl mx-auto" style={{color:MUTED}}>
-          We're raising <strong style={{color:TEXT}}>£500K seed</strong> to build the team, grow the user base, and launch the Pro tier.
+        <p className="text-xl mb-8 max-w-lg" style={{color:MUTED}}>
+          Raising <strong style={{color:TEXT,fontSize:"1.3em"}}>£500K seed</strong> to build the team, grow users, and launch Pro.
         </p>
+        <div className="flex flex-col items-start gap-2">
+          <div className="text-3xl font-black" style={{color:TEXT}}>Let's talk. <span style={{color:G}}>📈</span></div>
+          <p className="text-base" style={{color:MUTED2}}>hello@vstock.app · vstock.app</p>
+        </div>
       </motion.div>
-      <motion.div initial={{opacity:0,y:20}} animate={{opacity:1,y:0}} transition={{delay:0.5}}
-        className="grid grid-cols-3 gap-5 mb-8 max-w-2xl w-full relative z-10">
-        {[["🏗️","Product","Full curriculum, real broker integration, team leagues"],["🚀","Growth","Paid acquisition, influencer partnerships, school pilots"],["👥","Team","3 senior hires: CTO, Head of Content, Growth Lead"]].map(([icon,title,desc])=>(
-          <div key={title} className="rounded-2xl p-5"
-            style={{background:CARD,border:`1px solid ${BORDER}`,boxShadow:"0 1px 4px rgba(0,0,0,0.05)"}}>
-            <span className="text-3xl">{icon}</span>
-            <p className="font-black text-sm mt-3" style={{color:TEXT}}>{title}</p>
-            <p className="text-xs mt-1 leading-relaxed" style={{color:MUTED}}>{desc}</p>
+      {/* Right panel */}
+      <motion.div initial={{x:40,opacity:0}} animate={{x:0,opacity:1}} transition={{delay:0.3}}
+        className="w-96 flex flex-col justify-center px-8 gap-4 relative z-10">
+        {[
+          {icon:"🏗️",title:"Product",pct:"40%",desc:"Full curriculum, real broker integration, boss battles"},
+          {icon:"🚀",title:"Growth",pct:"35%",desc:"Paid acquisition, school pilots, influencer partnerships"},
+          {icon:"👥",title:"Team",pct:"25%",desc:"CTO, Head of Content, Growth Lead — 3 senior hires"},
+        ].map(({icon,title,pct,desc})=>(
+          <div key={title} className="rounded-3xl p-5"
+            style={{background:CARD,border:`1px solid ${BORDER}`,boxShadow:"0 2px 8px rgba(0,0,0,0.06)"}}>
+            <div className="flex items-center justify-between mb-2">
+              <div className="flex items-center gap-3">
+                <span className="text-3xl">{icon}</span>
+                <p className="font-black text-lg" style={{color:TEXT}}>{title}</p>
+              </div>
+              <p className="font-black text-2xl" style={{color:G}}>{pct}</p>
+            </div>
+            <div className="w-full h-1.5 rounded-full mb-2" style={{background:"#f1f5f9"}}>
+              <div className="h-full rounded-full" style={{width:pct,background:G}}/>
+            </div>
+            <p className="text-xs leading-relaxed" style={{color:MUTED}}>{desc}</p>
           </div>
         ))}
-      </motion.div>
-      <motion.div initial={{scale:0.8,opacity:0}} animate={{scale:1,opacity:1}} transition={{delay:0.9}}
-        className="relative z-10 flex flex-col items-center gap-2">
-        <div className="text-5xl font-black" style={{color:TEXT}}>Let's talk. <span style={{color:G}}>📈</span></div>
-        <p className="text-sm" style={{color:MUTED2}}>hello@vstock.app · vstock.app</p>
       </motion.div>
     </div>
   );
