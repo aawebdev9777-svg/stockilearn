@@ -1,28 +1,26 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
 import { motion, AnimatePresence } from "framer-motion";
 import { getLesson } from "@/lib/lessonData";
-import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
-import { X, ArrowRight, Check, Heart } from "lucide-react";
+import { X, Heart, Zap, BookOpen, Clock, Check } from "lucide-react";
 import LessonSlide from "@/components/lesson/LessonSlide";
 import QuizQuestion from "@/components/lesson/QuizQuestion";
 import LessonComplete from "@/components/lesson/LessonComplete";
 
 export default function Lesson() {
   const navigate = useNavigate();
-  const urlParams = new URLSearchParams(window.location.search);
   const lessonId = window.location.pathname.split("/lesson/")[1] || "1.1";
   const lesson = getLesson(lessonId);
 
-  const [phase, setPhase] = useState("intro"); // intro, slides, quiz, complete
+  const [phase, setPhase] = useState("intro");
   const [slideIndex, setSlideIndex] = useState(0);
   const [questionIndex, setQuestionIndex] = useState(0);
   const [correctCount, setCorrectCount] = useState(0);
   const [hearts, setHearts] = useState(5);
   const [xpEarned, setXpEarned] = useState(0);
-  const [showFeedback, setShowFeedback] = useState(null); // 'correct' | 'wrong' | null
+  const [showFeedback, setShowFeedback] = useState(null);
 
   if (!lesson) {
     return (
@@ -63,43 +61,33 @@ export default function Lesson() {
       if (questionIndex < questions.length - 1) {
         setQuestionIndex(q => q + 1);
       } else {
-        // Calculate XP
         const scorePercent = Math.round((correctCount + (isCorrect ? 1 : 0)) / questions.length * 100);
         const baseXp = lesson.xp || 15;
         const bonusXp = scorePercent === 100 ? 5 : 0;
         const earned = baseXp + bonusXp;
         setXpEarned(earned);
         setPhase("complete");
-        // Save progress
         saveProgress(scorePercent, earned);
       }
-    }, 500);
+    }, 1400);
   };
 
   const saveProgress = async (score, xp) => {
     try {
-      // Check if progress exists
       const existing = await base44.entities.LessonProgress.filter({ lesson_id: lessonId });
       if (existing.length > 0) {
         await base44.entities.LessonProgress.update(existing[0].id, {
-          status: "complete",
-          score_percent: score,
-          xp_earned: xp,
+          status: "complete", score_percent: score, xp_earned: xp,
           completed_at: new Date().toISOString(),
           attempts_count: (existing[0].attempts_count || 0) + 1,
         });
       } else {
         await base44.entities.LessonProgress.create({
-          lesson_id: lessonId,
-          unit_id: lesson.unit,
-          status: "complete",
-          score_percent: score,
-          xp_earned: xp,
-          completed_at: new Date().toISOString(),
-          attempts_count: 1,
+          lesson_id: lessonId, unit_id: lesson.unit, status: "complete",
+          score_percent: score, xp_earned: xp,
+          completed_at: new Date().toISOString(), attempts_count: 1,
         });
       }
-      // Update user XP
       const user = await base44.auth.me();
       if (user) {
         const today = new Date().toISOString().split("T")[0];
@@ -125,14 +113,27 @@ export default function Lesson() {
   return (
     <div className="min-h-screen bg-background flex flex-col">
       {/* Top bar */}
-      <div className="sticky top-0 z-50 bg-background/90 backdrop-blur-md px-4 py-3 flex items-center gap-3">
-        <button onClick={() => navigate("/learn")} className="text-muted-foreground">
-          <X className="w-5 h-5" />
+      <div className="sticky top-0 z-50 bg-background/95 backdrop-blur-md px-4 pt-3 pb-2 flex items-center gap-3"
+        style={{ borderBottom: "1px solid hsl(var(--border)/0.5)" }}>
+        <button
+          onClick={() => navigate("/learn")}
+          className="w-8 h-8 rounded-full flex items-center justify-center transition-colors hover:bg-muted"
+        >
+          <X className="w-4 h-4 text-muted-foreground" />
         </button>
-        <Progress value={progressPercent} className="flex-1 h-2.5" />
-        <div className="flex items-center gap-0.5">
-          <Heart className="w-4 h-4 fill-red-500 text-red-500" />
-          <span className="text-xs font-bold text-red-400">{hearts}</span>
+        <Progress value={progressPercent} className="flex-1 h-2" />
+        {/* Hearts */}
+        <div className="flex items-center gap-0.5 shrink-0">
+          {Array.from({ length: 5 }).map((_, i) => (
+            <Heart
+              key={i}
+              className="w-4 h-4 transition-all"
+              style={{
+                fill: i < hearts ? "hsl(0 80% 63%)" : "transparent",
+                color: i < hearts ? "hsl(0 80% 63%)" : "hsl(var(--muted-foreground)/0.3)",
+              }}
+            />
+          ))}
         </div>
       </div>
 
@@ -143,52 +144,104 @@ export default function Lesson() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className={`fixed inset-0 z-40 pointer-events-none flex items-center justify-center ${
-              showFeedback === "correct" ? "bg-green-500/10" : "bg-red-500/10"
-            }`}
+            className="fixed inset-0 z-40 pointer-events-none"
+            style={{ background: showFeedback === "correct" ? "hsl(142 70% 45% / 0.06)" : "hsl(0 80% 63% / 0.06)" }}
           >
+            {/* Big bottom banner */}
             <motion.div
-              initial={{ scale: 0 }}
-              animate={{ scale: 1 }}
-              exit={{ scale: 0 }}
-              transition={{ duration: 0.12, type: "spring", stiffness: 400, damping: 20 }}
-              className={`w-20 h-20 rounded-full flex items-center justify-center ${
-                showFeedback === "correct" ? "bg-green-500" : "bg-red-500"
-              }`}
+              initial={{ y: 100, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{ y: 100, opacity: 0 }}
+              className="absolute bottom-0 left-0 right-0 p-6 flex items-center gap-4 rounded-t-3xl"
+              style={{
+                background: showFeedback === "correct" ? "hsl(142 70% 45% / 0.95)" : "hsl(0 80% 63% / 0.95)",
+                backdropFilter: "blur(12px)",
+              }}
             >
-              {showFeedback === "correct" ? (
-                <Check className="w-10 h-10 text-white" strokeWidth={3} />
-              ) : (
-                <X className="w-10 h-10 text-white" strokeWidth={3} />
-              )}
+              <div className="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center">
+                {showFeedback === "correct"
+                  ? <Check className="w-7 h-7 text-white" strokeWidth={3} />
+                  : <X className="w-7 h-7 text-white" strokeWidth={3} />}
+              </div>
+              <div>
+                <p className="font-black text-lg text-white">
+                  {showFeedback === "correct" ? "Correct! 🎉" : "Oops!"}
+                </p>
+                <p className="text-sm text-white/80">
+                  {showFeedback === "correct" ? "Keep it up!" : "Keep going — you've got this!"}
+                </p>
+              </div>
             </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
 
       {/* Content */}
-      <div className="flex-1 px-4 flex flex-col">
+      <div className="flex-1 px-4 pb-6 flex flex-col min-h-0" style={{ maxWidth: 480, margin: "0 auto", width: "100%" }}>
         <AnimatePresence mode="wait">
+          {/* INTRO */}
           {phase === "intro" && (
             <motion.div
               key="intro"
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
-              className="flex-1 flex flex-col items-center justify-center text-center gap-6 py-10"
+              className="flex-1 flex flex-col items-center justify-center text-center gap-6 py-8"
             >
-              <div className="text-6xl mb-2">📖</div>
-              <div>
-                <p className="text-xs text-muted-foreground font-bold uppercase tracking-wider">
+              <motion.div
+                initial={{ scale: 0.4, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ delay: 0.15, type: "spring", stiffness: 260 }}
+                className="relative"
+              >
+                <div
+                  className="absolute inset-0 rounded-full blur-2xl opacity-30"
+                  style={{ background: "hsl(var(--primary))", transform: "scale(1.4)" }}
+                />
+                <div
+                  className="relative w-28 h-28 rounded-3xl flex items-center justify-center text-6xl shadow-xl"
+                  style={{ background: "hsl(var(--card))", border: "2px solid hsl(var(--border))" }}
+                >
+                  📖
+                </div>
+              </motion.div>
+
+              <div className="space-y-3">
+                <p className="text-xs text-muted-foreground font-black uppercase tracking-widest">
                   Unit {lesson.unit} · Lesson {lesson.id}
                 </p>
-                <h1 className="text-2xl font-black text-foreground mt-2">{lesson.title}</h1>
-                <p className="text-sm text-muted-foreground mt-3 max-w-xs">{lesson.teaser}</p>
-                <p className="text-xs text-muted-foreground/60 mt-2">~{lesson.time} min · +{lesson.xp} XP</p>
+                <h1 className="text-3xl font-black text-foreground leading-tight">{lesson.title}</h1>
+                <p className="text-base text-muted-foreground leading-relaxed max-w-xs mx-auto">
+                  {lesson.teaser}
+                </p>
               </div>
-              <Button onClick={handleNext} className="w-full max-w-xs h-12 text-base font-bold rounded-2xl">
-                START
-              </Button>
+
+              {/* Info pills */}
+              <div className="flex items-center gap-3">
+                <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-muted text-muted-foreground text-xs font-semibold">
+                  <Clock className="w-3.5 h-3.5" /> ~{lesson.time} min
+                </div>
+                <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold"
+                  style={{ background: "hsl(var(--primary)/0.12)", color: "hsl(var(--primary))" }}>
+                  <Zap className="w-3.5 h-3.5" /> +{lesson.xp} XP
+                </div>
+                <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-muted text-muted-foreground text-xs font-semibold">
+                  <BookOpen className="w-3.5 h-3.5" /> {slides.length} slides · {questions.length} Q
+                </div>
+              </div>
+
+              <motion.button
+                whileTap={{ scale: 0.97 }}
+                onClick={handleNext}
+                className="w-full max-w-xs h-14 rounded-2xl font-black text-lg shadow-lg transition-all"
+                style={{
+                  background: "hsl(var(--primary))",
+                  color: "hsl(var(--primary-foreground))",
+                  boxShadow: "0 6px 28px hsl(var(--primary)/0.4)",
+                }}
+              >
+                START LESSON
+              </motion.button>
             </motion.div>
           )}
 
