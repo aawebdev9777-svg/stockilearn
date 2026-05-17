@@ -2,8 +2,7 @@ import React, { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Zap, ArrowRight, Star, Trophy, Target } from "lucide-react";
-import confetti from "canvas-confetti";
+import { Zap, ArrowRight, Star, Target } from "lucide-react";
 
 export default function LessonComplete({ lesson, xpEarned, correctCount, totalQuestions }) {
   const isPerfect = correctCount === totalQuestions;
@@ -15,11 +14,13 @@ export default function LessonComplete({ lesson, xpEarned, correctCount, totalQu
     hasRun.current = true;
     if (isPerfect || scorePercent >= 80) {
       setTimeout(() => {
-        confetti({
-          particleCount: isPerfect ? 150 : 80,
-          spread: 70,
-          origin: { y: 0.5 },
-          colors: ["#00FF87", "#FFD700", "#FF6B6B", "#4ECDC4"],
+        import("canvas-confetti").then(mod => {
+          mod.default({
+            particleCount: isPerfect ? 150 : 80,
+            spread: 70,
+            origin: { y: 0.5 },
+            colors: ["#00FF87", "#FFD700", "#FF6B6B", "#4ECDC4"],
+          });
         });
       }, 400);
     }
