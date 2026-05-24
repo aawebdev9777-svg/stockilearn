@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
 import { useDemo, DEMO_USER } from "@/lib/DemoContext";
+import { Trash2 } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
 import { Button } from "@/components/ui/button";
@@ -80,6 +81,21 @@ export default function Settings() {
           </p>
         </Card>
 
+        <Button
+          variant="outline"
+          onClick={() => {
+            if (confirm("This will delete ALL user data, portfolios, and progress. Everyone will need to re-register and complete onboarding again. Continue?")) {
+              localStorage.removeItem("vstock_users");
+              localStorage.removeItem("vstock_demo_session");
+              logoutDemo();
+              navigate("/login");
+            }
+          }}
+          className="w-full gap-2 text-destructive border-destructive/30"
+        >
+          <Trash2 className="w-4 h-4" /> Reset Everything (Admin Only)
+        </Button>
+
         <Link to="/upgrade">
           <Button variant="default" className="w-full gap-2 bg-primary text-primary-foreground">
             <Crown className="w-4 h-4" /> Upgrade to Pro — £6.99/mo
@@ -96,10 +112,20 @@ export default function Settings() {
 
         <Button
           variant="outline"
-          onClick={() => { if (isDemoMode) { logoutDemo(); navigate("/login"); } else { base44.auth.logout(); } }}
+          onClick={() => {
+            if (isDemoMode) {
+              // Clear all demo data
+              localStorage.removeItem("vstock_users");
+              localStorage.removeItem("vstock_demo_session");
+              logoutDemo();
+              navigate("/login");
+            } else {
+              base44.auth.logout();
+            }
+          }}
           className="w-full gap-2 text-destructive border-destructive/20"
         >
-          <LogOut className="w-4 h-4" /> Sign Out
+          <LogOut className="w-4 h-4" /> Reset All Data & Sign Out
         </Button>
 
         <div className="text-center text-[10px] text-muted-foreground space-y-1 pt-4">

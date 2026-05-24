@@ -178,8 +178,15 @@ export function DemoProvider({ children }) {
     setDemoUser(null);
   };
 
+  const resetAllDemoData = () => {
+    localStorage.removeItem(USERS_KEY);
+    localStorage.removeItem(STORAGE_KEY);
+    setIsDemoMode(false);
+    setDemoUser(null);
+  };
+
   return (
-    <DemoContext.Provider value={{ isDemoMode, demoUser, loginDemo, signupDemo, logoutDemo }}>
+    <DemoContext.Provider value={{ isDemoMode, demoUser, loginDemo, signupDemo, logoutDemo, resetAllDemoData }}>
       {children}
     </DemoContext.Provider>
   );
