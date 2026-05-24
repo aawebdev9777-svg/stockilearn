@@ -1,0 +1,36 @@
+{
+  "name": "DailyChallenge",
+  "type": "object",
+  "properties": {
+    "challenge_date": {
+      "type": "string",
+      "format": "date",
+      "description": "Date of this challenge"
+    },
+    "completed": {
+      "type": "boolean",
+      "default": false
+    },
+    "xp_earned": {
+      "type": "number",
+      "default": 0
+    },
+    "challenge_type": {
+      "type": "string",
+      "enum": [
+        "quiz",
+        "portfolio",
+        "streak",
+        "prediction"
+      ],
+      "default": "quiz"
+    },
+    "score": {
+      "type": "number",
+      "default": 0
+    }
+  },
+  "required": [
+    "challenge_date"
+  ]
+}

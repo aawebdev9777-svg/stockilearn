@@ -1,0 +1,35 @@
+{
+  "name": "TopicMastery",
+  "type": "object",
+  "properties": {
+    "topic": {
+      "type": "string",
+      "description": "Topic category slug e.g. stocks, etfs, risk"
+    },
+    "mastery_percent": {
+      "type": "number",
+      "default": 0,
+      "description": "0-100 mastery percentage"
+    },
+    "lessons_completed": {
+      "type": "number",
+      "default": 0
+    },
+    "quiz_accuracy": {
+      "type": "number",
+      "default": 0,
+      "description": "Average quiz accuracy 0-100"
+    },
+    "total_xp_earned": {
+      "type": "number",
+      "default": 0
+    },
+    "last_practiced": {
+      "type": "string",
+      "format": "date"
+    }
+  },
+  "required": [
+    "topic"
+  ]
+}

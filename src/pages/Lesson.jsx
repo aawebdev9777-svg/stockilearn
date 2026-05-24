@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
 import { motion, AnimatePresence } from "framer-motion";
 import { getLesson } from "@/lib/lessonData";
+import { calcLessonXp } from "@/lib/xpEngine";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { X, ArrowRight, Check, Heart } from "lucide-react";
@@ -64,11 +65,11 @@ export default function Lesson() {
       if (questionIndex < questions.length - 1) {
         setQuestionIndex(q => q + 1);
       } else {
-        // Calculate XP
+        // Calculate XP with streak multiplier and accuracy bonus
         const scorePercent = Math.round((correctCount + (isCorrect ? 1 : 0)) / questions.length * 100);
         const baseXp = lesson.xp || 15;
-        const bonusXp = scorePercent === 100 ? 5 : 0;
-        const earned = baseXp + bonusXp;
+        // We'll fetch the user's streak in saveProgress — use a simple calc here for display
+        const earned = calcLessonXp({ baseXp, streakDays: 0, accuracyPct: scorePercent, isFirstTime: true });
         setXpEarned(earned);
         setPhase("complete");
         // Save progress
@@ -77,15 +78,22 @@ export default function Lesson() {
     }, 500);
   };
 
-  const saveProgress = async (score, xp) => {
+  const saveProgress = async (score, baseXp) => {
     if (isDemoMode) return; // Demo mode — skip all DB writes
     try {
+      const user = await base44.auth.me();
+      const streakDays = user?.streak_current || 0;
+      const isFirstTime = !(await base44.entities.LessonProgress.filter({ lesson_id: lessonId })).some(r => r.status === "complete");
+
+      // Apply streak and accuracy multipliers
+      const finalXp = calcLessonXp({ baseXp, streakDays, accuracyPct: score, isFirstTime });
+
       const existing = await base44.entities.LessonProgress.filter({ lesson_id: lessonId });
       if (existing.length > 0) {
         await base44.entities.LessonProgress.update(existing[0].id, {
           status: "complete",
           score_percent: score,
-          xp_earned: xp,
+          xp_earned: finalXp,
           completed_at: new Date().toISOString(),
           attempts_count: (existing[0].attempts_count || 0) + 1,
         });
@@ -95,26 +103,25 @@ export default function Lesson() {
           unit_id: lesson.unit,
           status: "complete",
           score_percent: score,
-          xp_earned: xp,
+          xp_earned: finalXp,
           completed_at: new Date().toISOString(),
           attempts_count: 1,
         });
       }
-      const user = await base44.auth.me();
+
       if (user) {
         const today = new Date().toISOString().split("T")[0];
-        const dailyXp = user.daily_goal_date === today ? (user.daily_xp_earned_today || 0) + xp : xp;
-        const newStreak = user.streak_last_activity_date === today
-          ? user.streak_current || 0
-          : (user.streak_current || 0) + 1;
+        const isNewDay = user.streak_last_activity_date !== today;
+        const dailyXp = (isNewDay || user.daily_goal_date !== today) ? finalXp : (user.daily_xp_earned_today || 0) + finalXp;
+        const newStreak = isNewDay ? (user.streak_current || 0) + 1 : (user.streak_current || 0);
         await base44.auth.updateMe({
-          xp_total: (user.xp_total || 0) + xp,
+          xp_total: (user.xp_total || 0) + finalXp,
           daily_xp_earned_today: dailyXp,
           daily_goal_date: today,
           streak_current: newStreak,
           streak_longest: Math.max(newStreak, user.streak_longest || 0),
           streak_last_activity_date: today,
-          league_season_xp: (user.league_season_xp || 0) + xp,
+          league_season_xp: (user.league_season_xp || 0) + finalXp,
         });
       }
     } catch (e) {

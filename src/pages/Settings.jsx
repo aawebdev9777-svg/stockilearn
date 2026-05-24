@@ -5,7 +5,8 @@ import { useDemo, DEMO_USER } from "@/lib/DemoContext";
 import { Card } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, LogOut } from "lucide-react";
+import { ArrowLeft, LogOut, ShieldCheck } from "lucide-react";
+import { Link } from "react-router-dom";
 
 export default function Settings() {
   const navigate = useNavigate();
@@ -78,6 +79,14 @@ export default function Settings() {
             Joined {user?.created_date ? new Date(user.created_date).toLocaleDateString() : "recently"}
           </p>
         </Card>
+
+        {user?.role === "admin" && (
+          <Link to="/admin">
+            <Button variant="outline" className="w-full gap-2 text-primary border-primary/20">
+              <ShieldCheck className="w-4 h-4" /> Admin Panel
+            </Button>
+          </Link>
+        )}
 
         <Button
           variant="outline"

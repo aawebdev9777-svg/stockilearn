@@ -20,6 +20,7 @@ import Settings from '@/pages/Settings';
 import Onboarding from '@/pages/Onboarding';
 import Present from '@/pages/Present';
 import Landing from '@/pages/Landing';
+import Admin from '@/pages/Admin';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -36,6 +37,7 @@ const AuthenticatedApp = () => {
         <Route path="/trade/stock/:ticker" element={<StockDetail />} />
         <Route path="/settings" element={<Settings />} />
         <Route path="/present" element={<Present />} />
+        <Route path="/admin" element={<Admin />} />
         <Route element={<AppLayout />}>
           <Route path="/home" element={<Home />} />
           <Route path="/learn" element={<Learn />} />
@@ -81,6 +83,7 @@ const AuthenticatedApp = () => {
       <Route path="/trade/stock/:ticker" element={<StockDetail />} />
       <Route path="/settings" element={<Settings />} />
       <Route path="/present" element={<Present />} />
+      <Route path="/admin" element={<Admin />} />
       <Route element={<AppLayout />}>
         <Route path="/home" element={<Home />} />
         <Route path="/learn" element={<Learn />} />

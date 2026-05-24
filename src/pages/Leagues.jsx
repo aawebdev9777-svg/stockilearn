@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { base44 } from "@/api/base44Client";
+import { useDemo, DEMO_USER } from "@/lib/DemoContext";
 import { motion } from "framer-motion";
 import { Card } from "@/components/ui/card";
 import { LEAGUE_TIERS } from "@/lib/lessonData";
@@ -29,11 +30,13 @@ function generateLeaderboard(userXp, username) {
 }
 
 export default function Leagues() {
-  const [user, setUser] = useState(null);
+  const { isDemoMode } = useDemo();
+  const [user, setUser] = useState(isDemoMode ? DEMO_USER : null);
 
   useEffect(() => {
+    if (isDemoMode) return;
     base44.auth.me().then(setUser).catch(() => {});
-  }, []);
+  }, [isDemoMode]);
 
   const tier = user?.league_tier || 1;
   const leagueInfo = LEAGUE_TIERS.find(l => l.tier === tier) || LEAGUE_TIERS[0];

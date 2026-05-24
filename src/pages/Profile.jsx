@@ -10,6 +10,8 @@ import { getLevelTitle, LEAGUE_TIERS, BADGES, getXpForLevel } from "@/lib/lesson
 import StreakFlame from "@/components/gamification/StreakFlame";
 import HeartsDisplay from "@/components/gamification/HeartsDisplay";
 import { Progress } from "@/components/ui/progress";
+import MasteryBar from "@/components/profile/MasteryBar";
+import { calculateAllMastery, TOPIC_META } from "@/lib/masteryEngine";
 
 export default function Profile() {
   const { isDemoMode } = useDemo();
@@ -141,6 +143,17 @@ export default function Profile() {
             );
           })}
         </div>
+      </div>
+
+      {/* Topic Mastery */}
+      <div>
+        <h3 className="text-sm font-bold text-foreground mb-3">Topic Mastery</h3>
+        <Card className="p-4 bg-card/80 border-border/50 space-y-3">
+          {Object.keys(TOPIC_META).map(topic => {
+            const mastery = calculateAllMastery(lessonProgress)[topic] || 0;
+            return <MasteryBar key={topic} topic={topic} mastery={mastery} />;
+          })}
+        </Card>
       </div>
 
       {/* Streak Protection */}

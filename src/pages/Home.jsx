@@ -7,6 +7,7 @@ import HeartsDisplay from "@/components/gamification/HeartsDisplay";
 import XpBadge from "@/components/gamification/XpBadge";
 import DailyGoalRing from "@/components/gamification/DailyGoalRing";
 import MissionCards from "@/components/home/MissionCards";
+import DailyChallenge from "@/components/home/DailyChallenge";
 import MarketPulse from "@/components/home/MarketPulse";
 import ContinueCard from "@/components/home/ContinueCard";
 import NewsFeed from "@/components/home/NewsFeed";
@@ -91,6 +92,11 @@ export default function Home() {
       {/* Continue */}
       <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}>
         <ContinueCard />
+      </motion.div>
+
+      {/* Daily Challenge */}
+      <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }}>
+        <DailyChallenge />
       </motion.div>
 
       {/* Market Pulse */}
