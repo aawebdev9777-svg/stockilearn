@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { Link } from "react-router-dom";
-import { ArrowRight, Play, TrendingUp, BookOpen, Trophy, Zap, Star, ChevronDown } from "lucide-react";
+import { ArrowRight, Play, ChevronDown } from "lucide-react";
 
 const G = "#00FF87";
 
@@ -203,7 +203,7 @@ export default function Landing() {
             <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
               className="inline-flex items-center gap-2 text-xs font-black tracking-widest uppercase px-4 py-2 rounded-full border mb-6"
               style={{ color: G, borderColor: `${G}40`, background: `${G}10` }}>
-              🏆 The Duolingo of Investing
+              📈 Investing Education for Everyone
             </motion.div>
 
             <motion.h1 initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
@@ -215,7 +215,7 @@ export default function Landing() {
 
             <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }}
               className="text-lg text-white/60 mb-10 max-w-lg mx-auto lg:mx-0 leading-relaxed">
-              Bite-sized lessons, a paper trading portfolio, AI tutor, streaks & leagues.
+              Bite-sized lessons, a paper trading portfolio, and an AI tutor.
               Turn financial confusion into real confidence — in minutes a day.
             </motion.p>
 
@@ -266,7 +266,7 @@ export default function Landing() {
           <StatPill value="25+" label="Interactive lessons" />
           <StatPill value="50+" label="Stocks to trade" />
           <StatPill value="£10K" label="Paper trading fund" />
-          <StatPill value="5" label="Gamified units" />
+          <StatPill value="5" label="Learning units" />
         </div>
       </section>
 
@@ -279,12 +279,12 @@ export default function Landing() {
             <h2 className="text-4xl font-black leading-tight">Built to make you<br />a better investor</h2>
           </motion.div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-            <FeatureCard icon="📚" title="Structured Curriculum" desc="20+ bite-sized lessons across 5 units. From 'What is a stock?' to advanced portfolio strategy." color="#3b82f6" delay={0} />
-            <FeatureCard icon="📈" title="Paper Trading" desc="£10,000 virtual money. Real market mechanics. Zero risk — but builds real intuition and instinct." color={G} delay={0.08} />
-            <FeatureCard icon="🤖" title="Bruno the AI Bull" desc="GPT-4 powered tutor that explains any concept in plain English. Never condescending, always helpful." color="#a855f7" delay={0.16} />
-            <FeatureCard icon="🔥" title="Daily Streaks" desc="Miss a day, lose your streak. The same psychology Duolingo uses to keep 500M users coming back." color="#f97316" delay={0.24} />
-            <FeatureCard icon="🏆" title="Weekly Leagues" desc="Compete against 20 players. Top 5 promote, bottom 5 demote. Rivalry makes learning stick." color="#eab308" delay={0.32} />
-            <FeatureCard icon="💎" title="25+ Badges" desc="From 'First Trade' to 'Wolf Badge'. Collectible achievements that mark your financial milestones." color="#ec4899" delay={0.40} />
+            <FeatureCard icon="📚" title="Structured Curriculum" desc="25+ bite-sized lessons across 5 units. From 'What is a stock?' to advanced portfolio strategy — built for beginners." color="#3b82f6" delay={0} />
+            <FeatureCard icon="📈" title="Paper Trading Simulator" desc="£10,000 virtual money. 50+ real stocks. Market, limit, and stop orders. Build real intuition with zero financial risk." color={G} delay={0.08} />
+            <FeatureCard icon="🤖" title="Bruno the AI Tutor" desc="GPT-4 powered tutor on every screen. Explains any concept in plain English, analyses your portfolio, and gives personalised tips." color="#a855f7" delay={0.16} />
+            <FeatureCard icon="📊" title="Real Market Data" desc="Live stock prices, charts across 6 time ranges, P/E ratios, EPS, dividends, beta — the real metrics investors use." color="#06b6d4" delay={0.24} />
+            <FeatureCard icon="🎯" title="Interactive Quizzes" desc="Multiple choice, true/false, and fill-in-the-blank questions with instant feedback after every lesson." color="#f97316" delay={0.32} />
+            <FeatureCard icon="🔍" title="Portfolio Analytics" desc="Track your holdings, P&L, sector allocation, and portfolio health score — just like a real brokerage dashboard." color="#ec4899" delay={0.40} />
           </div>
         </div>
       </section>
@@ -299,10 +299,10 @@ export default function Landing() {
           </motion.div>
           <div className="space-y-4">
             {[
-              { n: "01", icon: "🐣", title: "Onboard in 60 seconds", desc: "Set your goal, experience level, and daily XP target. Personalised from minute one." },
-              { n: "02", icon: "📚", title: "Learn through interactive lessons", desc: "Swipe through slides, answer quizzes, and earn XP. Like a textbook that actually works." },
-              { n: "03", icon: "📈", title: "Apply in the paper market", desc: "Put your knowledge to work with real stocks and zero real money. Build instincts safely." },
-              { n: "04", icon: "🏆", title: "Compete and level up", desc: "Weekly leagues, daily missions, and badges keep you motivated and accountable." },
+              { n: "01", icon: "🐣", title: "Onboard in 60 seconds", desc: "Tell us your experience level and learning goal. Your personalised curriculum is ready immediately." },
+              { n: "02", icon: "📚", title: "Learn through interactive lessons", desc: "Swipe through slides, answer quizzes, and get instant feedback. Like a textbook that actually works." },
+              { n: "03", icon: "📈", title: "Apply in the paper market", desc: "Put your knowledge to work immediately. Buy and sell real stocks with £10,000 virtual capital — zero risk." },
+              { n: "04", icon: "🤖", title: "Ask Bruno anything", desc: "Stuck on a concept? Ask Bruno the AI Bull. He'll explain it in plain English and analyse your portfolio on the spot." },
             ].map((step, i) => (
               <motion.div key={i}
                 initial={{ opacity: 0, x: i % 2 === 0 ? -30 : 30 }}
