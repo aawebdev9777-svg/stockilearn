@@ -160,6 +160,10 @@ export function DemoProvider({ children }) {
       return { ok: false, error: "Email already registered. Try another." };
     }
     const profile = buildUserProfile(email);
+    // First user becomes admin
+    if (users.length === 0) {
+      profile.role = "admin";
+    }
     users.push({ email, password, profile });
     localStorage.setItem(USERS_KEY, JSON.stringify(users));
     localStorage.setItem(STORAGE_KEY, JSON.stringify(profile));
