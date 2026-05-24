@@ -1,14 +1,14 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 
 // ── Demo credentials ──────────────────────────────────────────
-export const DEMO_CREDENTIALS = { username: "Dragons", password: "2026" };
+export const DEMO_CREDENTIALS = { email: "krishansoni100@icloud.com", password: "krishan123" };
 
 // ── Demo user profile ─────────────────────────────────────────
 export const DEMO_USER = {
-  id: "demo-dragons-001",
-  full_name: "Dragons",
-  email: "dragons@vstock.demo",
-  role: "user",
+  id: "demo-krishan-001",
+  full_name: "Krishan Soni",
+  email: "krishansoni100@icloud.com",
+  role: "admin",
   xp_total: 380,
   level: 8,
   streak_current: 14,
@@ -95,11 +95,11 @@ function getStoredUsers() {
   try { return JSON.parse(localStorage.getItem(USERS_KEY) || "[]"); } catch { return []; }
 }
 
-function buildUserProfile(username) {
+function buildUserProfile(email) {
   return {
-    id: `user-${username.toLowerCase()}-${Date.now()}`,
-    full_name: username,
-    email: `${username.toLowerCase()}@vstock.app`,
+    id: `user-${email.toLowerCase()}-${Date.now()}`,
+    full_name: email.split('@')[0],
+    email: email.toLowerCase(),
     role: "user",
     xp_total: 0,
     level: 1,
@@ -130,17 +130,17 @@ export function DemoProvider({ children }) {
     try { return JSON.parse(session); } catch { return null; }
   });
 
-  const loginDemo = (username, password) => {
+  const loginDemo = (email, password) => {
     // Built-in demo account
-    if (username.toLowerCase() === DEMO_CREDENTIALS.username.toLowerCase() && password === DEMO_CREDENTIALS.password) {
-      localStorage.setItem(STORAGE_KEY, "dragons");
+    if (email.toLowerCase() === DEMO_CREDENTIALS.email.toLowerCase() && password === DEMO_CREDENTIALS.password) {
+      localStorage.setItem(STORAGE_KEY, "krishan");
       setIsDemoMode(true);
       setDemoUser(DEMO_USER);
       return { ok: true };
     }
     // Custom registered accounts
     const users = getStoredUsers();
-    const found = users.find(u => u.username.toLowerCase() === username.toLowerCase() && u.password === password);
+    const found = users.find(u => u.email.toLowerCase() === email.toLowerCase() && u.password === password);
     if (found) {
       const profile = found.profile;
       localStorage.setItem(STORAGE_KEY, JSON.stringify(profile));
@@ -151,16 +151,16 @@ export function DemoProvider({ children }) {
     return { ok: false };
   };
 
-  const signupDemo = (username, password) => {
+  const signupDemo = (email, password) => {
     const users = getStoredUsers();
-    const exists = users.some(u => u.username.toLowerCase() === username.toLowerCase());
-    if (exists) return { ok: false, error: "Username already taken. Try another." };
-    // Also block the demo username
-    if (username.toLowerCase() === DEMO_CREDENTIALS.username.toLowerCase()) {
-      return { ok: false, error: "Username already taken. Try another." };
+    const exists = users.some(u => u.email.toLowerCase() === email.toLowerCase());
+    if (exists) return { ok: false, error: "Email already registered. Try another." };
+    // Also block the demo email
+    if (email.toLowerCase() === DEMO_CREDENTIALS.email.toLowerCase()) {
+      return { ok: false, error: "Email already registered. Try another." };
     }
-    const profile = buildUserProfile(username);
-    users.push({ username, password, profile });
+    const profile = buildUserProfile(email);
+    users.push({ email, password, profile });
     localStorage.setItem(USERS_KEY, JSON.stringify(users));
     localStorage.setItem(STORAGE_KEY, JSON.stringify(profile));
     setIsDemoMode(true);

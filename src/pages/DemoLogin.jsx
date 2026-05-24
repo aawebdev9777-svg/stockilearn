@@ -38,8 +38,8 @@ export default function DemoLogin() {
       setSuError("Please fill in all fields.");
       return;
     }
-    if (suName.trim().length < 3) {
-      setSuError("Username must be at least 3 characters.");
+    if (!suName.includes("@") || !suName.includes(".")) {
+      setSuError("Please enter a valid email address.");
       return;
     }
     if (suPassword.length < 4) {
@@ -103,12 +103,12 @@ export default function DemoLogin() {
               className="bg-card border border-border rounded-2xl p-6 shadow-sm space-y-4"
             >
               <div className="space-y-1">
-                <label className="text-xs font-bold text-muted-foreground uppercase tracking-wide">Username</label>
+                <label className="text-xs font-bold text-muted-foreground uppercase tracking-wide">Email</label>
                 <input
-                  type="text"
+                  type="email"
                   value={siUsername}
                   onChange={e => { setSiUsername(e.target.value); setSiError(""); }}
-                  placeholder="Enter username"
+                  placeholder="Enter email"
                   className="w-full px-4 py-3 rounded-xl border border-border bg-background text-foreground text-sm font-medium focus:outline-none focus:ring-2 focus:ring-primary/40"
                   autoComplete="username"
                 />
@@ -136,7 +136,7 @@ export default function DemoLogin() {
               </button>
 
               <p className="text-center text-xs text-muted-foreground pt-1">
-                Demo: <span className="font-bold text-foreground">Dragons</span> / <span className="font-bold text-foreground">2026</span>
+                Demo: <span className="font-bold text-foreground">krishansoni100@icloud.com</span> / <span className="font-bold text-foreground">krishan123</span>
               </p>
             </motion.form>
           ) : (
@@ -156,12 +156,12 @@ export default function DemoLogin() {
               </div>
 
               <div className="space-y-1">
-                <label className="text-xs font-bold text-muted-foreground uppercase tracking-wide">Username</label>
+                <label className="text-xs font-bold text-muted-foreground uppercase tracking-wide">Email</label>
                 <input
-                  type="text"
+                  type="email"
                   value={suName}
                   onChange={e => { setSuName(e.target.value); setSuError(""); }}
-                  placeholder="Choose a username"
+                  placeholder="Enter email"
                   className="w-full px-4 py-3 rounded-xl border border-border bg-background text-foreground text-sm font-medium focus:outline-none focus:ring-2 focus:ring-primary/40"
                   autoComplete="username"
                 />
