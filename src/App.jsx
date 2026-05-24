@@ -22,6 +22,7 @@ import Onboarding from '@/pages/Onboarding';
 import Present from '@/pages/Present';
 import Landing from '@/pages/Landing';
 import Admin from '@/pages/Admin';
+import Upgrade from '@/pages/Upgrade';
 
 // Guard: only admin users can access wrapped routes
 const AdminOnly = ({ children }) => {
@@ -52,6 +53,7 @@ const AuthenticatedApp = () => {
         <Route path="/learn/lesson/:lessonId" element={<Lesson />} />
         <Route path="/trade/stock/:ticker" element={<StockDetail />} />
         <Route path="/settings" element={<Settings />} />
+        <Route path="/upgrade" element={<Upgrade />} />
         <Route path="/admin" element={<Admin />} />
         <Route element={<AppLayout />}>
           <Route path="/home" element={<Home />} />
@@ -97,6 +99,7 @@ const AuthenticatedApp = () => {
       <Route path="/learn/lesson/:lessonId" element={<Lesson />} />
       <Route path="/trade/stock/:ticker" element={<StockDetail />} />
       <Route path="/settings" element={<Settings />} />
+      <Route path="/upgrade" element={<Upgrade />} />
       <Route path="/present" element={<AdminOnly><Present /></AdminOnly>} />
       <Route path="/admin" element={<Admin />} />
       <Route element={<AppLayout />}>

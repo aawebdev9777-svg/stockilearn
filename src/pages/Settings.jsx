@@ -5,7 +5,7 @@ import { useDemo, DEMO_USER } from "@/lib/DemoContext";
 import { Card } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, LogOut, ShieldCheck } from "lucide-react";
+import { ArrowLeft, LogOut, ShieldCheck, Crown } from "lucide-react";
 import { Link } from "react-router-dom";
 
 export default function Settings() {
@@ -79,6 +79,12 @@ export default function Settings() {
             Joined {user?.created_date ? new Date(user.created_date).toLocaleDateString() : "recently"}
           </p>
         </Card>
+
+        <Link to="/upgrade">
+          <Button variant="default" className="w-full gap-2 bg-primary text-primary-foreground">
+            <Crown className="w-4 h-4" /> Upgrade to Pro — £6.99/mo
+          </Button>
+        </Link>
 
         {user?.role === "admin" && (
           <Link to="/admin">

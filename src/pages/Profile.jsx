@@ -4,7 +4,7 @@ import { useDemo, DEMO_USER, DEMO_BADGES, DEMO_LESSON_PROGRESS } from "@/lib/Dem
 import { motion } from "framer-motion";
 import { Card } from "@/components/ui/card";
 import { useQuery } from "@tanstack/react-query";
-import { Settings, Zap, Gem } from "lucide-react";
+import { Settings, Zap, Gem, Crown } from "lucide-react";
 import { Link } from "react-router-dom";
 import { getLevelTitle, LEAGUE_TIERS, BADGES, getXpForLevel } from "@/lib/lessonData";
 import StreakFlame from "@/components/gamification/StreakFlame";
@@ -90,6 +90,12 @@ export default function Profile() {
                   <span className="text-xs font-bold text-purple-400">{gems}</span>
                 </div>
               </div>
+              <Link to="/upgrade" className="mt-3 block">
+                <div className="flex items-center justify-center gap-2 bg-gradient-to-r from-primary/20 to-primary/10 border border-primary/30 rounded-xl px-3 py-2 hover:opacity-80 transition-opacity">
+                  <Crown className="w-4 h-4 text-primary" />
+                  <span className="text-xs font-black text-primary">Upgrade to Pro</span>
+                </div>
+              </Link>
             </div>
           </div>
 
