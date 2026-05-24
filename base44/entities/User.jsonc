@@ -10,20 +10,10 @@
       ],
       "default": "user"
     },
-    "username": {
-      "type": "string"
-    },
-    "avatar_id": {
-      "type": "string",
-      "default": "investor1"
-    },
-    "frame_id": {
-      "type": "string",
-      "default": "default"
-    },
-    "level": {
-      "type": "number",
-      "default": 1
+    "is_banned": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether this user is banned from the platform"
     },
     "xp_total": {
       "type": "number",
@@ -40,31 +30,24 @@
     "streak_last_activity_date": {
       "type": "string"
     },
-    "streak_freezes_remaining": {
+    "daily_xp_earned_today": {
       "type": "number",
       "default": 0
-    },
-    "hearts_current": {
-      "type": "number",
-      "default": 5
-    },
-    "hearts_last_refill": {
-      "type": "string"
-    },
-    "gems": {
-      "type": "number",
-      "default": 20
     },
     "daily_goal_xp": {
       "type": "number",
       "default": 20
     },
-    "daily_xp_earned_today": {
-      "type": "number",
-      "default": 0
-    },
     "daily_goal_date": {
       "type": "string"
+    },
+    "hearts_current": {
+      "type": "number",
+      "default": 5
+    },
+    "gems": {
+      "type": "number",
+      "default": 0
     },
     "league_tier": {
       "type": "number",
@@ -74,46 +57,36 @@
       "type": "number",
       "default": 0
     },
+    "level": {
+      "type": "number",
+      "default": 1
+    },
     "knowledge_level": {
       "type": "string",
       "enum": [
         "newbie",
         "some_knowledge",
         "experienced"
-      ],
-      "default": "newbie"
+      ]
     },
     "goal_type": {
       "type": "string"
-    },
-    "is_pro": {
-      "type": "boolean",
-      "default": false
-    },
-    "prediction_correct_count": {
-      "type": "number",
-      "default": 0
-    },
-    "prediction_total_count": {
-      "type": "number",
-      "default": 0
     },
     "onboarding_complete": {
       "type": "boolean",
       "default": false
     },
-    "currency_preference": {
-      "type": "string",
-      "enum": [
-        "GBP",
-        "USD"
-      ],
-      "default": "USD"
-    },
     "dark_mode": {
       "type": "boolean",
       "default": true
+    },
+    "currency_preference": {
+      "type": "string",
+      "enum": [
+        "USD",
+        "GBP"
+      ],
+      "default": "USD"
     }
-  },
-  "required": []
+  }
 }

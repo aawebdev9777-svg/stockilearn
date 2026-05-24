@@ -1,3 +1,4 @@
+import React from 'react';
 import { Toaster } from "@/components/ui/toaster"
 import { QueryClientProvider } from '@tanstack/react-query'
 import { queryClientInstance } from '@/lib/query-client'
@@ -22,6 +23,21 @@ import Present from '@/pages/Present';
 import Landing from '@/pages/Landing';
 import Admin from '@/pages/Admin';
 
+// Guard: only admin users can access wrapped routes
+const AdminOnly = ({ children }) => {
+  const { isDemoMode } = useDemo();
+  const [allowed, setAllowed] = React.useState(null);
+  React.useEffect(() => {
+    if (isDemoMode) { setAllowed(false); return; }
+    base44.auth.me().then(u => setAllowed(u?.role === "admin")).catch(() => setAllowed(false));
+  }, [isDemoMode]);
+  if (allowed === null) return null;
+  if (!allowed) return <Navigate to="/home" replace />;
+  return children;
+};
+
+import { base44 } from '@/api/base44Client';
+
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
   const { isDemoMode } = useDemo();
@@ -36,7 +52,6 @@ const AuthenticatedApp = () => {
         <Route path="/learn/lesson/:lessonId" element={<Lesson />} />
         <Route path="/trade/stock/:ticker" element={<StockDetail />} />
         <Route path="/settings" element={<Settings />} />
-        <Route path="/present" element={<Present />} />
         <Route path="/admin" element={<Admin />} />
         <Route element={<AppLayout />}>
           <Route path="/home" element={<Home />} />
@@ -82,7 +97,7 @@ const AuthenticatedApp = () => {
       <Route path="/learn/lesson/:lessonId" element={<Lesson />} />
       <Route path="/trade/stock/:ticker" element={<StockDetail />} />
       <Route path="/settings" element={<Settings />} />
-      <Route path="/present" element={<Present />} />
+      <Route path="/present" element={<AdminOnly><Present /></AdminOnly>} />
       <Route path="/admin" element={<Admin />} />
       <Route element={<AppLayout />}>
         <Route path="/home" element={<Home />} />
