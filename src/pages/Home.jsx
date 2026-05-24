@@ -15,9 +15,9 @@ import { Gem } from "lucide-react";
 
 function getGreeting(name) {
   const hour = new Date().getHours();
-  if (hour < 12) return `Good morning, ${name}! ☀️`;
-  if (hour < 17) return `Good afternoon, ${name}! Markets are LIVE. 🔥`;
-  return `Good evening, ${name}! Let's study. 📚`;
+  if (hour < 12) return `Good morning, ${name} ☀️`;
+  if (hour < 17) return `Good afternoon, ${name} 🔥`;
+  return `Good evening, ${name} 📚`;
 }
 
 export default function Home() {
@@ -41,7 +41,7 @@ export default function Home() {
     );
   }
 
-  const name = user?.full_name?.split(" ")[0] || user?.username || "Investor";
+  const name = user?.full_name?.split(" ")[0] || user?.username || user?.email?.split("@")[0] || "Investor";
   const xp = user?.xp_total || 0;
   const level = user?.level || 1;
   const streak = user?.streak_current || 0;
@@ -69,6 +69,7 @@ export default function Home() {
           </div>
         </div>
         <div>
+          <p className="text-xs text-muted-foreground font-medium mb-0.5">Hello, {name}! 👋</p>
           <h1 className="text-xl font-black text-foreground">{getGreeting(name)}</h1>
           <XpBadge xp={xp} level={level} />
         </div>

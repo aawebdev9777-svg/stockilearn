@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
+import { useDemo } from "@/lib/DemoContext";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
+import { LESSONS } from "@/lib/lessonData";
 
 const GOALS = [
   { emoji: "📈", label: "Understand the stock market" },
@@ -29,12 +31,14 @@ const DAILY_GOALS = [
 
 export default function Onboarding() {
   const navigate = useNavigate();
+  const { isDemoMode } = useDemo();
   const [step, setStep] = useState(0);
   const [goal, setGoal] = useState(null);
   const [level, setLevel] = useState(null);
   const [dailyGoal, setDailyGoal] = useState(null);
 
   const handleComplete = async () => {
+    if (isDemoMode) { navigate("/home"); return; }
     try {
       await base44.auth.updateMe({
         goal_type: goal,
@@ -43,6 +47,23 @@ export default function Onboarding() {
         onboarding_complete: true,
         dark_mode: true,
       });
+
+      // Pre-unlock lessons based on knowledge level
+      const unitsToSkip = level === "experienced" ? [1, 2] : level === "some_knowledge" ? [1] : [];
+      if (unitsToSkip.length > 0) {
+        const lessonsToComplete = LESSONS.filter(l => unitsToSkip.includes(l.unit));
+        await Promise.all(lessonsToComplete.map(l =>
+          base44.entities.LessonProgress.create({
+            lesson_id: l.id,
+            unit_id: l.unit,
+            status: "complete",
+            score_percent: 100,
+            xp_earned: 0,
+            completed_at: new Date().toISOString(),
+            attempts_count: 1,
+          })
+        ));
+      }
     } catch (e) {
       console.error(e);
     }
@@ -61,7 +82,7 @@ export default function Onboarding() {
         📈
       </motion.div>
       <div>
-        <h1 className="text-3xl font-black text-foreground">StockMark</h1>
+        <h1 className="text-3xl font-black text-foreground">V<span className="text-primary">stock</span></h1>
         <p className="text-lg font-bold text-primary mt-2">Turn confusion into confidence.</p>
         <p className="text-sm text-muted-foreground mt-1">Learn investing the fun way.</p>
       </div>
