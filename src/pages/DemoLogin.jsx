@@ -135,9 +135,7 @@ export default function DemoLogin() {
                 Sign In
               </button>
 
-              <p className="text-center text-xs text-muted-foreground pt-1">
-                Demo: <span className="font-bold text-foreground">krishansoni100@icloud.com</span> / <span className="font-bold text-foreground">krishan123</span>
-              </p>
+
             </motion.form>
           ) : (
             <motion.form

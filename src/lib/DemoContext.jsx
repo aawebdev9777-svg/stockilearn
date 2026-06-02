@@ -126,14 +126,13 @@ export function DemoProvider({ children }) {
   const [demoUser, setDemoUser] = useState(() => {
     const session = localStorage.getItem(STORAGE_KEY);
     if (!session) return null;
-    if (session === "dragons") return DEMO_USER;
     try { return JSON.parse(session); } catch { return null; }
   });
 
   const loginDemo = (email, password) => {
     // Built-in demo account
     if (email.toLowerCase() === DEMO_CREDENTIALS.email.toLowerCase() && password === DEMO_CREDENTIALS.password) {
-      localStorage.setItem(STORAGE_KEY, "krishan");
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(DEMO_USER));
       setIsDemoMode(true);
       setDemoUser(DEMO_USER);
       return { ok: true };
