@@ -54,6 +54,7 @@ const AuthenticatedApp = () => {
         <Route path="/trade/stock/:ticker" element={<StockDetail />} />
         <Route path="/settings" element={<Settings />} />
         <Route path="/upgrade" element={<Upgrade />} />
+        <Route path="/present" element={<Present />} />
         <Route path="/admin" element={<Admin />} />
         <Route element={<AppLayout />}>
           <Route path="/home" element={<Home />} />
