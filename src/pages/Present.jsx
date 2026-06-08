@@ -690,7 +690,7 @@ export default function Present() {
   return (
     <div className="fixed inset-0 flex flex-col select-none overflow-hidden"
       style={{fontFamily:"Inter, sans-serif", background: BG}}
-      onClick={() => setShowNav(n=>!n)}>
+      onClick={goNext}>
 
       {/* Slide */}
       <div className="flex-1 relative overflow-hidden">
