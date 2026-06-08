@@ -40,6 +40,14 @@ export const UNITS = [
     theme: "space",
     badge: { slug: "market_veteran", name: "Market Veteran", emoji: "🚀" },
   },
+  {
+    id: 6,
+    title: "Real-World Investing",
+    icon: "🌍",
+    color: "#06b6d4",
+    theme: "world",
+    badge: { slug: "real_world_investor", name: "Real-World Investor", emoji: "🌍" },
+  },
 ];
 
 export const LESSONS = [
@@ -528,6 +536,104 @@ export const LESSONS = [
     ],
     summary: ["The most costly mistakes: panic selling, market timing, FOMO, high fees, investing short-term money", "Knowing the mistakes is 90% of avoiding them", "Patient, low-cost, diversified investing beats most alternatives over time"],
   },
+  // Unit 6 — Real-World Investing
+  { id: "6.1", unit: 6, title: "How to Actually Buy Your First Stock", xp: 20, time: 5, teaser: "Enough theory — let's walk through buying your first real stock step by step.",
+    slides: [
+      { text: "Step 1: Choose a broker — an app or platform that connects you to the stock market.", visual: "broker", detail: "In the UK, popular beginner-friendly brokers include Trading 212, Freetrade, eToro, and Hargreaves Lansdown. Each has different fees and features.", example: "Trading 212 and Freetrade offer free stock trading with no commissions. HL charges £11.95 per trade but has better research tools. Pick based on your needs." },
+      { text: "Step 2: Open and verify your account — you'll need ID and a bank account.", visual: "account", detail: "Brokers are regulated by the FCA (UK) or SEC (US) and must verify your identity to comply with anti-money-laundering laws. It takes 1–3 days typically.", example: "You'll upload a passport or driving licence and a bank statement. Once approved, you deposit funds — as little as £1 on some platforms." },
+      { text: "Step 3: Search for the stock by name or ticker symbol, check the current price.", visual: "search", detail: "Always double-check you've selected the right stock — there can be multiple listings (e.g. different share classes). Look for the one on the right exchange.", example: "Search 'Apple' and you'll see AAPL on NASDAQ. If you see 'AAPL.US' and 'AAPL.UK' — these are the same stock in different currencies." },
+      { text: "Step 4: Decide how much to invest and place your order (market or limit).", visual: "order", detail: "Start small. You don't need to buy a whole share — fractional shares let you invest £10 in Amazon even though one share costs £150+.", example: "With £50, you could buy fractional shares: £20 in Apple, £20 in an S&P 500 ETF, £10 in Microsoft. Instant mini-portfolio." },
+      { text: "Step 5: Monitor your investment — but resist checking it every 5 minutes!", visual: "monitor", detail: "Checking too often leads to emotional decisions. A weekly or monthly review is more than enough for long-term investors.", example: "Studies show investors who check their portfolio daily underperform those who check quarterly. Less obsessing = better returns. Seriously." },
+    ],
+    questions: [
+      { type: "multiple_choice", q: "A broker is...", options: ["A type of stock", "A platform connecting you to the market", "A financial advisor", "A government service"], answer: 1, explanation: "Brokers are regulated platforms or apps that execute your buy/sell orders on stock exchanges on your behalf." },
+      { type: "true_false", q: "You always need to buy whole shares — fractional shares don't exist.", answer: false, explanation: "Many modern brokers offer fractional shares, letting you invest any amount (even £5) into high-priced stocks." },
+      { type: "multiple_choice", q: "How often should a long-term investor ideally check their portfolio?", options: ["Every minute", "Every hour", "Every day", "Weekly or monthly"], answer: 3, explanation: "Less frequent checking reduces emotional decisions. Long-term investors do better when they're not constantly reacting to short-term noise." },
+    ],
+    summary: ["Choose a regulated broker and open an account", "Search the stock by ticker and verify it's correct", "Fractional shares let you start with very small amounts", "Review monthly — not daily"],
+  },
+  { id: "6.2", unit: 6, title: "ISAs, SIPPs & Tax-Efficient Investing (UK)", xp: 25, time: 6, teaser: "The UK's secret weapon for growing wealth tax-free. You'd be mad not to use it.",
+    slides: [
+      { text: "A Stocks & Shares ISA lets you invest up to £20,000/year — and ALL gains and income are completely tax-free.", visual: "isa", detail: "ISA = Individual Savings Account. Inside an ISA, you pay zero Capital Gains Tax on profits and zero income tax on dividends. This is one of the best tax perks available to UK investors.", example: "Outside an ISA: make £10,000 profit, potentially pay 20% CGT = £2,000 to the taxman. Inside an ISA: keep all £10,000. Over decades, this adds up to tens of thousands." },
+      { text: "A SIPP (Self-Invested Personal Pension) gives you tax relief on contributions — money goes in before tax.", visual: "sipp", detail: "When you contribute to a SIPP, HMRC adds 20% tax relief automatically. So a £80 contribution becomes £100 in your pension. Higher rate taxpayers get even more.", example: "Put £800 into a SIPP → HMRC adds £200 relief → £1,000 invested. That's 25% instant return before the market does anything. Hard to beat." },
+      { text: "Junior ISA (JISA): parents can invest up to £9,000/year for children under 18 — tax-free.", visual: "jisa", detail: "Funds in a JISA are locked until age 18 and grow entirely tax-free. Perfect for parents wanting to start their children's investment journey early.", example: "Invest £200/month from birth in a JISA at 8% return: by age 18 the child has ~£102,000 waiting for them. Tax-free. Completely life-changing." },
+      { text: "Always max your ISA allowance before investing in a standard account — the tax saving is guaranteed.", visual: "strategy", detail: "The ISA allowance doesn't roll over — use it or lose it each tax year (April 5th deadline). Even partial use dramatically improves long-term returns.", example: "A 20-year-old maxing their ISA at £20,000/year for 40 years at 8% would have £5.2M at 60 — entirely tax-free. A standard account in the same scenario loses hundreds of thousands to tax." },
+    ],
+    questions: [
+      { type: "multiple_choice", q: "The annual Stocks & Shares ISA allowance is...", options: ["£5,000", "£10,000", "£20,000", "£50,000"], answer: 2, explanation: "The UK Stocks & Shares ISA allowance is £20,000 per tax year. All gains and income within the ISA wrapper are completely tax-free." },
+      { type: "true_false", q: "Gains inside a Stocks & Shares ISA are subject to Capital Gains Tax.", answer: false, explanation: "ISAs are completely tax-free wrappers. No CGT on profits, no income tax on dividends — ever. This is one of the UK's most generous tax perks." },
+      { type: "multiple_choice", q: "A SIPP gives you...", options: ["Tax on contributions", "20%+ tax relief on contributions", "Access only at age 75", "Guaranteed returns"], answer: 1, explanation: "SIPP contributions get automatic 20% tax relief (more for higher-rate taxpayers). Contributing £800 gives you £1,000 invested — a 25% instant boost." },
+    ],
+    summary: ["ISA: invest up to £20K/year with zero tax on gains or income", "SIPP: pension with 20%+ tax relief on contributions", "Junior ISA: up to £9K/year tax-free for children under 18", "Always max tax-advantaged accounts before standard investing"],
+  },
+  { id: "6.3", unit: 6, title: "Dollar-Cost Averaging (DCA)", xp: 20, time: 5, teaser: "The strategy that removes timing pressure and beats most active approaches.",
+    slides: [
+      { text: "DCA = investing a fixed amount at regular intervals (e.g. £100 every month), regardless of price.", visual: "dca", detail: "Instead of trying to invest a lump sum at the 'perfect' moment (which is impossible to predict), you spread purchases over time and automatically buy more when cheap, less when expensive.", example: "£100/month in the S&P 500 for 30 years at average 10% return = £226,000 from just £36,000 total invested. No market timing needed whatsoever." },
+      { text: "DCA removes the psychological burden of trying to 'time the market' perfectly.", visual: "psychology", detail: "One of the biggest reasons investors fail is paralysis — waiting for the 'perfect' moment to invest a lump sum. DCA eliminates this problem entirely.", example: "Studies show lump-sum investing outperforms DCA about 2/3 of the time — but DCA wins when markets are volatile, and its psychological benefits are enormous." },
+      { text: "DCA means you buy more shares when prices are LOW and fewer when prices are HIGH.", visual: "shares_bought", detail: "When price is £100, £100 buys 1 share. When price falls to £50, £100 buys 2 shares. You're automatically buying more at the 'sale' price. Over time, your average cost is lower than the average price.", example: "If Apple averages £180 over a year but you DCA monthly, you might achieve an average buy price of £170 — because you bought more shares during the low months." },
+      { text: "DCA works best for long time horizons — monthly investing into an index ETF for 10–40 years.", visual: "long_term", detail: "DCA is the bedrock of pension schemes, workplace auto-enrolment, and long-term wealth building. It's boring, automatic, and it works.", example: "UK workplace pensions are DCA by design — a % of every paycheque goes in automatically. It's why 'set it and forget it' pension savers often end up millionaires without thinking about it." },
+    ],
+    questions: [
+      { type: "multiple_choice", q: "DCA stands for...", options: ["Diversified Capital Allocation", "Dollar-Cost Averaging", "Dynamic Chart Analysis", "Debt Coverage Accounting"], answer: 1, explanation: "DCA = Dollar-Cost Averaging. Investing a fixed amount at regular intervals, regardless of market price." },
+      { type: "true_false", q: "With DCA, you buy more shares when prices are high.", answer: false, explanation: "The opposite! With a fixed amount, you buy MORE shares when prices are LOW and fewer when prices are HIGH. This automatically improves your average purchase price." },
+      { type: "multiple_choice", q: "DCA's biggest psychological benefit is...", options: ["Maximising every trade", "Eliminating the stress of market timing", "Beating the market every year", "Avoiding all fees"], answer: 1, explanation: "DCA removes the paralysis of trying to find the 'perfect' time to invest. You invest automatically, removing emotion from the equation entirely." },
+    ],
+    summary: ["DCA = fixed regular investment regardless of market price", "Automatically buys more when cheap, less when expensive", "Removes timing pressure and emotional decision-making", "Best used long-term with index ETFs via ISA or SIPP"],
+  },
+  { id: "6.4", unit: 6, title: "Building Your First Portfolio", xp: 25, time: 6, teaser: "Putting it all together — a real portfolio for a real beginner.",
+    slides: [
+      { text: "A solid beginner portfolio has 3 layers: core index ETFs, sector exposure, and a handful of individual stocks.", visual: "portfolio", detail: "This three-layer approach gives you market returns as a base, some targeted sector bets, and the learning/excitement of picking individual companies.", example: "Example starter portfolio: 60% S&P 500 ETF (VOO) + 20% FTSE All-World ETF + 10% Tech ETF (QQQ) + 10% 2-3 individual stocks you believe in." },
+      { text: "The core should be 60–80% cheap global index ETFs. This is your foundation.", visual: "core", detail: "Index ETFs give you instant diversification across hundreds or thousands of companies at minimal cost. They form the stable backbone of any smart portfolio.", example: "A MSCI World index ETF like VWRL holds ~3,700 companies from 23 countries in one fund. That's extraordinary diversification for a 0.22% annual fee." },
+      { text: "Rebalance once a year — restore your target allocation percentages.", visual: "rebalance", detail: "Over time, some assets grow faster and throw off your target allocation. Rebalancing = selling some of the winners and buying more of the laggards to restore balance.", example: "If stocks rise and now make up 90% of your portfolio (vs target 80%), you sell some stocks and buy bonds/other assets until you're back at 80/20." },
+      { text: "Keep a 'watch and learn' allocation (5-10%) for experimenting with individual stocks.", visual: "experiment", detail: "Restricting speculative bets to a small percentage means you can explore, make mistakes, and learn — without catastrophic consequences for your overall wealth.", example: "Put 90% in boring index ETFs, 10% in stocks you find interesting. This way, even if your individual picks fail completely, your overall portfolio is down just 10%." },
+    ],
+    questions: [
+      { type: "multiple_choice", q: "For a beginner, the core of a portfolio should be...", options: ["Individual hot stocks", "Cheap global index ETFs", "Only bonds", "Cash savings"], answer: 1, explanation: "Cheap global index ETFs provide diversification across hundreds of companies at low cost — perfect as the stable core of any beginner portfolio." },
+      { type: "true_false", q: "You should rebalance your portfolio daily to maximise returns.", answer: false, explanation: "Annual rebalancing is sufficient. Daily rebalancing generates fees and tax events while adding no meaningful benefit — and creates more emotional interference." },
+      { type: "multiple_choice", q: "Keeping speculative stock picks to 5–10% of your portfolio...", options: ["Is too conservative", "Limits learning", "Lets you experiment without catastrophic risk", "Guarantees losses"], answer: 2, explanation: "A small speculative allocation lets you learn, make mistakes, and stay engaged — while protecting 90%+ of your wealth from those experiments." },
+    ],
+    summary: ["Core = 60–80% cheap global index ETFs", "Rebalance annually to restore target allocation", "Keep speculative picks to 5–10% of the portfolio", "Boring, diversified, low-cost = evidence-based wealth building"],
+  },
+  { id: "6.5", unit: 6, title: "Crypto, Commodities & Alternative Assets", xp: 20, time: 5, teaser: "Beyond stocks — what are all these other asset classes?",
+    slides: [
+      { text: "Beyond stocks and bonds, there are many other asset classes: crypto, gold, commodities, property, art.", visual: "alternatives", detail: "Each alternative asset class has different return drivers, risks, and correlations to the stock market. Adding some can diversify your overall portfolio beyond just equities.", example: "In 2022, stocks fell 20% and bonds fell 15% (both lost together). But gold rose 0.4% and held its value. That's the power of true alternative diversification." },
+      { text: "Gold is a store of value and 'safe haven' — it tends to rise when stock markets panic.", visual: "gold", detail: "Gold doesn't pay dividends or earnings — its value comes from being a physical, scarce, universally recognised store of value for 5,000 years.", example: "During the 2008 financial crisis, stocks fell 57%. Gold rose 25% in the same period. Not exciting in normal times, but valuable insurance in crises." },
+      { text: "Commodities include oil, wheat, copper, lithium — physical goods with real-world supply and demand.", visual: "commodities", detail: "Commodity prices are driven by global supply and demand, weather, geopolitics, and economic cycles. They're volatile but often uncorrelated to stocks.", example: "Russia's Ukraine invasion in 2022 caused wheat and oil prices to spike dramatically. Companies reliant on these inputs saw costs soar — but commodity investors profited." },
+      { text: "Crypto is highly speculative — enormous potential returns but also enormous risk of total loss.", visual: "crypto", detail: "Bitcoin and Ethereum are the most established, but the vast majority of cryptocurrencies have gone to zero. Treat crypto as a highly speculative position, never a core holding.", example: "Bitcoin rose 1,000,000% from 2010 to its 2021 peak — then fell 77%. $1,000 invested in 2010 peak = $167 by 2022. It's not a one-way street." },
+    ],
+    questions: [
+      { type: "multiple_choice", q: "Gold is primarily considered a...", options: ["Growth investment", "Safe haven and store of value", "Tech sector bet", "High-yield bond"], answer: 1, explanation: "Gold is a safe haven asset — it tends to hold or increase in value when stocks and other risky assets fall. It's insurance, not growth." },
+      { type: "true_false", q: "Crypto is a safe, stable investment suitable as a core portfolio holding.", answer: false, explanation: "Crypto is highly speculative with extreme volatility. Even Bitcoin has fallen 77-85% multiple times. It's suitable only as a small speculative allocation, not a core holding." },
+      { type: "multiple_choice", q: "Adding alternative assets like gold to a stock portfolio...", options: ["Always reduces returns", "Can improve diversification", "Is illegal in the UK", "Only works in bear markets"], answer: 1, explanation: "Alternative assets with low correlation to stocks (like gold) can genuinely reduce portfolio volatility without necessarily reducing returns over full market cycles." },
+    ],
+    summary: ["Alternative assets include gold, commodities, crypto, property, art", "Gold = safe haven; tends to rise when stocks fall", "Crypto = highly speculative; keep to a tiny % if at all", "True diversification means assets that don't all move together"],
+  },
+  { id: "6.6", unit: 6, title: "Reading the News Like an Investor", xp: 20, time: 5, teaser: "Every headline is an opportunity — if you know how to read between the lines.",
+    slides: [
+      { text: "Financial news can move markets dramatically — but most of it is noise. Knowing the difference is a skill.", visual: "news", detail: "Signal = new information that genuinely changes the outlook for a company or the economy. Noise = dramatic-sounding headlines about things already known.", example: "'Fed raises rates 0.25%' = often noise if widely expected. 'Fed raises rates when market expected a cut' = major signal. It's all about vs expectations." },
+      { text: "Earnings season (4x/year) is the highest-signal period — companies reveal their real results.", visual: "earnings_season", detail: "January, April, July, October are earnings seasons. This is when stocks move most on real new information — not speculation or rumour.", example: "During earnings season, a single morning can see 50+ major companies report. Great time to watch and learn how markets react to different types of news." },
+      { text: "Economic data releases move entire markets: inflation (CPI), jobs (NFP), growth (GDP).", visual: "economic_data", detail: "These macro data points affect central bank policy (interest rates), which affects every asset class simultaneously. They're scheduled in advance at fixed dates.", example: "The US Non-Farm Payrolls report (first Friday of each month) often moves markets 1-2%. Strong jobs data can be good OR bad depending on whether it changes rate expectations." },
+      { text: "Be sceptical of financial media — they need clicks, not good investment advice.", visual: "media", detail: "Headlines are designed to provoke emotion: fear or greed. 'EVERYTHING IS CRASHING' and 'THIS STOCK WILL 10X' are both designed to make you act impulsively — which usually costs you money.", example: "Jim Cramer (CNBC host) has a famous prediction record so poor that 'doing the opposite of Cramer' has become a genuine investment strategy. Popular media ≠ good advice." },
+    ],
+    questions: [
+      { type: "multiple_choice", q: "When does earnings season occur?", options: ["Once per year", "Twice per year", "Quarterly (4 times per year)", "Monthly"], answer: 2, explanation: "Earnings season happens quarterly — roughly in January, April, July, and October. This is the highest-signal period for individual stock investors." },
+      { type: "true_false", q: "Strong economic data always means stock markets will rise.", answer: false, explanation: "It depends on context! Strong jobs data can mean central banks keep rates high longer — which is bad for stocks. Markets react to what data means for future policy, not just the headline number." },
+      { type: "multiple_choice", q: "Financial news media is primarily designed to...", options: ["Maximise your investment returns", "Give unbiased financial advice", "Generate clicks and engagement", "Help you beat the market"], answer: 2, explanation: "Financial media is a business — clicks and viewership come from emotional content. They're not responsible for your returns. Always be sceptical and do your own research." },
+    ],
+    summary: ["Signal = new info changing outlook. Noise = dramatic headlines about known things", "Earnings season (quarterly) = highest-signal period", "Economic data (CPI, NFP, GDP) moves entire markets", "Financial media generates emotion, not good advice — be sceptical"],
+  },
+  // Unit 6 Checkpoint
+  { id: "6.C", unit: 6, title: "Real-World Investing Final Exam", xp: 75, time: 8, type: "checkpoint",
+    questions: [
+      { type: "multiple_choice", q: "The UK Stocks & Shares ISA allowance per year is...", options: ["£5,000", "£10,000", "£20,000", "£50,000"], answer: 2 },
+      { type: "true_false", q: "DCA automatically buys more shares when prices are low.", answer: true },
+      { type: "multiple_choice", q: "The core of a beginner's portfolio should be...", options: ["Crypto", "Individual hot stocks", "Cheap global index ETFs", "Only bonds"], answer: 2 },
+      { type: "multiple_choice", q: "Gold is primarily considered a...", options: ["High growth asset", "Safe haven / store of value", "Speculative bet", "Tech sector proxy"], answer: 1 },
+      { type: "true_false", q: "Financial news media is the best source of investment advice.", answer: false },
+    ],
+    summary: ["Unit 6 complete — you're now a Real-World Investor! 🌍", "ISAs, DCA, portfolio building, alternatives, and reading the news — all mastered!", "🎓 Real-World Investor badge unlocked!"],
+  },
+
   // Unit 5 Checkpoint
   { id: "5.C", unit: 5, title: "Advanced Concepts Final Exam", xp: 75, time: 8, type: "checkpoint",
     questions: [
@@ -567,6 +673,7 @@ export const BADGES = [
   { slug: "global_thinker", name: "Global Thinker", emoji: "🌍", description: "Complete 5 different sectors" },
   { slug: "graduated", name: "Graduated", emoji: "🎓", description: "Pass all checkpoint exams" },
   { slug: "boss_slayer", name: "Boss Slayer", emoji: "🗡️", description: "Beat all Boss Battles" },
+  { slug: "real_world_investor", name: "Real-World Investor", emoji: "🌍", description: "Complete Unit 6" },
 ];
 
 export const LEVEL_TITLES = [
