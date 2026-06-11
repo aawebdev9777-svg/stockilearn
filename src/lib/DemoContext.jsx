@@ -95,11 +95,11 @@ function getStoredUsers() {
   try { return JSON.parse(localStorage.getItem(USERS_KEY) || "[]"); } catch { return []; }
 }
 
-function buildUserProfile(email) {
+function buildUserProfile(username) {
   return {
-    id: `user-${email.toLowerCase()}-${Date.now()}`,
-    full_name: email.split('@')[0],
-    email: email.toLowerCase(),
+    id: `user-${username.toLowerCase()}-${Date.now()}`,
+    full_name: username,
+    email: username.toLowerCase(),
     role: "user",
     xp_total: 0,
     level: 1,
@@ -150,20 +150,20 @@ export function DemoProvider({ children }) {
     return { ok: false };
   };
 
-  const signupDemo = (email, password) => {
+  const signupDemo = (username, password) => {
     const users = getStoredUsers();
-    const exists = users.some(u => u.email.toLowerCase() === email.toLowerCase());
-    if (exists) return { ok: false, error: "Email already registered. Try another." };
-    // Also block the demo email
-    if (email.toLowerCase() === DEMO_CREDENTIALS.email.toLowerCase()) {
-      return { ok: false, error: "Email already registered. Try another." };
+    const exists = users.some(u => u.email.toLowerCase() === username.toLowerCase());
+    if (exists) return { ok: false, error: "Username already taken. Try another." };
+    // Also block the demo username
+    if (username.toLowerCase() === DEMO_CREDENTIALS.email.toLowerCase()) {
+      return { ok: false, error: "Username already taken. Try another." };
     }
-    const profile = buildUserProfile(email);
+    const profile = buildUserProfile(username);
     // First user becomes admin
     if (users.length === 0) {
       profile.role = "admin";
     }
-    users.push({ email, password, profile });
+    users.push({ email: username, password, profile });
     localStorage.setItem(USERS_KEY, JSON.stringify(users));
     localStorage.setItem(STORAGE_KEY, JSON.stringify(profile));
     setIsDemoMode(true);
