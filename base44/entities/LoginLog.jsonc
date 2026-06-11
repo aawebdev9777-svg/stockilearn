@@ -1,0 +1,29 @@
+{
+  "name": "LoginLog",
+  "type": "object",
+  "properties": {
+    "username": {
+      "type": "string"
+    },
+    "action": {
+      "type": "string",
+      "enum": [
+        "signin",
+        "signup"
+      ],
+      "description": "Whether this was a sign-in or sign-up"
+    },
+    "success": {
+      "type": "boolean",
+      "default": true
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "required": [
+    "username",
+    "action"
+  ]
+}

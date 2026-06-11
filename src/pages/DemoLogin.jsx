@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useDemo } from "@/lib/DemoContext";
 import { useNavigate } from "react-router-dom";
+import { base44 } from "@/api/base44Client";
 
 export default function DemoLogin() {
   const { loginDemo, signupDemo } = useDemo();
@@ -23,6 +24,7 @@ export default function DemoLogin() {
   const handleSignIn = (e) => {
     e.preventDefault();
     const result = loginDemo(siUsername, siPassword);
+    base44.entities.LoginLog.create({ username: siUsername, action: "signin", success: result.ok, timestamp: new Date().toISOString() });
     if (result.ok) {
       navigate(result.needsOnboarding ? "/onboarding" : "/home");
     } else {
@@ -51,6 +53,7 @@ export default function DemoLogin() {
       return;
     }
     const result = signupDemo(suName.trim(), suPassword);
+    base44.entities.LoginLog.create({ username: suName.trim(), action: "signup", success: result.ok, timestamp: new Date().toISOString() });
     if (result.ok) {
       navigate("/onboarding");
     } else {
