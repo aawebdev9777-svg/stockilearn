@@ -186,7 +186,7 @@ function SlideTitle() {
       <motion.div initial={{opacity:0,y:10}} animate={{opacity:1,y:0}} transition={{delay:0.85}}
         className="flex items-center gap-4 relative z-10">
         <div className="h-px w-24" style={{background:`linear-gradient(90deg,transparent,${G}60)`}}/>
-        <span className="text-xs font-black tracking-[0.25em] uppercase" style={{color:G}}>Investor Pitch · 2026</span>
+        <span className="text-xs font-black tracking-[0.25em] uppercase" style={{color:G}}>Ahmetzhan Aldiyar & Sander Rosingholm · 2026</span>
         <div className="h-px w-24" style={{background:`linear-gradient(90deg,${G}60,transparent)`}}/>
       </motion.div>
     </div>
