@@ -52,26 +52,27 @@ export default function Home() {
   const dailyGoal = user?.daily_goal_xp || 20;
 
   return (
-    <div className="px-4 pt-6 pb-4 space-y-6">
+    <div className="px-4 pt-5 pb-4 space-y-5">
       {/* Header */}
       <motion.div
         initial={{ opacity: 0, y: -10 }}
         animate={{ opacity: 1, y: 0 }}
         className="space-y-3"
       >
+        {/* Top stats bar — Duolingo style */}
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2">
             <StreakFlame streak={streak} size="md" />
             <HeartsDisplay hearts={hearts} />
           </div>
-          <div className="flex items-center gap-1 bg-purple-500/10 px-2.5 py-1 rounded-full">
-            <Gem className="w-3.5 h-3.5 text-purple-400" />
-            <span className="text-xs font-bold text-purple-400">{gems}</span>
+          <div className="flex items-center gap-1.5 bg-purple-100 border-b-2 border-purple-200 px-3 py-1.5 rounded-2xl">
+            <Gem className="w-3.5 h-3.5 text-purple-500" />
+            <span className="text-xs font-black text-purple-600">{gems}</span>
           </div>
         </div>
         <div>
-          <p className="text-xs text-primary font-black uppercase tracking-wider mb-0.5">Welcome back!</p>
-          <h1 className="text-2xl font-black text-foreground">{getGreeting(name)}</h1>
+          <p className="text-[10px] font-black uppercase tracking-widest text-[#58CC02] mb-0.5">Welcome back!</p>
+          <h1 className="text-2xl font-black text-gray-900">{getGreeting(name)}</h1>
           <XpBadge xp={xp} level={level} />
         </div>
       </motion.div>
@@ -116,12 +117,12 @@ export default function Home() {
         <motion.div
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
-          className="rounded-2xl bg-amber-500/10 border border-amber-500/20 p-3 flex items-center gap-3"
+          className="rounded-2xl bg-orange-50 border-b-4 border-orange-200 p-4 flex items-center gap-3"
         >
           <span className="text-2xl">⚠️</span>
           <div>
-            <p className="text-xs font-bold text-amber-400">Your {streak}-day streak is at risk!</p>
-            <p className="text-[10px] text-muted-foreground">Quick — do one lesson before midnight.</p>
+            <p className="text-xs font-black text-orange-600">Your {streak}-day streak is at risk!</p>
+            <p className="text-[10px] text-orange-400 font-bold">Quick — do one lesson before midnight.</p>
           </div>
         </motion.div>
       )}

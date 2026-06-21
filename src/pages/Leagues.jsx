@@ -61,7 +61,7 @@ export default function Leagues() {
         animate={{ opacity: 1, y: 0 }}
         className="text-center space-y-2"
       >
-        <p className="text-xs text-primary font-black uppercase tracking-wider">Weekly Competition</p>
+        <p className="text-[10px] font-black uppercase tracking-widest text-[#58CC02]">Weekly Competition</p>
         <motion.span
           animate={{ scale: [1, 1.1, 1] }}
           transition={{ duration: 2, repeat: Infinity }}
@@ -69,8 +69,8 @@ export default function Leagues() {
         >
           {leagueInfo.emoji}
         </motion.span>
-        <h1 className="text-2xl font-black text-foreground">{leagueInfo.name}</h1>
-        <p className="text-xs font-bold text-muted-foreground bg-card border-2 border-border rounded-2xl px-4 py-2 inline-block">
+        <h1 className="text-2xl font-black text-gray-900">{leagueInfo.name}</h1>
+        <p className="text-xs font-black text-gray-500 bg-white border-b-4 border-gray-200 rounded-2xl px-4 py-2 inline-block">
           {daysLeft} days remaining · You are #{userRank} of 30
         </p>
       </motion.div>
@@ -108,7 +108,7 @@ export default function Leagues() {
       </div>
 
       {/* Leaderboard */}
-      <Card className="bg-card border-2 border-border overflow-hidden rounded-2xl">
+      <Card className="bg-white border-b-4 border-gray-200 overflow-hidden rounded-2xl">
         {/* Promoted Zone */}
         <div className="px-3 py-2 bg-green-500/10 border-b-2 border-green-500/20">
           <p className="text-[10px] font-black text-green-400 uppercase tracking-wide">⬆ Promotion Zone</p>
@@ -141,9 +141,9 @@ export default function Leagues() {
       </Card>
 
       {/* Weekly Stats */}
-      <Card className="p-4 bg-card border-2 border-border rounded-2xl">
-        <p className="text-[10px] text-primary font-black uppercase tracking-wider mb-1">This Week</p>
-        <h3 className="text-base font-black text-foreground mb-3">Your Stats</h3>
+      <Card className="p-4 bg-white border-b-4 border-gray-200 rounded-2xl">
+        <p className="text-[10px] font-black uppercase tracking-widest text-[#58CC02] mb-1">This Week</p>
+        <h3 className="text-base font-black text-gray-900 mb-3">Your Stats</h3>
         <div className="grid grid-cols-2 gap-3">
           <StatItem label="XP Earned" value={`${seasonXp}`} />
           <StatItem label="Current Rank" value={`#${userRank}`} />

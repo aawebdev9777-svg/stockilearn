@@ -12,16 +12,16 @@ export default function Trade() {
     <div className="px-4 pt-6 pb-4">
       <div className="flex items-center justify-between mb-4">
         <div>
-          <p className="text-xs text-primary font-black uppercase tracking-wider">Paper Trading</p>
-          <h1 className="text-2xl font-black text-foreground mt-0.5">Markets</h1>
+          <p className="text-[10px] font-black uppercase tracking-widest text-[#58CC02]">Paper Trading</p>
+          <h1 className="text-2xl font-black text-gray-900 mt-0.5">Markets</h1>
         </div>
-        <span className="text-xs text-amber-400 font-black bg-amber-400/10 border-2 border-amber-400/20 px-3 py-1.5 rounded-2xl">
+        <span className="text-xs text-amber-600 font-black bg-amber-50 border-b-4 border-amber-200 px-3 py-1.5 rounded-2xl">
           📋 PAPER
         </span>
       </div>
 
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-        <TabsList className="w-full grid grid-cols-4 bg-card border-2 border-border rounded-2xl h-11 mb-0">
+        <TabsList className="w-full grid grid-cols-4 bg-gray-100 border-b-4 border-gray-200 rounded-2xl h-11 mb-0">
           <TabsTrigger value="portfolio" className="text-[10px] font-black rounded-xl uppercase">Portfolio</TabsTrigger>
           <TabsTrigger value="market" className="text-[10px] font-black rounded-xl uppercase">Market</TabsTrigger>
           <TabsTrigger value="watchlist" className="text-[10px] font-black rounded-xl uppercase">Watch</TabsTrigger>

@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Play } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 
 export default function ContinueCard({ lesson, progress = 30 }) {
@@ -9,17 +9,15 @@ export default function ContinueCard({ lesson, progress = 30 }) {
     return (
       <Link to="/learn">
         <motion.div
-          whileTap={{ scale: 0.98 }}
-          className="rounded-2xl bg-gradient-to-r from-primary/20 to-primary/5 border border-primary/20 p-4"
+          whileTap={{ scale: 0.97, y: 3 }}
+          className="rounded-2xl bg-[#58CC02] border-b-4 border-[#46A302] p-5 flex items-center justify-between shadow-sm"
         >
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-xs text-muted-foreground font-medium">Ready to learn?</p>
-              <p className="text-base font-bold text-foreground mt-1">Start Today's Lesson</p>
-            </div>
-            <div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center">
-              <Play className="w-5 h-5 text-primary-foreground ml-0.5" />
-            </div>
+          <div>
+            <p className="text-xs font-black uppercase tracking-widest text-white/70 mb-0.5">Ready?</p>
+            <p className="text-lg font-black text-white">Start Today's Lesson</p>
+          </div>
+          <div className="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center">
+            <ArrowRight className="w-6 h-6 text-white" />
           </div>
         </motion.div>
       </Link>
@@ -29,15 +27,17 @@ export default function ContinueCard({ lesson, progress = 30 }) {
   return (
     <Link to={`/learn/lesson/${lesson.id}`}>
       <motion.div
-        whileTap={{ scale: 0.98 }}
-        className="rounded-2xl bg-gradient-to-r from-primary/20 to-primary/5 border border-primary/20 p-4"
+        whileTap={{ scale: 0.97, y: 3 }}
+        className="rounded-2xl bg-[#58CC02] border-b-4 border-[#46A302] p-5 shadow-sm"
       >
-        <p className="text-[10px] text-muted-foreground font-medium uppercase tracking-wider">Continue where you left off</p>
-        <p className="text-base font-bold text-foreground mt-1">{lesson.title}</p>
-        <div className="mt-3 flex items-center gap-3">
-          <Progress value={progress} className="flex-1 h-2" />
-          <div className="w-9 h-9 rounded-full bg-primary flex items-center justify-center shrink-0">
-            <Play className="w-4 h-4 text-primary-foreground ml-0.5" />
+        <p className="text-[10px] font-black uppercase tracking-widest text-white/70 mb-1">Continue Learning</p>
+        <p className="text-base font-black text-white mb-3">{lesson.title}</p>
+        <div className="flex items-center gap-3">
+          <div className="flex-1 h-2.5 bg-white/30 rounded-full overflow-hidden">
+            <div className="h-full bg-white rounded-full transition-all" style={{ width: `${progress}%` }} />
+          </div>
+          <div className="w-9 h-9 rounded-full bg-white/20 flex items-center justify-center shrink-0">
+            <ArrowRight className="w-4 h-4 text-white" />
           </div>
         </div>
       </motion.div>

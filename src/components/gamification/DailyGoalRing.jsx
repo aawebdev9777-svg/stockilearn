@@ -13,13 +13,13 @@ export default function DailyGoalRing({ current = 0, goal = 20 }) {
         <circle
           cx="70" cy="70" r="54"
           fill="none"
-          stroke="hsl(var(--muted))"
+          stroke="#e5e7eb"
           strokeWidth="10"
         />
         <motion.circle
           cx="70" cy="70" r="54"
           fill="none"
-          stroke={isComplete ? "hsl(155, 100%, 50%)" : "hsl(155, 100%, 50%)"}
+          stroke="#58CC02"
           strokeWidth="10"
           strokeLinecap="round"
           strokeDasharray={circumference}
@@ -30,13 +30,13 @@ export default function DailyGoalRing({ current = 0, goal = 20 }) {
         />
       </svg>
       <div className="absolute inset-0 flex flex-col items-center justify-center">
-        <span className="text-2xl font-black text-foreground">{current}</span>
-        <span className="text-xs text-muted-foreground font-medium">/ {goal} XP</span>
+        <span className="text-2xl font-black text-gray-800">{current}</span>
+        <span className="text-xs text-gray-400 font-bold">/ {goal} XP</span>
         {isComplete && (
           <motion.span
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
-            className="text-xs font-bold text-primary mt-1"
+            className="text-xs font-black text-[#58CC02] mt-1"
           >
             🎉 DONE!
           </motion.span>

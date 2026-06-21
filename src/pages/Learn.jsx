@@ -47,10 +47,10 @@ export default function Learn() {
   }
 
   return (
-    <div className="px-4 pt-6 pb-4">
+    <div className="px-4 pt-6 pb-4 bg-background min-h-screen">
       <div className="mb-6">
-        <p className="text-xs text-primary font-black uppercase tracking-wider">Your Journey</p>
-        <h1 className="text-2xl font-black text-foreground mt-0.5">Learn</h1>
+        <p className="text-[10px] font-black uppercase tracking-widest text-[#58CC02]">Your Journey</p>
+        <h1 className="text-2xl font-black text-gray-900 mt-0.5">Learn</h1>
       </div>
 
       <div className="space-y-8">
@@ -66,18 +66,18 @@ export default function Learn() {
               transition={{ delay: unit.id * 0.1 }}
             >
               {/* Unit Header */}
-              <div className="flex items-center gap-3 mb-4 px-2">
+              <div className="flex items-center gap-3 mb-4 px-2 py-3 bg-white rounded-2xl border-b-4 border-gray-100">
                 <div
-                  className="w-12 h-12 rounded-2xl flex items-center justify-center text-xl border-2"
-                  style={{ backgroundColor: `${unit.color}20`, borderColor: `${unit.color}40` }}
+                  className="w-12 h-12 rounded-2xl flex items-center justify-center text-xl"
+                  style={{ backgroundColor: `${unit.color}20` }}
                 >
                   {unit.icon}
                 </div>
                 <div>
-                  <p className="text-[10px] text-primary font-black uppercase tracking-wider">
+                  <p className="text-[10px] font-black uppercase tracking-widest text-[#58CC02]">
                     Unit {unit.id}
                   </p>
-                  <p className="text-base font-black text-foreground">{unit.title}</p>
+                  <p className="text-base font-black text-gray-900">{unit.title}</p>
                 </div>
               </div>
 
