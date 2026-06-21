@@ -10,14 +10,18 @@ export default function ContinueCard({ lesson, progress = 30 }) {
       <Link to="/learn">
         <motion.div
           whileTap={{ scale: 0.97, y: 3 }}
-          className="rounded-2xl bg-[#58CC02] border-b-4 border-[#46A302] p-5 flex items-center justify-between shadow-sm"
+          className="rounded-3xl p-5 flex items-center justify-between shadow-lg border border-white/40"
+      style={{ background: "linear-gradient(135deg, #58CC02 0%, #3da800 100%)", boxShadow: "0 8px 32px rgba(88,204,2,0.25)" }}
         >
           <div>
             <p className="text-xs font-black uppercase tracking-widest text-white/70 mb-0.5">Ready?</p>
             <p className="text-lg font-black text-white">Start Today's Lesson</p>
           </div>
-          <div className="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center">
-            <ArrowRight className="w-6 h-6 text-white" />
+          <div className="w-14 h-14 rounded-full bg-white/20 border border-white/30 flex items-center justify-center" style={{ backdropFilter: "blur(8px)" }}>
+            <div className="text-center">
+              <p className="text-xl font-black text-white leading-none">0</p>
+              <p className="text-[9px] text-white/70 font-bold">/ {20} XP</p>
+            </div>
           </div>
         </motion.div>
       </Link>
@@ -28,7 +32,8 @@ export default function ContinueCard({ lesson, progress = 30 }) {
     <Link to={`/learn/lesson/${lesson.id}`}>
       <motion.div
         whileTap={{ scale: 0.97, y: 3 }}
-        className="rounded-2xl bg-[#58CC02] border-b-4 border-[#46A302] p-5 shadow-sm"
+        className="rounded-3xl p-5 shadow-lg border border-white/40"
+      style={{ background: "linear-gradient(135deg, #58CC02 0%, #3da800 100%)", boxShadow: "0 8px 32px rgba(88,204,2,0.25)" }}
       >
         <p className="text-[10px] font-black uppercase tracking-widest text-white/70 mb-1">Continue Learning</p>
         <p className="text-base font-black text-white mb-3">{lesson.title}</p>

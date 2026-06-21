@@ -24,32 +24,32 @@ export default function MissionCards({ missions = [] }) {
 
   return (
     <div className="space-y-2">
-      <p className="text-[10px] font-black uppercase tracking-widest text-[#58CC02]">Daily Missions</p>
-      <div className="flex gap-3 overflow-x-auto pb-2 -mx-1 px-1 scrollbar-hide">
+      <p className="text-[10px] font-black uppercase tracking-widest text-gray-500 mb-3">Daily Missions</p>
+      <div className="space-y-2">
         {displayMissions.map((mission, i) => {
-          const s = CARD_STYLES[i % 3];
           return (
             <motion.div
               key={i}
-              whileTap={{ scale: 0.95, y: 2 }}
-              className={`min-w-[140px] rounded-2xl ${s.bg} border-b-4 ${s.border} p-4 flex flex-col gap-2`}
+              whileTap={{ scale: 0.98 }}
+              className="rounded-2xl p-3 flex items-start gap-2 border border-white/50"
+              style={{ background: "rgba(255,255,255,0.55)", backdropFilter: "blur(12px)", WebkitBackdropFilter: "blur(12px)" }}
             >
-              <div className="flex items-center justify-between">
-                <span className="text-2xl">{mission.emoji}</span>
-                {mission.complete ? (
-                  <motion.div
-                    initial={{ scale: 0 }}
-                    animate={{ scale: 1 }}
-                    className="w-6 h-6 rounded-full bg-[#58CC02] border-b-2 border-[#46A302] flex items-center justify-center"
-                  >
-                    <Check className="w-3.5 h-3.5 text-white" />
-                  </motion.div>
-                ) : (
-                  <div className="w-6 h-6 rounded-full border-2 border-gray-300 bg-white" />
-                )}
+              <span className="text-lg shrink-0">{mission.emoji}</span>
+              <div className="flex-1 min-w-0">
+                <p className="text-xs font-bold text-gray-800 leading-tight">{mission.title}</p>
+                <span className="text-[10px] font-black text-purple-500">+{mission.xp} XP</span>
               </div>
-              <p className="text-xs font-black text-gray-800 leading-tight">{mission.title}</p>
-              <span className={`text-[10px] font-black ${s.xp}`}>+{mission.xp} XP</span>
+              {mission.complete ? (
+                <motion.div
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  className="w-5 h-5 rounded-full bg-[#58CC02] flex items-center justify-center shrink-0 mt-0.5"
+                >
+                  <Check className="w-3 h-3 text-white" />
+                </motion.div>
+              ) : (
+                <div className="w-5 h-5 rounded-full border-2 border-gray-300 bg-white/60 shrink-0 mt-0.5" />
+              )}
             </motion.div>
           );
         })}

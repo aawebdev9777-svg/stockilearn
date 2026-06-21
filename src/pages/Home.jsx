@@ -52,64 +52,49 @@ export default function Home() {
   const dailyGoal = user?.daily_goal_xp || 20;
 
   return (
-    <div className="px-4 pt-5 pb-4 space-y-5">
+    <div className="px-4 pt-5 pb-4 space-y-5" style={{ fontFamily: "'Outfit', sans-serif" }}>
       {/* Header */}
       <motion.div
         initial={{ opacity: 0, y: -10 }}
         animate={{ opacity: 1, y: 0 }}
         className="space-y-3"
       >
-        {/* Top stats bar — bold coloured pills */}
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            {/* Streak pill */}
-            <div className="flex items-center gap-1 bg-orange-100 border-b-4 border-orange-300 px-3 py-1.5 rounded-2xl">
+        {/* Top stats bar */}
+        <div
+          className="rounded-3xl border border-white/50 px-4 py-3 flex items-center justify-between"
+          style={{ background: "rgba(255,255,255,0.55)", backdropFilter: "blur(16px)", WebkitBackdropFilter: "blur(16px)" }}
+        >
+          <div className="flex items-center gap-3">
+            <XpBadge xp={xp} level={level} />
+            {/* Streak */}
+            <div className="flex items-center gap-1">
               <StreakFlame streak={streak} size="sm" />
             </div>
-            {/* Hearts pill */}
-            <div className="flex items-center gap-1 bg-red-100 border-b-4 border-red-300 px-3 py-1.5 rounded-2xl">
-              <HeartsDisplay hearts={hearts} />
-            </div>
+            {/* Hearts */}
+            <HeartsDisplay hearts={hearts} />
           </div>
-          {/* Gems pill */}
-          <div className="flex items-center gap-1.5 bg-purple-100 border-b-4 border-purple-300 px-3 py-1.5 rounded-2xl">
-            <Gem className="w-3.5 h-3.5 text-purple-500" />
+          {/* Gems */}
+          <div className="flex items-center gap-1 text-purple-500">
+            <Gem className="w-3.5 h-3.5" />
             <span className="text-xs font-black text-purple-600">{gems}</span>
           </div>
         </div>
 
         {/* Greeting */}
-        <div className="bg-white rounded-3xl border-b-4 border-gray-200 px-4 py-3 flex items-center justify-between">
-          <div>
-            <p className="text-[10px] font-black uppercase tracking-widest text-[#58CC02] mb-0.5">Welcome back!</p>
-            <h1 className="text-xl font-black text-gray-900">{getGreeting(name)}</h1>
-          </div>
-          <XpBadge xp={xp} level={level} />
+        <div>
+          <p className="text-[10px] font-black uppercase tracking-widest text-gray-500 mb-0.5 text-center">Welcome back!</p>
+          <h1 className="text-2xl font-black text-gray-900 text-center">{getGreeting(name)}</h1>
         </div>
       </motion.div>
 
-      {/* Daily Goal Ring */}
-      <motion.div
-        initial={{ opacity: 0, scale: 0.9 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ delay: 0.1 }}
-        className="flex justify-center"
-      >
-        <DailyGoalRing current={dailyXp} goal={dailyGoal} />
-      </motion.div>
-
-      {/* Missions */}
-      <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}>
-        <MissionCards />
-      </motion.div>
-
       {/* Continue */}
-      <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}>
+      <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
         <ContinueCard />
       </motion.div>
 
-      {/* Daily Challenge */}
-      <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }}>
+      {/* Missions + Daily Challenge side by side */}
+      <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="grid grid-cols-2 gap-3 items-start">
+        <MissionCards />
         <DailyChallenge />
       </motion.div>
 
@@ -128,7 +113,8 @@ export default function Home() {
         <motion.div
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
-          className="rounded-2xl bg-orange-50 border-b-4 border-orange-200 p-4 flex items-center gap-3"
+          className="rounded-3xl border border-orange-200/60 p-4 flex items-center gap-3"
+        style={{ background: "rgba(255,237,213,0.65)", backdropFilter: "blur(12px)", WebkitBackdropFilter: "blur(12px)" }}
         >
           <span className="text-2xl">⚠️</span>
           <div>

@@ -61,23 +61,23 @@ export default function DailyChallenge() {
 
   if (alreadyDone) {
     return (
-      <Card className="p-3 bg-card/80 border-border/50 flex items-center gap-3">
+      <div className="p-3 rounded-3xl border border-white/50 flex items-center gap-3" style={{ background: "rgba(255,255,255,0.55)", backdropFilter: "blur(12px)", WebkitBackdropFilter: "blur(12px)" }}>
         <CheckCircle2 className="w-5 h-5 text-primary shrink-0" />
         <div>
           <p className="text-xs font-bold text-foreground">Daily Challenge — Done! ✅</p>
           <p className="text-[10px] text-muted-foreground">Come back tomorrow for a new question.</p>
         </div>
         <span className="ml-auto text-xs font-black text-primary">+{challenge.xp} XP</span>
-      </Card>
+      </div>
     );
   }
 
   return (
-    <Card className="bg-card/80 border-border/50 overflow-hidden">
+    <div className="rounded-3xl border border-white/50 overflow-hidden" style={{ background: "rgba(255,255,255,0.6)", backdropFilter: "blur(16px)", WebkitBackdropFilter: "blur(16px)" }}>
       {/* Header */}
       <button
         onClick={() => setExpanded(e => !e)}
-        className="w-full flex items-center gap-2 px-4 py-3 hover:bg-muted/20 transition-colors"
+        className="w-full flex items-center gap-2 px-4 py-3 hover:bg-white/20 transition-colors"
       >
         <Zap className="w-4 h-4 text-amber-400" />
         <div className="text-left flex-1">
@@ -90,7 +90,7 @@ export default function DailyChallenge() {
       </button>
 
       <AnimatePresence>
-        {(expanded || !submitted) && (
+        {true && (
           <motion.div
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: "auto", opacity: 1 }}
@@ -101,20 +101,20 @@ export default function DailyChallenge() {
               <p className="text-sm font-bold text-foreground leading-snug">{challenge.q}</p>
               <div className="space-y-2">
                 {challenge.options.map((opt, i) => {
-                  let cls = "bg-muted/40 border-border hover:bg-muted/60";
+                  let cls = "bg-white/50 border-white/60 hover:bg-white/70";
                   if (submitted) {
-                    if (i === challenge.answer) cls = "bg-green-500/15 border-green-500/40 text-green-400";
-                    else if (i === selected && i !== challenge.answer) cls = "bg-red-500/15 border-red-500/40 text-red-400";
-                    else cls = "bg-muted/20 border-border/30 text-muted-foreground";
+                    if (i === challenge.answer) cls = "bg-green-100/80 border-green-300 text-green-700";
+                    else if (i === selected && i !== challenge.answer) cls = "bg-red-100/80 border-red-300 text-red-600";
+                    else cls = "bg-white/30 border-white/40 text-gray-400";
                   } else if (selected === i) {
-                    cls = "bg-primary/15 border-primary/40";
+                    cls = "bg-cyan-100/70 border-cyan-300";
                   }
                   return (
                     <button
                       key={i}
                       disabled={submitted}
                       onClick={() => setSelected(i)}
-                      className={`w-full text-left text-xs font-medium px-3 py-2.5 rounded-xl border transition-colors ${cls}`}
+                      className={`w-full text-left text-sm font-medium px-4 py-3 rounded-2xl border transition-colors ${cls}`}
                     >
                       {opt}
                     </button>
@@ -141,7 +141,7 @@ export default function DailyChallenge() {
                 <button
                   onClick={handleSubmit}
                   disabled={selected === null}
-                  className="w-full py-2.5 rounded-xl text-xs font-black bg-primary text-primary-foreground disabled:opacity-40 transition-opacity"
+                  className="w-full py-3 rounded-2xl text-sm font-black bg-white/70 text-gray-800 border border-white/60 disabled:opacity-40 transition-opacity hover:bg-white/90"
                 >
                   Submit Answer
                 </button>
@@ -150,6 +150,6 @@ export default function DailyChallenge() {
           </motion.div>
         )}
       </AnimatePresence>
-    </Card>
+    </div>
   );
 }

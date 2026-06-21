@@ -16,7 +16,7 @@ export default function BottomNav() {
   const currentPath = location.pathname;
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-50 bg-white border-t-4 border-gray-100 shadow-lg">
+    <nav className="fixed bottom-0 left-0 right-0 z-50 border-t border-white/30 shadow-2xl" style={{ background: "rgba(255,255,255,0.55)", backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)" }}>
       <div className="flex items-center justify-around max-w-lg mx-auto h-18 px-2 pt-1 pb-2">
         {tabs.map((tab) => {
           const isActive = currentPath.startsWith(tab.path);

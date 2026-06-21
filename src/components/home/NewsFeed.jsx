@@ -11,19 +11,23 @@ const NEWS_ITEMS = [
 
 export default function NewsFeed() {
   return (
-    <div className="space-y-2">
-      <h3 className="text-sm font-bold text-foreground">Market News</h3>
+    <div className="rounded-3xl border border-white/50 p-4 space-y-3" style={{ background: "rgba(255,255,255,0.55)", backdropFilter: "blur(16px)", WebkitBackdropFilter: "blur(16px)" }}>
+      <h3 className="text-sm font-bold text-gray-800">Market News</h3>
       <div className="space-y-2">
         {NEWS_ITEMS.map((item, i) => (
-          <Card key={i} className="p-3 bg-card/80 border border-border/50">
-            <p className="text-xs text-foreground/90 leading-relaxed">{item.text}</p>
+          <div key={i} className="p-3 rounded-2xl border border-white/50 bg-white/40">
+            <p className="text-xs text-gray-800 leading-relaxed">{item.text}</p>
             <div className="flex items-center justify-between mt-2">
-              <span className={`text-[10px] font-bold ${item.tagColor}`}>
+              <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
+                item.tag === "BULLISH" ? "bg-green-100 text-green-700" :
+                item.tag === "BEARISH" ? "bg-red-100 text-red-600" :
+                "bg-yellow-100 text-yellow-700"
+              }`}>
                 {item.tag === "BULLISH" ? "🟢" : item.tag === "BEARISH" ? "🔴" : "🟡"} {item.tag}
               </span>
-              <span className="text-[10px] text-muted-foreground">Summarised by StockMark AI</span>
+              <span className="text-[10px] text-gray-400">Summarised by StockMark AI</span>
             </div>
-          </Card>
+          </div>
         ))}
       </div>
     </div>
