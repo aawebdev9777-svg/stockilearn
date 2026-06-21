@@ -1,4 +1,5 @@
 import React, { useState, useMemo } from "react";
+import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
@@ -81,13 +82,13 @@ export default function MarketTab() {
       {/* Indices Strip */}
       <div className="flex gap-2 overflow-x-auto pb-1 -mx-1 px-1">
         {indices.map((idx) => (
-          <Card key={idx.ticker} className="shrink-0 p-2.5 rounded-2xl border border-white/50 min-w-[100px]" style={{ background: "rgba(255,255,255,0.55)", backdropFilter: "blur(14px)", WebkitBackdropFilter: "blur(14px)" }}>
+          <motion.div key={idx.ticker} whileHover={{ scale: 1.04, boxShadow: "0 6px 20px rgba(0,0,0,0.08)" }} transition={{ type: "spring", stiffness: 400, damping: 30 }} className="shrink-0 p-2.5 rounded-2xl border border-white/50 min-w-[100px]" style={{ background: "rgba(255,255,255,0.55)", backdropFilter: "blur(14px)", WebkitBackdropFilter: "blur(14px)" }}>
             <p className="text-[9px] text-muted-foreground font-bold">{idx.name}</p>
             <p className="text-sm font-black text-foreground">{idx.price.toLocaleString()}</p>
             <p className={`text-[10px] font-bold ${idx.change >= 0 ? "text-green-400" : "text-red-400"}`}>
               {idx.change >= 0 ? "+" : ""}{idx.change.toFixed(2)}%
             </p>
-          </Card>
+          </motion.div>
         ))}
       </div>
 
@@ -147,7 +148,7 @@ export default function MarketTab() {
           const isUp = stock.change >= 0;
           return (
             <Link key={stock.ticker} to={`/trade/stock/${stock.ticker}`}>
-              <Card className="p-3 rounded-2xl border border-white/50 hover:bg-white/70 transition-colors" style={{ background: "rgba(255,255,255,0.55)", backdropFilter: "blur(12px)", WebkitBackdropFilter: "blur(12px)" }}>
+              <motion.div whileHover={{ scale: 1.02, boxShadow: "0 6px 20px rgba(0,0,0,0.07)" }} whileTap={{ scale: 0.98 }} transition={{ type: "spring", stiffness: 400, damping: 30 }} className="p-3 rounded-2xl border border-white/50" style={{ background: "rgba(255,255,255,0.55)", backdropFilter: "blur(12px)", WebkitBackdropFilter: "blur(12px)" }}>
                 <div className="flex items-center gap-3">
                   <div className="w-9 h-9 rounded-full bg-muted flex items-center justify-center text-xs font-black text-foreground shrink-0">
                     {stock.sectorEmoji}
@@ -164,7 +165,7 @@ export default function MarketTab() {
                     </p>
                   </div>
                 </div>
-              </Card>
+              </motion.div>
             </Link>
           );
         })}

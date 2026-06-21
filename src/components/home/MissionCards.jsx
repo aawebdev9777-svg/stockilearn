@@ -30,8 +30,10 @@ export default function MissionCards({ missions = [] }) {
           return (
             <motion.div
               key={i}
-              whileTap={{ scale: 0.98 }}
-              className="rounded-2xl p-3 flex items-start gap-2 border border-white/50"
+              whileHover={{ scale: 1.02, boxShadow: "0 8px 24px rgba(0,0,0,0.08)" }}
+              whileTap={{ scale: 0.97 }}
+              transition={{ type: "spring", stiffness: 400, damping: 30 }}
+              className="rounded-2xl p-3 flex items-start gap-2 border border-white/50 cursor-pointer"
               style={{ background: "rgba(255,255,255,0.55)", backdropFilter: "blur(12px)", WebkitBackdropFilter: "blur(12px)" }}
             >
               <span className="text-lg shrink-0">{mission.emoji}</span>

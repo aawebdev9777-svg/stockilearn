@@ -1,5 +1,5 @@
 import React from "react";
-import { Card } from "@/components/ui/card";
+import { motion } from "framer-motion";
 
 const NEWS_ITEMS = [
   { text: "Tech stocks rallied today as AI companies reported record revenue growth. NVDA led gains.", tag: "BULLISH", tagColor: "text-green-400" },
@@ -15,7 +15,7 @@ export default function NewsFeed() {
       <h3 className="text-sm font-bold text-gray-800">Market News</h3>
       <div className="space-y-2">
         {NEWS_ITEMS.map((item, i) => (
-          <div key={i} className="p-3 rounded-2xl border border-white/50 bg-white/40">
+          <motion.div key={i} whileHover={{ scale: 1.02, boxShadow: "0 6px 18px rgba(0,0,0,0.07)" }} transition={{ type: "spring", stiffness: 400, damping: 30 }} className="p-3 rounded-2xl border border-white/50 bg-white/40">
             <p className="text-xs text-gray-800 leading-relaxed">{item.text}</p>
             <div className="flex items-center justify-between mt-2">
               <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
@@ -27,7 +27,7 @@ export default function NewsFeed() {
               </span>
               <span className="text-[10px] text-gray-400">Summarised by StockMark AI</span>
             </div>
-          </div>
+          </motion.div>
         ))}
       </div>
     </div>

@@ -247,7 +247,7 @@ export default function Leagues() {
         <p className="text-[10px] font-black uppercase tracking-widest text-[#58CC02] mb-2">Your Stats</p>
         <div className="grid grid-cols-2 gap-3">
           {stats.map(({ label, value, Icon, color }) => (
-            <div key={label} className="rounded-2xl border border-white/50 p-3.5 flex items-center gap-3" style={{ background: "rgba(255,255,255,0.55)", backdropFilter: "blur(12px)", WebkitBackdropFilter: "blur(12px)" }}>
+            <motion.div key={label} whileHover={{ scale: 1.03, boxShadow: "0 6px 20px rgba(0,0,0,0.08)" }} transition={{ type: "spring", stiffness: 400, damping: 30 }} className="rounded-2xl border border-white/50 p-3.5 flex items-center gap-3" style={{ background: "rgba(255,255,255,0.55)", backdropFilter: "blur(12px)", WebkitBackdropFilter: "blur(12px)" }}>
               <div className="w-9 h-9 rounded-xl bg-gray-100 flex items-center justify-center shrink-0">
                 <Icon className={`w-4 h-4 ${color}`} strokeWidth={2.5} />
               </div>
@@ -255,10 +255,10 @@ export default function Leagues() {
                 <p className="text-[10px] text-gray-400 font-medium">{label}</p>
                 <p className="text-sm font-black text-gray-900">{value}</p>
               </div>
+            </motion.div>
+            ))}
             </div>
-          ))}
-        </div>
-      </div>
-    </div>
+            </div>
+            </div>
   );
 }

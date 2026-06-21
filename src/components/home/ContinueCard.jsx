@@ -9,7 +9,9 @@ export default function ContinueCard({ lesson, progress = 30 }) {
     return (
       <Link to="/learn">
         <motion.div
-          whileTap={{ scale: 0.97, y: 3 }}
+          whileHover={{ scale: 1.02, boxShadow: "0 12px 32px rgba(88,204,2,0.3)" }}
+        whileTap={{ scale: 0.97, y: 2 }}
+        transition={{ type: "spring", stiffness: 400, damping: 30 }}
           className="rounded-3xl p-5 flex items-center justify-between shadow-lg border border-white/40"
       style={{ background: "linear-gradient(135deg, #58CC02 0%, #3da800 100%)", boxShadow: "0 8px 32px rgba(88,204,2,0.25)" }}
         >
@@ -31,7 +33,9 @@ export default function ContinueCard({ lesson, progress = 30 }) {
   return (
     <Link to={`/learn/lesson/${lesson.id}`}>
       <motion.div
-        whileTap={{ scale: 0.97, y: 3 }}
+        whileHover={{ scale: 1.02, boxShadow: "0 12px 32px rgba(88,204,2,0.3)" }}
+        whileTap={{ scale: 0.97, y: 2 }}
+        transition={{ type: "spring", stiffness: 400, damping: 30 }}
         className="rounded-3xl p-5 shadow-lg border border-white/40"
       style={{ background: "linear-gradient(135deg, #58CC02 0%, #3da800 100%)", boxShadow: "0 8px 32px rgba(88,204,2,0.25)" }}
       >

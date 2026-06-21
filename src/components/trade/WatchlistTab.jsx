@@ -8,6 +8,7 @@ import { X, Bell, Plus } from "lucide-react";
 import { getStock, generateSparkline, formatPrice } from "@/lib/stockData";
 import MiniSparkline from "@/components/common/MiniSparkline";
 import { motion, AnimatePresence } from "framer-motion";
+const glassHover = { whileHover: { scale: 1.02, boxShadow: "0 6px 20px rgba(0,0,0,0.08)" }, transition: { type: "spring", stiffness: 400, damping: 30 } };
 
 export default function WatchlistTab({ onNavigateToMarket }) {
   const queryClient = useQueryClient();
@@ -105,7 +106,7 @@ export default function WatchlistTab({ onNavigateToMarket }) {
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: 60, height: 0 }}
             >
-              <Card className="p-3 rounded-2xl border border-white/50" style={{ background: "rgba(255,255,255,0.55)", backdropFilter: "blur(12px)", WebkitBackdropFilter: "blur(12px)" }}>
+              <motion.div {...glassHover} whileTap={{ scale: 0.98 }} className="p-3 rounded-2xl border border-white/50" style={{ background: "rgba(255,255,255,0.55)", backdropFilter: "blur(12px)", WebkitBackdropFilter: "blur(12px)" }}>
                 <div className="flex items-center gap-3">
                   <Link to={`/trade/stock/${item.ticker}`} className="flex items-center gap-3 flex-1 min-w-0">
                     <div className="w-9 h-9 rounded-full bg-muted flex items-center justify-center text-base shrink-0 relative">
@@ -139,7 +140,7 @@ export default function WatchlistTab({ onNavigateToMarket }) {
                     <Bell className="w-3.5 h-3.5 text-muted-foreground/30" />
                   </div>
                 </div>
-              </Card>
+              </motion.div>
             </motion.div>
           );
         })}

@@ -1,4 +1,5 @@
 import React, { useState, useMemo } from "react";
+import { motion } from "framer-motion";
 import { Card } from "@/components/ui/card";
 import { RefreshCw } from "lucide-react";
 import MiniSparkline from "@/components/common/MiniSparkline";
@@ -25,7 +26,7 @@ export default function MarketPulse() {
           const sparkData = generateSparkline(Object.keys({ SPX: 1, NDX: 1, DJI: 1, FTSE: 1 })[0] || "AAPL");
           const isPositive = idx.change >= 0;
           return (
-            <div key={idx.ticker} className={`p-3 rounded-2xl border ${isPositive ? "border-green-200/60" : "border-red-200/60"}`} style={{ background: isPositive ? "rgba(240,255,240,0.6)" : "rgba(255,240,240,0.6)" }}>
+            <motion.div key={idx.ticker} whileHover={{ scale: 1.03, boxShadow: "0 6px 20px rgba(0,0,0,0.07)" }} transition={{ type: "spring", stiffness: 400, damping: 30 }} className={`p-3 rounded-2xl border ${isPositive ? "border-green-200/60" : "border-red-200/60"}`} style={{ background: isPositive ? "rgba(240,255,240,0.6)" : "rgba(255,240,240,0.6)" }}>
               <div className="flex items-center justify-between mb-1">
                 <span className="text-xs font-bold text-gray-700">{idx.name}</span>
                 <MiniSparkline
@@ -41,7 +42,7 @@ export default function MarketPulse() {
               <div className={`text-xs font-bold ${isPositive ? "text-green-600" : "text-red-500"}`}>
                 {isPositive ? "+" : ""}{idx.change.toFixed(2)}%
               </div>
-            </div>
+            </motion.div>
           );
         })}
       </div>
