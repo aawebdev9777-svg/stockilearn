@@ -105,7 +105,15 @@ export default function Landing() {
             <span className="text-2xl">📈</span>
             <span className="text-xl font-black text-gray-800">Stocki<span className="text-[#58CC02]">Learn</span></span>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-3">
+            <Link to="/about"
+              className="text-sm font-bold text-gray-500 hover:text-gray-800 transition-colors px-3 py-2 rounded-xl hover:bg-gray-100 hidden sm:block">
+              About
+            </Link>
+            <Link to="/contact"
+              className="text-sm font-bold text-gray-500 hover:text-gray-800 transition-colors px-3 py-2 rounded-xl hover:bg-gray-100 hidden sm:block">
+              Contact
+            </Link>
             <Link to="/login"
               className="text-sm font-bold text-gray-500 hover:text-gray-800 transition-colors px-4 py-2 rounded-xl hover:bg-gray-100">
               Sign In
@@ -403,8 +411,9 @@ export default function Landing() {
           </div>
           <p className="text-xs text-gray-400">© 2026 StockiLearn · Educational purposes only</p>
           <div className="flex items-center gap-4 text-xs text-gray-400">
+            <Link to="/about" className="hover:text-gray-700 transition-colors">About</Link>
+            <Link to="/contact" className="hover:text-gray-700 transition-colors">Contact</Link>
             <Link to="/login" className="hover:text-gray-700 transition-colors">Sign In</Link>
-            <Link to="/present" target="_blank" className="hover:text-gray-700 transition-colors">Pitch Deck</Link>
           </div>
         </div>
       </footer>
