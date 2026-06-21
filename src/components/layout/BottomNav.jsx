@@ -16,8 +16,8 @@ export default function BottomNav() {
   const currentPath = location.pathname;
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-50 bg-white border-t-2 border-gray-100">
-      <div className="flex items-center justify-around max-w-lg mx-auto h-16 px-2">
+    <nav className="fixed bottom-0 left-0 right-0 z-50 bg-white border-t-4 border-gray-100 shadow-lg">
+      <div className="flex items-center justify-around max-w-lg mx-auto h-18 px-2 pt-1 pb-2">
         {tabs.map((tab) => {
           const isActive = currentPath.startsWith(tab.path);
           const Icon = tab.icon;
@@ -25,21 +25,19 @@ export default function BottomNav() {
             <Link
               key={tab.path}
               to={tab.path}
-              className="flex flex-col items-center justify-center flex-1 py-1 relative"
+              className="flex flex-col items-center justify-center flex-1"
             >
               <motion.div
-                whileTap={{ scale: 0.82 }}
-                className="flex flex-col items-center gap-0.5 transition-colors"
+                whileTap={{ scale: 0.78 }}
+                className="flex flex-col items-center gap-1"
               >
-                {isActive && (
-                  <motion.div
-                    layoutId="nav-indicator"
-                    className="absolute -top-[1px] w-10 h-1 bg-[#58CC02] rounded-full"
-                    transition={{ type: "spring", stiffness: 500, damping: 30 }}
+                <div className={`px-3 py-1.5 rounded-2xl transition-all ${
+                  isActive ? "bg-[#58CC02] shadow-md shadow-green-300/50" : ""
+                }`}>
+                  <Icon
+                    className={`w-5 h-5 ${isActive ? "text-white" : "text-gray-400"}`}
+                    strokeWidth={isActive ? 2.5 : 2}
                   />
-                )}
-                <div className={`p-1.5 rounded-xl transition-all ${isActive ? "bg-[#58CC02]/10" : ""}`}>
-                  <Icon className={`w-5 h-5 ${isActive ? "text-[#58CC02]" : "text-gray-400"}`} strokeWidth={isActive ? 2.5 : 2} />
                 </div>
                 <span className={`text-[9px] font-black uppercase tracking-wide ${isActive ? "text-[#58CC02]" : "text-gray-400"}`}>
                   {tab.label}

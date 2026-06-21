@@ -5,7 +5,7 @@ import BrunoWidget from "@/components/common/BrunoWidget";
 
 export default function AppLayout() {
   return (
-    <div className="min-h-screen bg-background pb-20">
+    <div className="min-h-screen bg-[#F7F7F7] pb-24">
       <div className="max-w-lg mx-auto">
         <Outlet />
       </div>

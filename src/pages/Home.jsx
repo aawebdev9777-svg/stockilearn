@@ -59,20 +59,31 @@ export default function Home() {
         animate={{ opacity: 1, y: 0 }}
         className="space-y-3"
       >
-        {/* Top stats bar — Duolingo style */}
+        {/* Top stats bar — bold coloured pills */}
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <StreakFlame streak={streak} size="md" />
-            <HeartsDisplay hearts={hearts} />
+            {/* Streak pill */}
+            <div className="flex items-center gap-1 bg-orange-100 border-b-4 border-orange-300 px-3 py-1.5 rounded-2xl">
+              <StreakFlame streak={streak} size="sm" />
+            </div>
+            {/* Hearts pill */}
+            <div className="flex items-center gap-1 bg-red-100 border-b-4 border-red-300 px-3 py-1.5 rounded-2xl">
+              <HeartsDisplay hearts={hearts} />
+            </div>
           </div>
-          <div className="flex items-center gap-1.5 bg-purple-100 border-b-2 border-purple-200 px-3 py-1.5 rounded-2xl">
+          {/* Gems pill */}
+          <div className="flex items-center gap-1.5 bg-purple-100 border-b-4 border-purple-300 px-3 py-1.5 rounded-2xl">
             <Gem className="w-3.5 h-3.5 text-purple-500" />
             <span className="text-xs font-black text-purple-600">{gems}</span>
           </div>
         </div>
-        <div>
-          <p className="text-[10px] font-black uppercase tracking-widest text-[#58CC02] mb-0.5">Welcome back!</p>
-          <h1 className="text-2xl font-black text-gray-900">{getGreeting(name)}</h1>
+
+        {/* Greeting */}
+        <div className="bg-white rounded-3xl border-b-4 border-gray-200 px-4 py-3 flex items-center justify-between">
+          <div>
+            <p className="text-[10px] font-black uppercase tracking-widest text-[#58CC02] mb-0.5">Welcome back!</p>
+            <h1 className="text-xl font-black text-gray-900">{getGreeting(name)}</h1>
+          </div>
           <XpBadge xp={xp} level={level} />
         </div>
       </motion.div>
