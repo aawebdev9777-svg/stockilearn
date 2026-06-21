@@ -70,8 +70,8 @@ export default function Home() {
           </div>
         </div>
         <div>
-          <p className="text-xs text-muted-foreground font-medium mb-0.5">Hello, {name}! 👋</p>
-          <h1 className="text-xl font-black text-foreground">{getGreeting(name)}</h1>
+          <p className="text-xs text-primary font-black uppercase tracking-wider mb-0.5">Welcome back!</p>
+          <h1 className="text-2xl font-black text-foreground">{getGreeting(name)}</h1>
           <XpBadge xp={xp} level={level} />
         </div>
       </motion.div>

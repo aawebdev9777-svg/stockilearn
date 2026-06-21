@@ -61,15 +61,16 @@ export default function Leagues() {
         animate={{ opacity: 1, y: 0 }}
         className="text-center space-y-2"
       >
+        <p className="text-xs text-primary font-black uppercase tracking-wider">Weekly Competition</p>
         <motion.span
           animate={{ scale: [1, 1.1, 1] }}
           transition={{ duration: 2, repeat: Infinity }}
-          className="text-5xl block"
+          className="text-6xl block"
         >
           {leagueInfo.emoji}
         </motion.span>
-        <h1 className="text-xl font-black text-foreground">{leagueInfo.name}</h1>
-        <p className="text-xs text-muted-foreground">
+        <h1 className="text-2xl font-black text-foreground">{leagueInfo.name}</h1>
+        <p className="text-xs font-bold text-muted-foreground bg-card border-2 border-border rounded-2xl px-4 py-2 inline-block">
           {daysLeft} days remaining · You are #{userRank} of 30
         </p>
       </motion.div>
@@ -107,10 +108,10 @@ export default function Leagues() {
       </div>
 
       {/* Leaderboard */}
-      <Card className="bg-card/80 border-border/50 overflow-hidden">
+      <Card className="bg-card border-2 border-border overflow-hidden rounded-2xl">
         {/* Promoted Zone */}
-        <div className="px-3 py-1.5 bg-green-500/10">
-          <p className="text-[10px] font-bold text-green-400 uppercase">⬆ Promotion Zone</p>
+        <div className="px-3 py-2 bg-green-500/10 border-b-2 border-green-500/20">
+          <p className="text-[10px] font-black text-green-400 uppercase tracking-wide">⬆ Promotion Zone</p>
         </div>
         <div className="divide-y divide-border/30">
           {leaderboard.slice(0, 5).map((player) => (
@@ -119,8 +120,8 @@ export default function Leagues() {
         </div>
 
         {/* Safe Zone */}
-        <div className="px-3 py-1.5 bg-muted/30">
-          <p className="text-[10px] font-bold text-muted-foreground uppercase">Safe Zone</p>
+        <div className="px-3 py-2 bg-muted/30 border-y-2 border-border/50">
+          <p className="text-[10px] font-black text-muted-foreground uppercase tracking-wide">Safe Zone</p>
         </div>
         <div className="divide-y divide-border/30 max-h-60 overflow-y-auto">
           {leaderboard.slice(5, 25).map((player) => (
@@ -129,8 +130,8 @@ export default function Leagues() {
         </div>
 
         {/* Danger Zone */}
-        <div className="px-3 py-1.5 bg-red-500/10">
-          <p className="text-[10px] font-bold text-red-400 uppercase">⬇ Danger Zone</p>
+        <div className="px-3 py-2 bg-red-500/10 border-t-2 border-red-500/20">
+          <p className="text-[10px] font-black text-red-400 uppercase tracking-wide">⬇ Danger Zone</p>
         </div>
         <div className="divide-y divide-border/30">
           {leaderboard.slice(25).map((player) => (
@@ -140,8 +141,9 @@ export default function Leagues() {
       </Card>
 
       {/* Weekly Stats */}
-      <Card className="p-4 bg-card/80 border-border/50">
-        <h3 className="text-sm font-bold text-foreground mb-3">Your Week</h3>
+      <Card className="p-4 bg-card border-2 border-border rounded-2xl">
+        <p className="text-[10px] text-primary font-black uppercase tracking-wider mb-1">This Week</p>
+        <h3 className="text-base font-black text-foreground mb-3">Your Stats</h3>
         <div className="grid grid-cols-2 gap-3">
           <StatItem label="XP Earned" value={`${seasonXp}`} />
           <StatItem label="Current Rank" value={`#${userRank}`} />

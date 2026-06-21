@@ -16,7 +16,7 @@ export default function BottomNav() {
   const currentPath = location.pathname;
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-50 bg-card border-t border-border backdrop-blur-xl">
+    <nav className="fixed bottom-0 left-0 right-0 z-50 bg-card border-t-2 border-border">
       <div className="flex items-center justify-around max-w-lg mx-auto h-16 px-2">
         {tabs.map((tab) => {
           const isActive = currentPath.startsWith(tab.path);
@@ -28,7 +28,7 @@ export default function BottomNav() {
               className="flex flex-col items-center justify-center flex-1 py-1 relative"
             >
               <motion.div
-                whileTap={{ scale: 0.85 }}
+                whileTap={{ scale: 0.82 }}
                 className={`flex flex-col items-center gap-0.5 transition-colors ${
                   isActive ? "text-primary" : "text-muted-foreground"
                 }`}
@@ -36,12 +36,14 @@ export default function BottomNav() {
                 {isActive && (
                   <motion.div
                     layoutId="nav-indicator"
-                    className="absolute -top-1 w-8 h-1 bg-primary rounded-full"
+                    className="absolute -top-[1px] w-10 h-1 bg-primary rounded-full"
                     transition={{ type: "spring", stiffness: 500, damping: 30 }}
                   />
                 )}
-                <Icon className="w-5 h-5" strokeWidth={isActive ? 2.5 : 2} />
-                <span className={`text-[10px] font-semibold ${isActive ? "text-primary" : ""}`}>
+                <div className={`p-1.5 rounded-xl transition-all ${isActive ? "bg-primary/10" : ""}`}>
+                  <Icon className="w-5 h-5" strokeWidth={isActive ? 2.5 : 2} />
+                </div>
+                <span className={`text-[9px] font-black uppercase tracking-wide ${isActive ? "text-primary" : "text-muted-foreground"}`}>
                   {tab.label}
                 </span>
               </motion.div>
@@ -49,7 +51,6 @@ export default function BottomNav() {
           );
         })}
       </div>
-      {/* Safe area spacer for mobile */}
       <div className="h-safe-area-bottom" />
     </nav>
   );

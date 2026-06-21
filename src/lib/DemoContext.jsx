@@ -26,14 +26,12 @@ export function DemoProvider({ children }) {
     try { return JSON.parse(session); } catch { return null; }
   });
 
-  // Sign in: check username+password against DB entity
+  // Sign in: use backend function (avoids RLS on unauthenticated client)
   const loginDemo = async (username, password) => {
     try {
-      const users = await base44.entities.AppUser.filter({ username: username.toLowerCase() });
-      if (!users || users.length === 0) return { ok: false };
-      const found = users[0];
-      if (found.password_hash !== password) return { ok: false };
-      // Load profile from DB record
+      const res = await base44.functions.invoke('appLogin', { username, password });
+      if (!res.data?.ok) return { ok: false };
+      const found = res.data.user;
       const profile = {
         id: found.id,
         full_name: found.display_name || found.username,
@@ -64,42 +62,18 @@ export function DemoProvider({ children }) {
     }
   };
 
-  // Sign up: save new user to DB
+  // Sign up: use backend function (avoids RLS on unauthenticated client)
   const signupDemo = async (username, password) => {
     try {
-      // Check if username already taken
-      const existing = await base44.entities.AppUser.filter({ username: username.toLowerCase() });
-      if (existing && existing.length > 0) {
-        return { ok: false, error: "Username already taken. Try another." };
-      }
-      // Count users to determine if first (admin)
-      const allUsers = await base44.entities.AppUser.list();
-      const isFirst = !allUsers || allUsers.length === 0;
-
-      const newUser = await base44.entities.AppUser.create({
-        username: username.toLowerCase(),
-        display_name: username,
-        password_hash: password,
-        role: isFirst ? "admin" : "user",
-        xp_total: 0,
-        level: 1,
-        streak_current: 0,
-        streak_longest: 0,
-        hearts_current: 5,
-        gems: 0,
-        daily_xp_earned_today: 0,
-        daily_goal_xp: 50,
-        league_tier: 1,
-        league_xp: 0,
-        onboarding_complete: false,
-        preferred_currency: "GBP",
-      });
+      const res = await base44.functions.invoke('appSignup', { username, password });
+      if (!res.data?.ok) return { ok: false, error: res.data?.error || "Something went wrong." };
+      const newUser = res.data.user;
 
       const profile = {
         id: newUser.id,
         full_name: username,
         email: username.toLowerCase(),
-        role: isFirst ? "admin" : "user",
+        role: newUser.role,
         xp_total: 0,
         level: 1,
         streak_current: 0,

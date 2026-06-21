@@ -48,7 +48,10 @@ export default function Learn() {
 
   return (
     <div className="px-4 pt-6 pb-4">
-      <h1 className="text-xl font-black text-foreground mb-6">Learn</h1>
+      <div className="mb-6">
+        <p className="text-xs text-primary font-black uppercase tracking-wider">Your Journey</p>
+        <h1 className="text-2xl font-black text-foreground mt-0.5">Learn</h1>
+      </div>
 
       <div className="space-y-8">
         {UNITS.map((unit) => {
@@ -65,16 +68,16 @@ export default function Learn() {
               {/* Unit Header */}
               <div className="flex items-center gap-3 mb-4 px-2">
                 <div
-                  className="w-10 h-10 rounded-xl flex items-center justify-center text-lg"
-                  style={{ backgroundColor: `${unit.color}20` }}
+                  className="w-12 h-12 rounded-2xl flex items-center justify-center text-xl border-2"
+                  style={{ backgroundColor: `${unit.color}20`, borderColor: `${unit.color}40` }}
                 >
                   {unit.icon}
                 </div>
                 <div>
-                  <p className="text-[10px] text-muted-foreground font-bold uppercase tracking-wider">
+                  <p className="text-[10px] text-primary font-black uppercase tracking-wider">
                     Unit {unit.id}
                   </p>
-                  <p className="text-sm font-bold text-foreground">{unit.title}</p>
+                  <p className="text-base font-black text-foreground">{unit.title}</p>
                 </div>
               </div>
 

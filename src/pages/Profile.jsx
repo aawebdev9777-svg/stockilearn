@@ -66,15 +66,18 @@ export default function Profile() {
     <div className="px-4 pt-6 pb-4 space-y-6">
       {/* Header */}
       <div className="flex items-center justify-between">
-        <h1 className="text-xl font-black text-foreground">Profile</h1>
-        <Link to="/settings" className="text-muted-foreground">
-          <Settings className="w-5 h-5" />
+        <div>
+          <p className="text-xs text-primary font-black uppercase tracking-wider">Your Account</p>
+          <h1 className="text-2xl font-black text-foreground mt-0.5">Profile</h1>
+        </div>
+        <Link to="/settings" className="w-10 h-10 rounded-2xl bg-card border-2 border-border flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors">
+          <Settings className="w-4 h-4" />
         </Link>
       </div>
 
       {/* User Card */}
       <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
-        <Card className="p-5 bg-gradient-to-br from-card to-card/80 border-border/50">
+        <Card className="p-5 bg-card border-2 border-border rounded-2xl">
           <div className="flex items-center gap-4">
             <div className="w-16 h-16 rounded-full bg-primary/10 border-2 border-primary flex items-center justify-center text-2xl">
               {emoji}
@@ -129,7 +132,8 @@ export default function Profile() {
 
       {/* Badges */}
       <div>
-        <h3 className="text-sm font-bold text-foreground mb-3">
+        <p className="text-[10px] text-primary font-black uppercase tracking-wider mb-1">Achievements</p>
+        <h3 className="text-base font-black text-foreground mb-3">
           Badges ({earnedBadgeSlugs.length}/{BADGES.length})
         </h3>
         <div className="grid grid-cols-4 gap-3">
@@ -157,8 +161,9 @@ export default function Profile() {
 
       {/* Topic Mastery */}
       <div>
-        <h3 className="text-sm font-bold text-foreground mb-3">Topic Mastery</h3>
-        <Card className="p-4 bg-card/80 border-border/50 space-y-3">
+        <p className="text-[10px] text-primary font-black uppercase tracking-wider mb-1">Knowledge</p>
+        <h3 className="text-base font-black text-foreground mb-3">Topic Mastery</h3>
+        <Card className="p-4 bg-card border-2 border-border rounded-2xl space-y-3">
           {Object.keys(TOPIC_META).map(topic => {
             const mastery = calculateAllMastery(lessonProgress)[topic] || 0;
             return <MasteryBar key={topic} topic={topic} mastery={mastery} />;
@@ -167,7 +172,7 @@ export default function Profile() {
       </div>
 
       {/* Streak Protection */}
-      <Card className="p-4 bg-card/80 border-border/50">
+      <Card className="p-4 bg-card border-2 border-border rounded-2xl">
         <h3 className="text-sm font-bold text-foreground mb-2">Streak Protection</h3>
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
@@ -197,7 +202,7 @@ export default function Profile() {
 
 function StatCard({ label, value, icon }) {
   return (
-    <Card className="p-3 bg-card/80 border-border/50 text-center">
+    <Card className="p-3 bg-card border-2 border-border rounded-2xl text-center">
       <span className="text-lg">{icon}</span>
       <p className="text-lg font-black text-foreground">{value}</p>
       <p className="text-[10px] text-muted-foreground font-medium">{label}</p>
