@@ -1,148 +1,91 @@
 import React, { useState, useEffect } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import { ArrowRight, Play, ChevronDown } from "lucide-react";
+import { ArrowRight, Flame, Zap, Star, Trophy, BookOpen, TrendingUp } from "lucide-react";
 
-const G = "#00FF87";
-
-// ── Ticker tape ──────────────────────────────────────────────
-const TICKERS = [
-  { t: "AAPL", p: "$213.40", c: "+1.2%" }, { t: "NVDA", p: "$495.50", c: "+3.4%" },
-  { t: "TSLA", p: "$248.10", c: "-1.8%" }, { t: "AMZN", p: "$195.30", c: "+0.9%" },
-  { t: "MSFT", p: "$415.70", c: "+0.5%" }, { t: "GOOGL", p: "$175.20", c: "+2.1%" },
-  { t: "META", p: "$520.80", c: "+1.7%" }, { t: "SPX",  p: "5,248",   c: "+0.6%" },
-];
-
-function TickerTape() {
-  const doubled = [...TICKERS, ...TICKERS];
+// ── Duolingo-style mascot card ────────────────────────────────
+function MascotBubble({ text, delay = 0 }) {
   return (
-    <div className="overflow-hidden border-y border-white/10 bg-black/40 backdrop-blur-sm py-2">
-      <motion.div
-        className="flex gap-8 whitespace-nowrap"
-        animate={{ x: ["0%", "-50%"] }}
-        transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-      >
-        {doubled.map((item, i) => (
-          <span key={i} className="flex items-center gap-2 text-sm font-mono shrink-0">
-            <span className="font-black text-white">{item.t}</span>
-            <span className="text-white/60">{item.p}</span>
-            <span className={item.c.startsWith("+") ? "text-green-400 font-bold" : "text-red-400 font-bold"}>
-              {item.c}
-            </span>
-          </span>
-        ))}
-      </motion.div>
-    </div>
+    <motion.div
+      initial={{ opacity: 0, scale: 0.8, y: 10 }}
+      animate={{ opacity: 1, scale: 1, y: 0 }}
+      transition={{ delay, type: "spring", stiffness: 200 }}
+      className="relative bg-white rounded-2xl px-4 py-3 shadow-lg border-b-4 border-gray-200 max-w-[200px]"
+    >
+      <p className="text-sm font-bold text-gray-800">{text}</p>
+      <div className="absolute -bottom-2 left-6 w-4 h-4 bg-white border-b-4 border-r-4 border-gray-200 rotate-45" />
+    </motion.div>
   );
 }
 
-// ── Phone mockup ─────────────────────────────────────────────
-function PhoneMock() {
+// ── Streak badge ─────────────────────────────────────────────
+function StreakBadge({ count }) {
   return (
-    <div className="relative" style={{ width: 260, height: 530 }}>
-      <div className="absolute inset-0 rounded-[42px] overflow-hidden"
-        style={{ border: "5px solid rgba(255,255,255,0.15)", background: "#0d0f1e", boxShadow: "0 40px 80px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.05)" }}>
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-20 h-5 bg-black rounded-b-2xl z-10" />
-        <div className="pt-6 px-3 py-2 space-y-2 text-white h-full overflow-hidden">
-          {/* Header */}
-          <div className="flex items-center justify-between pt-1">
-            <div>
-              <p className="text-[9px] text-white/40">Good morning 👋</p>
-              <p className="text-sm font-black">Alex</p>
-            </div>
-            <div className="flex items-center gap-1 bg-orange-500/20 rounded-full px-2 py-0.5">
-              <span className="text-sm">🔥</span>
-              <span className="text-xs font-black text-orange-400">14</span>
-            </div>
-          </div>
-          {/* XP ring */}
-          <div className="bg-white/5 rounded-2xl p-2.5 flex items-center gap-3">
-            <svg width="44" height="44" viewBox="0 0 44 44">
-              <circle cx="22" cy="22" r="18" fill="none" stroke="rgba(255,255,255,0.1)" strokeWidth="4"/>
-              <circle cx="22" cy="22" r="18" fill="none" stroke={G} strokeWidth="4"
-                strokeDasharray="113" strokeDashoffset="40" strokeLinecap="round" transform="rotate(-90 22 22)"/>
-              <text x="22" y="26" textAnchor="middle" fontSize="9" fill="white" fontWeight="900">65%</text>
-            </svg>
-            <div>
-              <p className="text-[9px] text-white/40">Daily Goal</p>
-              <p className="text-xs font-black">13 / 20 XP</p>
-            </div>
-          </div>
-          {/* Continue card */}
-          <div className="rounded-2xl p-2.5" style={{ background: `${G}18`, border: `1px solid ${G}30` }}>
-            <p className="text-[8px] font-black" style={{ color: G }}>CONTINUE</p>
-            <p className="text-[11px] font-black mt-0.5">What Is a P/E Ratio?</p>
-            <div className="w-full bg-white/10 rounded-full h-1 mt-1.5">
-              <div className="h-1 rounded-full w-2/3" style={{ background: G }} />
-            </div>
-          </div>
-          {/* Missions */}
-          <div className="space-y-1">
-            {[{ e: "⚡", t: "Complete a lesson", d: "15 XP", done: true },
-              { e: "📈", t: "Make a trade", d: "10 XP", done: false }].map((m, i) => (
-              <div key={i} className={`flex items-center gap-2 rounded-xl p-2 ${m.done ? "bg-[#00FF87]/10" : "bg-white/5"}`}>
-                <span className="text-sm">{m.e}</span>
-                <span className="text-[9px] flex-1 font-medium">{m.t}</span>
-                <span className={`text-[8px] font-bold ${m.done ? "text-green-400" : "text-white/30"}`}>{m.d}</span>
-              </div>
-            ))}
-          </div>
-          {/* Market indices */}
-          <div className="flex gap-1.5">
-            {[["SPX", "5,248", "+0.6%", true], ["NDX", "18,290", "+1.1%", true], ["FTSE", "8,312", "-0.2%", false]].map(([t, v, c, up]) => (
-              <div key={t} className="flex-1 bg-white/5 rounded-xl p-1.5">
-                <p className="text-[7px] text-white/30">{t}</p>
-                <p className="text-[9px] font-black">{v}</p>
-                <p className={`text-[7px] font-bold ${up ? "text-green-400" : "text-red-400"}`}>{c}</p>
-              </div>
-            ))}
-          </div>
-        </div>
+    <div className="flex items-center gap-1.5 bg-orange-100 border-b-4 border-orange-300 rounded-2xl px-4 py-2">
+      <span className="text-2xl">🔥</span>
+      <div>
+        <p className="text-2xl font-black text-orange-500 leading-none">{count}</p>
+        <p className="text-[10px] font-bold text-orange-400 uppercase tracking-wide">day streak</p>
       </div>
-      {/* Side buttons */}
-      <div className="absolute right-[-7px] top-20 w-1.5 h-10 bg-white/20 rounded-full" />
-      <div className="absolute left-[-7px] top-16 w-1.5 h-8 bg-white/20 rounded-full" />
-      <div className="absolute left-[-7px] top-28 w-1.5 h-8 bg-white/20 rounded-full" />
     </div>
   );
 }
 
-// ── Feature card ──────────────────────────────────────────────
-function FeatureCard({ icon, title, desc, color, delay }) {
+// ── XP badge ─────────────────────────────────────────────────
+function XpBadge({ xp }) {
+  return (
+    <div className="flex items-center gap-1.5 bg-yellow-100 border-b-4 border-yellow-300 rounded-2xl px-4 py-2">
+      <span className="text-2xl">⚡</span>
+      <div>
+        <p className="text-2xl font-black text-yellow-600 leading-none">{xp}</p>
+        <p className="text-[10px] font-bold text-yellow-500 uppercase tracking-wide">XP today</p>
+      </div>
+    </div>
+  );
+}
+
+// ── Lesson node (Duolingo path style) ────────────────────────
+function LessonNode({ emoji, label, status, delay }) {
+  const styles = {
+    done:   { bg: "bg-green-400 border-green-600", text: "text-white", shadow: "shadow-[0_4px_0_#16a34a]" },
+    active: { bg: "bg-[#58CC02] border-[#46A302]", text: "text-white", shadow: "shadow-[0_4px_0_#46A302]" },
+    locked: { bg: "bg-gray-200 border-gray-300", text: "text-gray-400", shadow: "shadow-[0_4px_0_#d1d5db]" },
+  };
+  const s = styles[status];
+  return (
+    <motion.div
+      initial={{ opacity: 0, scale: 0.5 }}
+      whileInView={{ opacity: 1, scale: 1 }}
+      viewport={{ once: true }}
+      transition={{ delay, type: "spring", stiffness: 200 }}
+      className="flex flex-col items-center gap-1"
+    >
+      <div className={`w-16 h-16 rounded-full border-b-4 flex items-center justify-center text-2xl ${s.bg} ${s.shadow} ${status === "active" ? "ring-4 ring-[#58CC02]/30" : ""}`}>
+        {status === "locked" ? "🔒" : emoji}
+      </div>
+      <p className={`text-[10px] font-bold ${status === "locked" ? "text-gray-400" : "text-gray-700"}`}>{label}</p>
+    </motion.div>
+  );
+}
+
+// ── Feature card (Duolingo card style) ───────────────────────
+function FeatureCard({ icon, title, desc, color, bg, border, delay }) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
-      transition={{ delay, duration: 0.5 }}
-      className="relative rounded-3xl p-6 border border-white/10 bg-white/5 backdrop-blur-sm hover:bg-white/8 transition-colors"
+      transition={{ delay, duration: 0.4 }}
+      className={`rounded-2xl p-6 border-b-4 ${bg} ${border}`}
     >
-      <div className="w-12 h-12 rounded-2xl flex items-center justify-center text-2xl mb-4"
-        style={{ background: `${color}20`, border: `1px solid ${color}40` }}>
-        {icon}
-      </div>
-      <h3 className="font-black text-white text-lg mb-2">{title}</h3>
-      <p className="text-sm text-white/60 leading-relaxed">{desc}</p>
+      <div className="text-4xl mb-3">{icon}</div>
+      <h3 className="font-black text-gray-800 text-lg mb-2">{title}</h3>
+      <p className="text-sm text-gray-500 leading-relaxed">{desc}</p>
     </motion.div>
   );
 }
 
-// ── Stat pill ─────────────────────────────────────────────────
-function StatPill({ value, label }) {
-  return (
-    <motion.div
-      initial={{ opacity: 0, scale: 0.8 }}
-      whileInView={{ opacity: 1, scale: 1 }}
-      viewport={{ once: true }}
-      className="text-center"
-    >
-      <p className="text-4xl font-black" style={{ color: G }}>{value}</p>
-      <p className="text-sm text-white/50 mt-1">{label}</p>
-    </motion.div>
-  );
-}
-
-// ── Main ──────────────────────────────────────────────────────
+// ── Main ─────────────────────────────────────────────────────
 export default function Landing() {
   const [scrolled, setScrolled] = useState(false);
 
@@ -153,169 +96,215 @@ export default function Landing() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-[#080d1a] text-white overflow-x-hidden font-inter">
+    <div className="min-h-screen bg-white text-gray-800 overflow-x-hidden font-inter">
 
       {/* ── Nav ── */}
-      <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? "bg-[#080d1a]/90 backdrop-blur-md border-b border-white/10" : ""}`}>
-        <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+      <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-white ${scrolled ? "border-b-2 border-gray-100 shadow-sm" : ""}`}>
+        <div className="max-w-5xl mx-auto px-6 py-3 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <span className="text-2xl">📈</span>
-            <span className="text-xl font-black">V<span style={{ color: G }}>stock</span></span>
+            <span className="text-xl font-black text-gray-800">V<span className="text-[#58CC02]">stock</span></span>
           </div>
-          <div className="flex items-center gap-3">
-            <Link to="/present" target="_blank"
-              className="flex items-center gap-1.5 text-sm font-bold text-white/70 hover:text-white transition-colors px-3 py-2 rounded-xl hover:bg-white/5">
-              <Play className="w-3.5 h-3.5" /> View Pitch
-            </Link>
+          <div className="flex items-center gap-2">
             <Link to="/login"
-              className="text-sm font-bold text-white/70 hover:text-white transition-colors px-4 py-2 rounded-xl hover:bg-white/5">
+              className="text-sm font-bold text-gray-500 hover:text-gray-800 transition-colors px-4 py-2 rounded-xl hover:bg-gray-100">
               Sign In
             </Link>
             <Link to="/login?tab=signup"
-              className="text-sm font-black px-4 py-2 rounded-xl transition-opacity hover:opacity-90"
-              style={{ background: G, color: "#080d1a" }}>
-              Get Started Free
+              className="text-sm font-black px-5 py-2.5 rounded-xl bg-[#58CC02] text-white border-b-4 border-[#46A302] hover:brightness-105 transition-all active:border-b-0 active:mt-1">
+              Get Started
             </Link>
           </div>
         </div>
       </nav>
 
       {/* ── Hero ── */}
-      <section className="relative min-h-screen flex flex-col items-center justify-center pt-20 overflow-hidden">
-        {/* Background glow */}
-        <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[600px] h-[600px] rounded-full opacity-20"
-            style={{ background: `radial-gradient(circle, ${G}, transparent 70%)` }} />
-          <div className="absolute top-1/3 left-1/4 w-64 h-64 rounded-full opacity-10"
-            style={{ background: "radial-gradient(circle, #3b82f6, transparent 70%)" }} />
-          <div className="absolute bottom-1/4 right-1/4 w-48 h-48 rounded-full opacity-10"
-            style={{ background: "radial-gradient(circle, #a855f7, transparent 70%)" }} />
-          {/* Grid */}
-          <div className="absolute inset-0" style={{
-            backgroundImage: `linear-gradient(${G}10 1px,transparent 1px),linear-gradient(90deg,${G}10 1px,transparent 1px)`,
-            backgroundSize: "80px 80px"
-          }} />
-        </div>
+      <section className="pt-28 pb-16 px-6 bg-white">
+        <div className="max-w-5xl mx-auto flex flex-col lg:flex-row items-center gap-12">
 
-        <div className="relative z-10 max-w-6xl mx-auto px-6 flex flex-col lg:flex-row items-center gap-16 w-full">
           {/* Left copy */}
           <div className="flex-1 text-center lg:text-left">
-            <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
-              className="inline-flex items-center gap-2 text-xs font-black tracking-widest uppercase px-4 py-2 rounded-full border mb-6"
-              style={{ color: G, borderColor: `${G}40`, background: `${G}10` }}>
-              📈 Investing Education for Everyone
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="inline-flex items-center gap-2 bg-[#58CC02]/10 text-[#46A302] text-xs font-black tracking-widest uppercase px-4 py-2 rounded-full mb-6"
+            >
+              🏆 #1 investing app for teens
             </motion.div>
 
-            <motion.h1 initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
-              className="font-black leading-none mb-6"
-              style={{ fontSize: "clamp(48px, 8vw, 88px)", letterSpacing: "-3px" }}>
-              Learn to invest.<br />
-              <span style={{ color: G }}>Actually.</span>
+            <motion.h1
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1 }}
+              className="font-black leading-tight text-gray-900 mb-5"
+              style={{ fontSize: "clamp(40px, 7vw, 72px)" }}
+            >
+              Learn investing.<br />
+              <span className="text-[#58CC02]">Level up your life.</span>
             </motion.h1>
 
-            <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }}
-              className="text-lg text-white/60 mb-10 max-w-lg mx-auto lg:mx-0 leading-relaxed">
-              Bite-sized lessons, a paper trading portfolio, and an AI tutor.
-              Turn financial confusion into real confidence — in minutes a day.
+            <motion.p
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+              className="text-lg text-gray-500 mb-8 max-w-md mx-auto lg:mx-0 leading-relaxed"
+            >
+              Bite-sized lessons, paper trading, and an AI tutor — 
+              all with streaks, XP, and leagues to keep you coming back.
             </motion.p>
 
-            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }}
-              className="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start">
+            <motion.div
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 }}
+              className="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start"
+            >
               <Link to="/login"
-                className="flex items-center justify-center gap-2 px-8 py-4 rounded-2xl font-black text-base transition-all hover:scale-105"
-                style={{ background: G, color: "#080d1a", boxShadow: `0 0 30px ${G}50` }}>
-                Start For Free <ArrowRight className="w-4 h-4" />
+                className="flex items-center justify-center gap-2 px-8 py-4 rounded-2xl font-black text-lg text-white bg-[#58CC02] border-b-4 border-[#46A302] hover:brightness-105 transition-all active:border-b-0 shadow-lg"
+              >
+                Start For Free <ArrowRight className="w-5 h-5" />
               </Link>
-              <Link to="/present" target="_blank"
-                className="flex items-center justify-center gap-2 px-8 py-4 rounded-2xl font-black text-base border border-white/20 bg-white/5 hover:bg-white/10 transition-colors">
-                <Play className="w-4 h-4" style={{ color: G }} /> Watch Pitch Deck
+              <Link to="/login"
+                className="flex items-center justify-center gap-2 px-8 py-4 rounded-2xl font-black text-base text-gray-600 border-2 border-gray-200 hover:bg-gray-50 transition-colors">
+                I have an account
               </Link>
             </motion.div>
 
-            <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.7 }}
-              className="text-xs text-white/30 mt-4">
-              Free forever · No credit card needed
+            <motion.p
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.5 }}
+              className="text-xs text-gray-400 mt-4"
+            >
+              Free forever · No credit card · Takes 60 seconds
             </motion.p>
           </div>
 
-          {/* Right phone */}
+          {/* Right — Duolingo-style character panel */}
           <motion.div
-            initial={{ opacity: 0, x: 60, rotate: 5 }}
-            animate={{ opacity: 1, x: 0, rotate: 3 }}
-            transition={{ delay: 0.3, type: "spring", stiffness: 80 }}
-            className="shrink-0 hidden lg:block"
+            initial={{ opacity: 0, x: 40 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.2, type: "spring", stiffness: 80 }}
+            className="flex-shrink-0 flex flex-col items-center gap-4"
           >
-            <PhoneMock />
+            {/* Mascot */}
+            <div className="relative">
+              <MascotBubble text="Let's learn about stocks! 📈" delay={0.6} />
+              <motion.div
+                initial={{ opacity: 0, scale: 0 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.4, type: "spring" }}
+                className="text-[100px] mt-2 select-none leading-none text-center"
+              >
+                🐂
+              </motion.div>
+            </div>
+
+            {/* Gamification badges */}
+            <div className="flex gap-3">
+              <StreakBadge count={14} />
+              <XpBadge xp={350} />
+            </div>
+
+            {/* Mini lesson path */}
+            <div className="bg-gray-50 rounded-3xl p-5 border-2 border-gray-100 w-72">
+              <p className="text-xs font-black text-gray-400 uppercase tracking-widest mb-4 text-center">Unit 1 · The Basics</p>
+              <div className="flex justify-around items-end">
+                <LessonNode emoji="📖" label="What's a stock?" status="done" delay={0.7} />
+                <LessonNode emoji="💹" label="The market" status="done" delay={0.8} />
+                <LessonNode emoji="🐂" label="Bulls & Bears" status="active" delay={0.9} />
+                <LessonNode emoji="📊" label="P/E ratios" status="locked" delay={1.0} />
+              </div>
+            </div>
           </motion.div>
         </div>
-
-        {/* Scroll hint */}
-        <motion.div
-          initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.2 }}
-          className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 text-white/30">
-          <ChevronDown className="w-5 h-5 animate-bounce" />
-        </motion.div>
       </section>
 
-      {/* ── Ticker tape ── */}
-      <TickerTape />
-
-      {/* ── Stats ── */}
-      <section className="py-20 px-6">
-        <div className="max-w-4xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-8">
-          <StatPill value="25+" label="Interactive lessons" />
-          <StatPill value="50+" label="Stocks to trade" />
-          <StatPill value="£10K" label="Paper trading fund" />
-          <StatPill value="5" label="Learning units" />
+      {/* ── Social proof bar ── */}
+      <section className="py-8 bg-gray-50 border-y-2 border-gray-100">
+        <div className="max-w-4xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-6">
+          {[
+            { value: "25+", label: "Lessons", icon: "📚" },
+            { value: "50+", label: "Stocks to trade", icon: "📈" },
+            { value: "£10K", label: "Virtual money", icon: "💰" },
+            { value: "7", label: "League tiers", icon: "🏆" },
+          ].map(({ value, label, icon }) => (
+            <motion.div
+              key={label}
+              initial={{ opacity: 0, y: 10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="text-center"
+            >
+              <div className="text-3xl mb-1">{icon}</div>
+              <p className="text-3xl font-black text-gray-900">{value}</p>
+              <p className="text-sm text-gray-400 font-medium">{label}</p>
+            </motion.div>
+          ))}
         </div>
       </section>
 
       {/* ── Features ── */}
-      <section className="py-20 px-6">
-        <div className="max-w-6xl mx-auto">
-          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
-            className="text-center mb-16">
-            <p className="text-xs font-black tracking-widest uppercase mb-3" style={{ color: G }}>Everything You Need</p>
-            <h2 className="text-4xl font-black leading-tight">Built to make you<br />a better investor</h2>
+      <section className="py-20 px-6 bg-white">
+        <div className="max-w-5xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-12"
+          >
+            <p className="text-xs font-black tracking-widest uppercase text-[#58CC02] mb-2">Why Vstock</p>
+            <h2 className="text-4xl font-black text-gray-900 leading-tight">
+              Everything you need to<br />become a confident investor
+            </h2>
           </motion.div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-            <FeatureCard icon="📚" title="Structured Curriculum" desc="25+ bite-sized lessons across 5 units. From 'What is a stock?' to advanced portfolio strategy — built for beginners." color="#3b82f6" delay={0} />
-            <FeatureCard icon="📈" title="Paper Trading Simulator" desc="£10,000 virtual money. 50+ real stocks. Market, limit, and stop orders. Build real intuition with zero financial risk." color={G} delay={0.08} />
-            <FeatureCard icon="🤖" title="Bruno the AI Tutor" desc="GPT-4 powered tutor on every screen. Explains any concept in plain English, analyses your portfolio, and gives personalised tips." color="#a855f7" delay={0.16} />
-            <FeatureCard icon="📊" title="Real Market Data" desc="Live stock prices, charts across 6 time ranges, P/E ratios, EPS, dividends, beta — the real metrics investors use." color="#06b6d4" delay={0.24} />
-            <FeatureCard icon="🎯" title="Interactive Quizzes" desc="Multiple choice, true/false, and fill-in-the-blank questions with instant feedback after every lesson." color="#f97316" delay={0.32} />
-            <FeatureCard icon="🔍" title="Portfolio Analytics" desc="Track your holdings, P&L, sector allocation, and portfolio health score — just like a real brokerage dashboard." color="#ec4899" delay={0.40} />
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            <FeatureCard icon="📚" title="Structured Curriculum" desc="25+ bite-sized lessons across 5 units. Start from zero, master the fundamentals." color="#3b82f6" bg="bg-blue-50" border="border-blue-200" delay={0} />
+            <FeatureCard icon="📈" title="Paper Trading" desc="£10,000 virtual fund. 50+ real stocks. Build real intuition with zero risk." color="#58CC02" bg="bg-green-50" border="border-green-200" delay={0.08} />
+            <FeatureCard icon="🤖" title="Bruno the AI Tutor" desc="Ask anything in plain English. Bruno explains concepts and analyses your portfolio instantly." color="#a855f7" bg="bg-purple-50" border="border-purple-200" delay={0.16} />
+            <FeatureCard icon="🔥" title="Daily Streaks" desc="Build the habit. Miss a day and lose your streak — just like Duolingo. Use gems to freeze it." color="#f97316" bg="bg-orange-50" border="border-orange-200" delay={0.24} />
+            <FeatureCard icon="🏆" title="Leagues & Leaderboards" desc="Compete in 7 tiers. Top 5 promote each week. Bottom 5 get demoted. Stakes are real." color="#eab308" bg="bg-yellow-50" border="border-yellow-200" delay={0.32} />
+            <FeatureCard icon="⚡" title="XP & 50 Levels" desc="From Market Newbie to Market Legend. Earn XP for lessons, quizzes, and smart trades." color="#06b6d4" bg="bg-cyan-50" border="border-cyan-200" delay={0.40} />
           </div>
         </div>
       </section>
 
       {/* ── How it works ── */}
-      <section className="py-20 px-6">
+      <section className="py-20 px-6 bg-gray-50">
         <div className="max-w-4xl mx-auto">
-          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
-            className="text-center mb-14">
-            <p className="text-xs font-black tracking-widest uppercase mb-3" style={{ color: G }}>How It Works</p>
-            <h2 className="text-4xl font-black">Four steps to financial confidence</h2>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-12"
+          >
+            <p className="text-xs font-black tracking-widest uppercase text-[#58CC02] mb-2">How It Works</p>
+            <h2 className="text-4xl font-black text-gray-900">Start learning in 60 seconds</h2>
           </motion.div>
-          <div className="space-y-4">
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
             {[
-              { n: "01", icon: "🐣", title: "Onboard in 60 seconds", desc: "Tell us your experience level and learning goal. Your personalised curriculum is ready immediately." },
-              { n: "02", icon: "📚", title: "Learn through interactive lessons", desc: "Swipe through slides, answer quizzes, and get instant feedback. Like a textbook that actually works." },
-              { n: "03", icon: "📈", title: "Apply in the paper market", desc: "Put your knowledge to work immediately. Buy and sell real stocks with £10,000 virtual capital — zero risk." },
-              { n: "04", icon: "🤖", title: "Ask Bruno anything", desc: "Stuck on a concept? Ask Bruno the AI Bull. He'll explain it in plain English and analyse your portfolio on the spot." },
+              { n: "1", icon: "🐣", title: "Set your goal", desc: "Tell us your experience level. Your personalised curriculum is ready in 60 seconds.", bg: "bg-green-50", border: "border-green-200" },
+              { n: "2", icon: "📚", title: "Complete daily lessons", desc: "Short, fun lessons with quizzes. Earn XP, protect your streak, unlock the next unit.", bg: "bg-blue-50", border: "border-blue-200" },
+              { n: "3", icon: "📈", title: "Trade with virtual money", desc: "Apply what you learned in a real-feeling paper market. No risk — all the fun.", bg: "bg-yellow-50", border: "border-yellow-200" },
+              { n: "4", icon: "🏆", title: "Climb the leagues", desc: "Compete weekly. Promote or demote. The same dopamine loop as Duolingo — but for money.", bg: "bg-purple-50", border: "border-purple-200" },
             ].map((step, i) => (
-              <motion.div key={i}
-                initial={{ opacity: 0, x: i % 2 === 0 ? -30 : 30 }}
-                whileInView={{ opacity: 1, x: 0 }}
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.1 }}
-                className="flex items-center gap-6 rounded-3xl p-6 border border-white/10 bg-white/5 backdrop-blur-sm">
-                <div className="text-5xl font-black shrink-0 w-16 text-right leading-none"
-                  style={{ color: `${G}30` }}>{step.n}</div>
-                <span className="text-3xl shrink-0">{step.icon}</span>
+                className={`rounded-2xl p-6 border-b-4 ${step.bg} ${step.border} flex gap-4 items-start`}
+              >
+                <div className="w-10 h-10 rounded-full bg-white border-b-4 border-gray-200 flex items-center justify-center font-black text-gray-700 shrink-0 text-lg shadow-sm">
+                  {step.n}
+                </div>
                 <div>
-                  <h3 className="font-black text-lg text-white">{step.title}</h3>
-                  <p className="text-sm text-white/50 mt-1">{step.desc}</p>
+                  <div className="text-2xl mb-1">{step.icon}</div>
+                  <h3 className="font-black text-gray-900 text-base mb-1">{step.title}</h3>
+                  <p className="text-sm text-gray-500 leading-relaxed">{step.desc}</p>
                 </div>
               </motion.div>
             ))}
@@ -323,43 +312,99 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* ── CTA ── */}
-      <section className="py-24 px-6 relative overflow-hidden">
-        <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full opacity-15"
-            style={{ background: `radial-gradient(circle, ${G}, transparent 70%)` }} />
+      {/* ── Gamification showcase ── */}
+      <section className="py-20 px-6 bg-white">
+        <div className="max-w-5xl mx-auto flex flex-col lg:flex-row items-center gap-16">
+          <motion.div
+            initial={{ opacity: 0, x: -30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            className="flex-1"
+          >
+            <p className="text-xs font-black tracking-widest uppercase text-[#58CC02] mb-3">Gamified Learning</p>
+            <h2 className="text-4xl font-black text-gray-900 leading-tight mb-5">
+              The same psychology<br />that built Duolingo.<br />
+              <span className="text-[#58CC02]">For investing.</span>
+            </h2>
+            <p className="text-gray-500 text-lg leading-relaxed mb-6">
+              Streaks keep you coming back. Leagues create competition. XP rewards progress. 
+              It's the most powerful habit loop in edtech — now applied to financial literacy.
+            </p>
+            <Link to="/login"
+              className="inline-flex items-center gap-2 px-7 py-3.5 rounded-2xl font-black text-white bg-[#58CC02] border-b-4 border-[#46A302] hover:brightness-105 transition-all shadow-md"
+            >
+              Try it free <ArrowRight className="w-4 h-4" />
+            </Link>
+          </motion.div>
+
+          {/* Gamification cards grid */}
+          <motion.div
+            initial={{ opacity: 0, x: 30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            className="flex-shrink-0 grid grid-cols-2 gap-3 w-72"
+          >
+            {[
+              { icon: "🔥", label: "14-day streak", sub: "Keep going!", bg: "bg-orange-50 border-orange-200" },
+              { icon: "⚡", label: "350 XP", sub: "Level 8", bg: "bg-yellow-50 border-yellow-200" },
+              { icon: "🏆", label: "Gold League", sub: "Rank #3 this week", bg: "bg-amber-50 border-amber-200" },
+              { icon: "💎", label: "120 Gems", sub: "Streak freeze ready", bg: "bg-cyan-50 border-cyan-200" },
+              { icon: "❤️", label: "5 Hearts", sub: "Full health", bg: "bg-red-50 border-red-200" },
+              { icon: "🥇", label: "3 Badges", sub: "Collected", bg: "bg-green-50 border-green-200" },
+            ].map((item, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, scale: 0.8 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.07 }}
+                className={`rounded-2xl p-3 border-b-4 ${item.bg}`}
+              >
+                <div className="text-2xl mb-1">{item.icon}</div>
+                <p className="text-sm font-black text-gray-800">{item.label}</p>
+                <p className="text-[10px] text-gray-400 font-medium">{item.sub}</p>
+              </motion.div>
+            ))}
+          </motion.div>
         </div>
-        <div className="relative z-10 max-w-2xl mx-auto text-center">
-          <motion.div initial={{ opacity: 0, scale: 0.9 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }}>
-            <p className="text-xs font-black tracking-widest uppercase mb-3" style={{ color: G }}>Ready?</p>
-            <h2 className="text-5xl font-black leading-tight mb-4">Your financial journey<br />starts today</h2>
-            <p className="text-white/50 mb-10 text-lg">Join thousands learning to invest the smart way.</p>
-            <div className="flex flex-col sm:flex-row gap-3 justify-center">
-              <Link to="/login"
-                className="flex items-center justify-center gap-2 px-10 py-4 rounded-2xl font-black text-lg transition-all hover:scale-105"
-                style={{ background: G, color: "#080d1a", boxShadow: `0 0 40px ${G}60` }}>
-                Get Started Free <ArrowRight className="w-5 h-5" />
-              </Link>
-              <Link to="/present" target="_blank"
-                className="flex items-center justify-center gap-2 px-8 py-4 rounded-2xl font-black text-base border border-white/20 bg-white/5 hover:bg-white/10 transition-colors">
-                <Play className="w-4 h-4" style={{ color: G }} /> Investor Pitch
-              </Link>
-            </div>
+      </section>
+
+      {/* ── CTA ── */}
+      <section className="py-24 px-6 bg-[#58CC02]">
+        <div className="max-w-2xl mx-auto text-center">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+          >
+            <div className="text-6xl mb-4">📈</div>
+            <h2 className="text-5xl font-black text-white leading-tight mb-4">
+              Your streak starts today.
+            </h2>
+            <p className="text-white/80 mb-10 text-lg font-medium">
+              Join thousands of teens learning to invest the smart way.
+            </p>
+            <Link to="/login"
+              className="inline-flex items-center justify-center gap-2 px-10 py-4 rounded-2xl font-black text-xl text-[#58CC02] bg-white border-b-4 border-gray-200 hover:brightness-95 transition-all shadow-lg"
+            >
+              Get Started Free <ArrowRight className="w-5 h-5" />
+            </Link>
+            <p className="text-white/60 text-sm mt-5">Free forever · No credit card needed</p>
           </motion.div>
         </div>
       </section>
 
       {/* ── Footer ── */}
-      <footer className="border-t border-white/10 py-8 px-6">
-        <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+      <footer className="border-t-2 border-gray-100 py-8 px-6 bg-white">
+        <div className="max-w-5xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-2">
             <span className="text-xl">📈</span>
-            <span className="font-black">V<span style={{ color: G }}>stock</span></span>
+            <span className="font-black text-gray-800">V<span className="text-[#58CC02]">stock</span></span>
           </div>
-          <p className="text-xs text-white/30">© 2026 Vstock · The Duolingo of Investing</p>
-          <div className="flex items-center gap-4 text-xs text-white/40">
-            <Link to="/login" className="hover:text-white/70 transition-colors">Sign In</Link>
-            <Link to="/present" target="_blank" className="hover:text-white/70 transition-colors">Pitch Deck</Link>
+          <p className="text-xs text-gray-400">© 2026 Vstock · Educational purposes only</p>
+          <div className="flex items-center gap-4 text-xs text-gray-400">
+            <Link to="/login" className="hover:text-gray-700 transition-colors">Sign In</Link>
+            <Link to="/present" target="_blank" className="hover:text-gray-700 transition-colors">Pitch Deck</Link>
           </div>
         </div>
       </footer>
