@@ -88,7 +88,7 @@ export default function DemoLogin() {
           </motion.div>
           <div>
             <h1 className="text-3xl font-black text-foreground">
-              Stocki<span className="text-primary">Learn</span>
+              VSTOCK
             </h1>
             <p className="text-sm font-bold text-primary mt-1">Turn confusion into confidence.</p>
             <p className="text-xs text-muted-foreground mt-0.5">Learn investing the fun way.</p>

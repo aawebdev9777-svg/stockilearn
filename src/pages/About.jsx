@@ -12,7 +12,7 @@ export default function About() {
         <div className="max-w-4xl mx-auto px-6 py-3 flex items-center justify-between">
           <Link to="/" className="flex items-center gap-2">
             <span className="text-2xl">📈</span>
-            <span className="text-xl font-black text-gray-800">Stocki<span className="text-[#58CC02]">Learn</span></span>
+            <span className="text-xl font-black text-gray-800">VSTOCK</span>
           </Link>
           <Link to="/login"
             className="text-sm font-black px-5 py-2.5 rounded-xl bg-[#58CC02] text-white border-b-4 border-[#46A302] hover:brightness-105 transition-all">
@@ -31,7 +31,7 @@ export default function About() {
         >
           <div className="text-7xl mb-4">🐂</div>
           <p className="text-xs font-black tracking-widest uppercase text-[#58CC02] mb-2">Our Story</p>
-          <h1 className="text-5xl font-black text-gray-900 leading-tight">About StockiLearn</h1>
+          <h1 className="text-5xl font-black text-gray-900 leading-tight">About VSTOCK</h1>
         </motion.div>
 
         {/* Main content */}
@@ -44,9 +44,9 @@ export default function About() {
             className="rounded-2xl bg-green-50 border-b-4 border-green-200 p-8"
           >
             <div className="text-3xl mb-3">📈</div>
-            <h2 className="text-xl font-black text-gray-900 mb-3">What is StockiLearn?</h2>
+            <h2 className="text-xl font-black text-gray-900 mb-3">What is VSTOCK?</h2>
             <p className="text-gray-600 leading-relaxed">
-              StockiLearn is a gamified investing education platform inspired by Duolingo. 
+              VSTOCK is a gamified investing education platform inspired by Duolingo. 
               We believe that financial literacy should be fun, accessible, and habit-forming — 
               not dry, boring, or locked behind expensive courses. Through bite-sized lessons, 
               paper trading with £10,000 of virtual money, and daily XP streaks, we make it 
@@ -65,7 +65,7 @@ export default function About() {
             <div className="text-3xl mb-3">🎓</div>
             <h2 className="text-xl font-black text-gray-900 mb-3">Who is it for?</h2>
             <p className="text-gray-600 leading-relaxed">
-              StockiLearn is built for anyone who feels like investing is "not for them" — 
+              VSTOCK is built for anyone who feels like investing is "not for them" — 
               especially teenagers, students, and young adults who want to take control of their 
               financial future but don't know where to start. Whether you think a stock is 
               "something to do with money" or you've already heard of a P/E ratio, our 
@@ -83,7 +83,7 @@ export default function About() {
             <div className="text-3xl mb-3">🛠️</div>
             <h2 className="text-xl font-black text-gray-900 mb-3">Who builds it?</h2>
             <p className="text-gray-600 leading-relaxed">
-              StockiLearn is an independent project built by a passionate developer who 
+              VSTOCK is an independent project built by a passionate developer who 
               believes financial education should be a right, not a privilege. The platform 
               is built with a modern tech stack — React, AI, real-time market data — and 
               is continuously improving based on user feedback. Have a suggestion or spotted 
@@ -138,9 +138,9 @@ export default function About() {
         <div className="max-w-4xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
           <Link to="/" className="flex items-center gap-2">
             <span className="text-xl">📈</span>
-            <span className="font-black text-gray-800">Stocki<span className="text-[#58CC02]">Learn</span></span>
+            <span className="font-black text-gray-800">VSTOCK</span>
           </Link>
-          <p className="text-xs text-gray-400">© 2026 StockiLearn · Educational purposes only</p>
+          <p className="text-xs text-gray-400">© 2026 VSTOCK · Educational purposes only</p>
           <div className="flex items-center gap-4 text-xs text-gray-400">
             <Link to="/about" className="hover:text-gray-700 transition-colors font-bold text-[#58CC02]">About</Link>
             <Link to="/contact" className="hover:text-gray-700 transition-colors">Contact</Link>
