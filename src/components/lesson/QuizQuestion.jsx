@@ -24,7 +24,7 @@ export default function QuizQuestion({ question, onAnswer, index, total }) {
     }
 
     setIsCorrect(correct);
-    setTimeout(() => onAnswer(correct), 1200);
+    setTimeout(() => onAnswer(correct), 400);
   };
 
   const options = question.type === "true_false" ? ["True ✅", "False ❌"] : question.options || [];

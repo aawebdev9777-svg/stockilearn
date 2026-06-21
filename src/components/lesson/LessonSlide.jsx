@@ -239,7 +239,7 @@ export default function LessonSlide({ slide, onNext, index, total }) {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3 }}
+          transition={{ delay: 0.1 }}
           className="flex-1"
         >
           <p className="text-xl font-black text-foreground leading-relaxed text-center px-2">
@@ -249,7 +249,7 @@ export default function LessonSlide({ slide, onNext, index, total }) {
             <motion.p
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ delay: 0.5 }}
+              transition={{ delay: 0.2 }}
               className="text-sm text-muted-foreground text-center mt-3 leading-relaxed px-2"
             >
               {slide.detail}
@@ -259,7 +259,7 @@ export default function LessonSlide({ slide, onNext, index, total }) {
             <motion.div
               initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.6 }}
+              transition={{ delay: 0.25 }}
               className="mt-4 rounded-2xl p-4"
               style={{ background: `${visual.accent}12`, border: `1px solid ${visual.accent}25` }}
             >

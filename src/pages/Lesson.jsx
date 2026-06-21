@@ -65,17 +65,14 @@ export default function Lesson() {
       if (questionIndex < questions.length - 1) {
         setQuestionIndex(q => q + 1);
       } else {
-        // Calculate XP with streak multiplier and accuracy bonus
         const scorePercent = Math.round((correctCount + (isCorrect ? 1 : 0)) / questions.length * 100);
         const baseXp = lesson.xp || 15;
-        // We'll fetch the user's streak in saveProgress — use a simple calc here for display
         const earned = calcLessonXp({ baseXp, streakDays: 0, accuracyPct: scorePercent, isFirstTime: true });
         setXpEarned(earned);
         setPhase("complete");
-        // Save progress
         saveProgress(scorePercent, earned);
       }
-    }, 500);
+    }, 250);
   };
 
   const saveProgress = async (score, baseXp) => {
