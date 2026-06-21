@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
 import { motion } from "framer-motion";
 import { Users, BookOpen, Trophy, BarChart3, Shield, Zap, Settings, ChevronDown, ChevronUp, Ban, CheckCircle, Trash2, Play, Crown, RefreshCw } from "lucide-react";
+import { useDemo } from "@/lib/DemoContext";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { LESSONS, BADGES, LEVEL_TITLES } from "@/lib/lessonData";
@@ -90,7 +91,7 @@ function UsersTab({ users, onBan, onUnban, onMakeAdmin, onRemoveAdmin, loading }
   const [filter, setFilter] = useState("all"); // all | banned | admin
 
   const filtered = users.filter(u => {
-    const matchSearch = !search || u.email?.toLowerCase().includes(search.toLowerCase()) || u.full_name?.toLowerCase().includes(search.toLowerCase());
+    const matchSearch = !search || u.username?.toLowerCase().includes(search.toLowerCase()) || u.display_name?.toLowerCase().includes(search.toLowerCase());
     const matchFilter = filter === "all" || (filter === "banned" && u.is_banned) || (filter === "admin" && u.role === "admin");
     return matchSearch && matchFilter;
   });
@@ -125,11 +126,11 @@ function UsersTab({ users, onBan, onUnban, onMakeAdmin, onRemoveAdmin, loading }
           <Card key={u.id} className={`p-3 bg-card/80 border-border/50 ${u.is_banned ? "opacity-60" : ""}`}>
             <div className="flex items-center gap-3">
               <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
-                <span className="text-sm font-black text-primary">{(u.full_name || u.email || "?")[0].toUpperCase()}</span>
+                <span className="text-sm font-black text-primary">{(u.display_name || u.username || "?")[0].toUpperCase()}</span>
               </div>
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-1.5 flex-wrap">
-                  <p className="text-xs font-bold text-foreground truncate">{u.full_name || "No name"}</p>
+                  <p className="text-xs font-bold text-foreground truncate">{u.display_name || u.username}</p>
                   {u.role === "admin" && (
                     <span className="text-[9px] font-black bg-rose-500/20 text-rose-400 px-1.5 py-0.5 rounded-full">ADMIN</span>
                   )}
@@ -137,11 +138,12 @@ function UsersTab({ users, onBan, onUnban, onMakeAdmin, onRemoveAdmin, loading }
                     <span className="text-[9px] font-black bg-destructive/20 text-destructive px-1.5 py-0.5 rounded-full">BANNED</span>
                   )}
                 </div>
-                <p className="text-[10px] text-muted-foreground truncate">{u.email}</p>
+                <p className="text-[10px] text-muted-foreground truncate">@{u.username}</p>
                 <p className="text-[10px] text-muted-foreground">
                   Joined {u.created_date ? new Date(u.created_date).toLocaleDateString() : "—"}
                   {u.xp_total ? ` · ${u.xp_total} XP` : ""}
                   {u.streak_current ? ` · 🔥${u.streak_current}` : ""}
+                  {u.level ? ` · Lv${u.level}` : ""}
                 </p>
               </div>
               <div className="flex flex-col gap-1 shrink-0">
@@ -285,6 +287,7 @@ function PitchTab() {
 
 // ── Main ─────────────────────────────────────────────────────
 export default function Admin() {
+  const { demoUser } = useDemo();
   const [user, setUser] = useState(null);
   const [users, setUsers] = useState([]);
   const [usersLoading, setUsersLoading] = useState(false);
@@ -312,34 +315,34 @@ export default function Admin() {
 
   const fetchUsers = async () => {
     setUsersLoading(true);
-    const all = await base44.entities.User.list();
+    const all = await base44.asServiceRole.entities.AppUser.list();
     setUsers(all);
     setUsersLoading(false);
   };
 
   const handleBan = async (u) => {
-    await base44.entities.User.update(u.id, { is_banned: true });
+    await base44.asServiceRole.entities.AppUser.update(u.id, { is_banned: true });
     setUsers(prev => prev.map(x => x.id === u.id ? { ...x, is_banned: true } : x));
-    showToast(`${u.full_name || u.email} has been banned.`);
+    showToast(`${u.display_name || u.username} has been banned.`);
   };
 
   const handleUnban = async (u) => {
-    await base44.entities.User.update(u.id, { is_banned: false });
+    await base44.asServiceRole.entities.AppUser.update(u.id, { is_banned: false });
     setUsers(prev => prev.map(x => x.id === u.id ? { ...x, is_banned: false } : x));
-    showToast(`${u.full_name || u.email} has been unbanned.`);
+    showToast(`${u.display_name || u.username} has been unbanned.`);
   };
 
   const handleMakeAdmin = async (u) => {
-    await base44.entities.User.update(u.id, { role: "admin" });
+    await base44.asServiceRole.entities.AppUser.update(u.id, { role: "admin" });
     setUsers(prev => prev.map(x => x.id === u.id ? { ...x, role: "admin" } : x));
-    showToast(`${u.full_name || u.email} is now an admin.`);
+    showToast(`${u.display_name || u.username} is now an admin.`);
   };
 
   const handleRemoveAdmin = async (u) => {
-    if (u.id === user.id) { showToast("You can't remove your own admin role.", "error"); return; }
-    await base44.entities.User.update(u.id, { role: "user" });
+    if (u.username === demoUser?.email) { showToast("You can't remove your own admin role.", "error"); return; }
+    await base44.asServiceRole.entities.AppUser.update(u.id, { role: "user" });
     setUsers(prev => prev.map(x => x.id === u.id ? { ...x, role: "user" } : x));
-    showToast(`${u.full_name || u.email} is no longer an admin.`);
+    showToast(`${u.display_name || u.username} is no longer an admin.`);
   };
 
   if (loading) {

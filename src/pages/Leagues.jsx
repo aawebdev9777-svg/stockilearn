@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { base44 } from "@/api/base44Client";
-import { useDemo, DEMO_USER } from "@/lib/DemoContext";
+import { useDemo } from "@/lib/DemoContext";
 import { motion } from "framer-motion";
 import { Card } from "@/components/ui/card";
 import { LEAGUE_TIERS } from "@/lib/lessonData";
@@ -30,8 +30,8 @@ function generateLeaderboard(userXp, username) {
 }
 
 export default function Leagues() {
-  const { isDemoMode } = useDemo();
-  const [user, setUser] = useState(isDemoMode ? DEMO_USER : null);
+  const { isDemoMode, demoUser } = useDemo();
+  const [user, setUser] = useState(isDemoMode ? demoUser : null);
 
   useEffect(() => {
     if (isDemoMode) return;
