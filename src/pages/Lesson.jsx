@@ -52,7 +52,7 @@ export default function Lesson() {
     }
   };
 
-  const handleAnswer = (isCorrect) => {
+  const handleAnswer = async (isCorrect) => {
     if (isCorrect) {
       setCorrectCount(c => c + 1);
       setShowFeedback("correct");
@@ -60,7 +60,7 @@ export default function Lesson() {
       setHearts(h => Math.max(0, h - 1));
       setShowFeedback("wrong");
     }
-    setTimeout(() => {
+    setTimeout(async () => {
       setShowFeedback(null);
       if (questionIndex < questions.length - 1) {
         setQuestionIndex(q => q + 1);
@@ -69,8 +69,8 @@ export default function Lesson() {
         const baseXp = lesson.xp || 15;
         const earned = calcLessonXp({ baseXp, streakDays: 0, accuracyPct: scorePercent, isFirstTime: true });
         setXpEarned(earned);
+        await saveProgress(scorePercent, earned);
         setPhase("complete");
-        saveProgress(scorePercent, earned);
       }
     }, 250);
   };
