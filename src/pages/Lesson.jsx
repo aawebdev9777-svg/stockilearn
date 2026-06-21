@@ -10,7 +10,7 @@ import { X, ArrowRight, Check, Heart } from "lucide-react";
 import LessonSlide from "@/components/lesson/LessonSlide";
 import QuizQuestion from "@/components/lesson/QuizQuestion";
 import LessonComplete from "@/components/lesson/LessonComplete";
-import { useDemo } from "@/lib/DemoContext";
+import { useDemo, saveDemoLessonProgress } from "@/lib/DemoContext";
 
 export default function Lesson() {
   const navigate = useNavigate();
@@ -76,7 +76,11 @@ export default function Lesson() {
   };
 
   const saveProgress = async (score, baseXp) => {
-    if (isDemoMode) return; // Demo mode — skip all DB writes
+    if (isDemoMode) {
+      // Demo mode - save to localStorage
+      saveDemoLessonProgress(lessonId, lesson.unit, score, baseXp);
+      return;
+    }
     try {
       const user = await base44.auth.me();
       const streakDays = user?.streak_current || 0;

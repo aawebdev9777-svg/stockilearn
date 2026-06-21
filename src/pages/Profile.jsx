@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { base44 } from "@/api/base44Client";
-import { useDemo, DEMO_BADGES, DEMO_LESSON_PROGRESS } from "@/lib/DemoContext";
+import { useDemo, DEMO_BADGES, getDemoLessonProgress } from "@/lib/DemoContext";
 import { motion } from "framer-motion";
 import { Card } from "@/components/ui/card";
 import { useQuery } from "@tanstack/react-query";
@@ -34,9 +34,9 @@ export default function Profile() {
 
   const { data: lessonProgress = [] } = useQuery({
     queryKey: ["lesson-progress-profile", userId],
-    queryFn: () => isDemoMode ? Promise.resolve(DEMO_LESSON_PROGRESS) : base44.entities.LessonProgress.filter({ created_by_id: userId }),
+    queryFn: () => isDemoMode ? Promise.resolve(getDemoLessonProgress()) : base44.entities.LessonProgress.filter({ created_by_id: userId }),
     enabled: isDemoMode || !!userId,
-    initialData: isDemoMode ? DEMO_LESSON_PROGRESS : [],
+    initialData: isDemoMode ? getDemoLessonProgress() : [],
   });
 
   if (loading) {

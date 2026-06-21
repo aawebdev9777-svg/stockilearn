@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { base44 } from "@/api/base44Client";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { useDemo, DEMO_LESSON_PROGRESS } from "@/lib/DemoContext";
+import { useDemo, getDemoLessonProgress } from "@/lib/DemoContext";
 import { motion } from "framer-motion";
 import { UNITS, LESSONS, getLessonsForUnit } from "@/lib/lessonData";
 import SkillNode from "@/components/learn/SkillNode";
@@ -15,18 +15,19 @@ export default function Learn() {
     if (!isDemoMode) base44.auth.me().then(u => setUserId(u?.id)).catch(() => {});
   }, [isDemoMode]);
 
-  // Refetch progress when page comes into focus (e.g., after completing a lesson)
+  // Refetch progress when page comes into focus or mounts (e.g., after completing a lesson)
   useEffect(() => {
     const onFocus = () => queryClient.invalidateQueries({ queryKey: ["lesson-progress"] });
     window.addEventListener("focus", onFocus);
+    queryClient.invalidateQueries({ queryKey: ["lesson-progress"] });
     return () => window.removeEventListener("focus", onFocus);
   }, [queryClient]);
 
   const { data: progressData = [] } = useQuery({
     queryKey: ["lesson-progress", userId],
-    queryFn: () => isDemoMode ? Promise.resolve(DEMO_LESSON_PROGRESS) : base44.entities.LessonProgress.filter({ created_by_id: userId }),
+    queryFn: () => isDemoMode ? Promise.resolve(getDemoLessonProgress()) : base44.entities.LessonProgress.filter({ created_by_id: userId }),
     enabled: isDemoMode || !!userId,
-    initialData: isDemoMode ? DEMO_LESSON_PROGRESS : [],
+    initialData: isDemoMode ? getDemoLessonProgress() : [],
   });
 
   const completedIds = progressData.filter(p => p.status === "complete").map(p => p.lesson_id);

@@ -5,8 +5,34 @@ const DemoContext = createContext(null);
 
 const STORAGE_KEY = "stockilearn_session";
 
-// ── Demo lesson progress for new users ────────────────────────
-export const DEMO_LESSON_PROGRESS = [];
+// ── Demo lesson progress helper ────────────────────────
+export const getDemoLessonProgress = () => {
+  const stored = localStorage.getItem("stockilearn_lesson_progress");
+  return stored ? JSON.parse(stored) : [];
+};
+
+export const saveDemoLessonProgress = (lessonId, unitId, score, xp) => {
+  const progress = getDemoLessonProgress();
+  const existing = progress.find(p => p.lesson_id === lessonId);
+  if (existing) {
+    existing.status = "complete";
+    existing.score_percent = score;
+    existing.xp_earned = xp;
+    existing.completed_at = new Date().toISOString();
+    existing.attempts_count = (existing.attempts_count || 0) + 1;
+  } else {
+    progress.push({
+      lesson_id: lessonId,
+      unit_id: unitId,
+      status: "complete",
+      score_percent: score,
+      xp_earned: xp,
+      completed_at: new Date().toISOString(),
+      attempts_count: 1,
+    });
+  }
+  localStorage.setItem("stockilearn_lesson_progress", JSON.stringify(progress));
+};
 
 // ── Demo portfolio/holdings/trades/watchlist/badges (empty for real users) ──
 export const DEMO_PORTFOLIO = null;
@@ -126,7 +152,7 @@ export function DemoProvider({ children }) {
   };
 
   return (
-    <DemoContext.Provider value={{ isDemoMode, demoUser, loginDemo, signupDemo, logoutDemo, resetAllDemoData, updateDemoUser }}>
+    <DemoContext.Provider value={{ isDemoMode, demoUser, loginDemo, signupDemo, logoutDemo, resetAllDemoData, updateDemoUser, getDemoLessonProgress, saveDemoLessonProgress }}>
       {children}
     </DemoContext.Provider>
   );
