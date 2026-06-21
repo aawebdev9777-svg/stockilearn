@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { base44 } from "@/api/base44Client";
-import { useDemo, DEMO_USER } from "@/lib/DemoContext";
+import { useDemo } from "@/lib/DemoContext";
 import { motion } from "framer-motion";
 import StreakFlame from "@/components/gamification/StreakFlame";
 import HeartsDisplay from "@/components/gamification/HeartsDisplay";
@@ -21,17 +21,17 @@ function getGreeting(name) {
 }
 
 export default function Home() {
-  const { isDemoMode } = useDemo();
-  const [user, setUser] = useState(isDemoMode ? DEMO_USER : null);
+  const { isDemoMode, demoUser } = useDemo();
+  const [user, setUser] = useState(isDemoMode ? demoUser : null);
   const [loading, setLoading] = useState(!isDemoMode);
 
   useEffect(() => {
-    if (isDemoMode) return;
+    if (isDemoMode) { setUser(demoUser); return; }
     base44.auth.me().then(u => {
       setUser(u);
       setLoading(false);
     }).catch(() => setLoading(false));
-  }, [isDemoMode]);
+  }, [isDemoMode, demoUser]);
 
   if (loading) {
     return (

@@ -1,7 +1,6 @@
 import React, { createContext, useContext, useState } from "react";
 import { base44 } from "@/api/base44Client";
 
-// ── Context ───────────────────────────────────────────────────
 const DemoContext = createContext(null);
 
 const STORAGE_KEY = "stockilearn_session";
@@ -16,30 +15,6 @@ export const DEMO_TRADES = [];
 export const DEMO_WATCHLIST = [];
 export const DEMO_BADGES = [];
 
-function buildUserProfile(username) {
-  return {
-    id: `user-${username.toLowerCase()}-${Date.now()}`,
-    full_name: username,
-    email: username.toLowerCase(),
-    role: "user",
-    xp_total: 0,
-    level: 1,
-    streak_current: 0,
-    streak_longest: 0,
-    hearts_current: 5,
-    gems: 0,
-    daily_xp_earned_today: 0,
-    daily_goal_xp: 50,
-    league_tier: 1,
-    league_xp: 0,
-    goals: [],
-    knowledge_level: "beginner",
-    daily_time: "10_mins",
-    preferred_currency: "GBP",
-    onboarding_complete: false,
-    created_date: new Date().toISOString(),
-  };
-}
 
 export function DemoProvider({ children }) {
   const [isDemoMode, setIsDemoMode] = useState(() => {
@@ -186,6 +161,3 @@ export function DemoProvider({ children }) {
 export function useDemo() {
   return useContext(DemoContext);
 }
-
-// Legacy export for components that import DEMO_USER
-export const DEMO_USER = null;
