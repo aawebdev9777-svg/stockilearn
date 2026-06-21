@@ -103,7 +103,7 @@ export default function Landing() {
         <div className="max-w-5xl mx-auto px-6 py-3 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <span className="text-2xl">📈</span>
-            <span className="text-xl font-black text-gray-800">V<span className="text-[#58CC02]">stock</span></span>
+            <span className="text-xl font-black text-gray-800">Stocki<span className="text-[#58CC02]">Learn</span></span>
           </div>
           <div className="flex items-center gap-2">
             <Link to="/login"
@@ -253,7 +253,7 @@ export default function Landing() {
             viewport={{ once: true }}
             className="text-center mb-12"
           >
-            <p className="text-xs font-black tracking-widest uppercase text-[#58CC02] mb-2">Why Vstock</p>
+            <p className="text-xs font-black tracking-widest uppercase text-[#58CC02] mb-2">Why StockiLearn</p>
             <h2 className="text-4xl font-black text-gray-900 leading-tight">
               Everything you need to<br />become a confident investor
             </h2>
@@ -399,9 +399,9 @@ export default function Landing() {
         <div className="max-w-5xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-2">
             <span className="text-xl">📈</span>
-            <span className="font-black text-gray-800">V<span className="text-[#58CC02]">stock</span></span>
+            <span className="font-black text-gray-800">Stocki<span className="text-[#58CC02]">Learn</span></span>
           </div>
-          <p className="text-xs text-gray-400">© 2026 Vstock · Educational purposes only</p>
+          <p className="text-xs text-gray-400">© 2026 StockiLearn · Educational purposes only</p>
           <div className="flex items-center gap-4 text-xs text-gray-400">
             <Link to="/login" className="hover:text-gray-700 transition-colors">Sign In</Link>
             <Link to="/present" target="_blank" className="hover:text-gray-700 transition-colors">Pitch Deck</Link>
