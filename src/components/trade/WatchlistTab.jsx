@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { base44 } from "@/api/base44Client";
 import { Link } from "react-router-dom";
@@ -14,15 +14,22 @@ export default function WatchlistTab({ onNavigateToMarket }) {
   const [sortBy, setSortBy] = useState("added");
   const [removedIds, setRemovedIds] = useState([]);
 
+  const [userId, setUserId] = useState(null);
+  useEffect(() => {
+    base44.auth.me().then(u => setUserId(u?.id)).catch(() => {});
+  }, []);
+
   const { data: watchlist = [] } = useQuery({
-    queryKey: ["watchlist"],
-    queryFn: () => base44.entities.Watchlist.list(),
+    queryKey: ["watchlist", userId],
+    queryFn: () => base44.entities.Watchlist.filter({ created_by_id: userId }),
+    enabled: !!userId,
     initialData: [],
   });
 
   const { data: holdings = [] } = useQuery({
-    queryKey: ["holdings"],
-    queryFn: () => base44.entities.PaperHolding.list(),
+    queryKey: ["holdings", userId],
+    queryFn: () => base44.entities.PaperHolding.filter({ created_by_id: userId }),
+    enabled: !!userId,
     initialData: [],
   });
 

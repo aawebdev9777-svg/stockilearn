@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { base44 } from "@/api/base44Client";
 import { Card } from "@/components/ui/card";
@@ -19,9 +19,15 @@ export default function HistoryTab() {
   const [filter, setFilter] = useState("all");
   const [expanded, setExpanded] = useState(null);
 
+  const [userId, setUserId] = useState(null);
+  useEffect(() => {
+    base44.auth.me().then(u => setUserId(u?.id)).catch(() => {});
+  }, []);
+
   const { data: trades = [] } = useQuery({
-    queryKey: ["trades"],
-    queryFn: () => base44.entities.PaperTrade.list("-created_date"),
+    queryKey: ["trades", userId],
+    queryFn: () => base44.entities.PaperTrade.filter({ created_by_id: userId }),
+    enabled: !!userId,
     initialData: [],
   });
 

@@ -23,15 +23,19 @@ export default function Profile() {
     base44.auth.me().then(u => { setUser(u); setLoading(false); }).catch(() => setLoading(false));
   }, [isDemoMode]);
 
+  const userId = user?.id || null;
+
   const { data: userBadges = [] } = useQuery({
-    queryKey: ["user-badges"],
-    queryFn: () => isDemoMode ? Promise.resolve(DEMO_BADGES) : base44.entities.UserBadge.list(),
+    queryKey: ["user-badges", userId],
+    queryFn: () => isDemoMode ? Promise.resolve(DEMO_BADGES) : base44.entities.UserBadge.filter({ created_by_id: userId }),
+    enabled: isDemoMode || !!userId,
     initialData: isDemoMode ? DEMO_BADGES : [],
   });
 
   const { data: lessonProgress = [] } = useQuery({
-    queryKey: ["lesson-progress-profile"],
-    queryFn: () => isDemoMode ? Promise.resolve(DEMO_LESSON_PROGRESS) : base44.entities.LessonProgress.list(),
+    queryKey: ["lesson-progress-profile", userId],
+    queryFn: () => isDemoMode ? Promise.resolve(DEMO_LESSON_PROGRESS) : base44.entities.LessonProgress.filter({ created_by_id: userId }),
+    enabled: isDemoMode || !!userId,
     initialData: isDemoMode ? DEMO_LESSON_PROGRESS : [],
   });
 

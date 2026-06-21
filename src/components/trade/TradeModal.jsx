@@ -39,7 +39,8 @@ export default function TradeModal({ action, stock, holding, onClose }) {
   const invalid = sharesNum <= 0 || notEnoughCash || tooManyShares;
 
   const loadPortfolio = async () => {
-    const portfolios = await base44.entities.PaperPortfolio.list();
+    const user = await base44.auth.me();
+    const portfolios = await base44.entities.PaperPortfolio.filter({ created_by_id: user.id });
     if (portfolios.length === 0) {
       const p = await base44.entities.PaperPortfolio.create({ cash_balance: 10000, total_value: 10000 });
       setPortfolio(p);
@@ -66,7 +67,8 @@ export default function TradeModal({ action, stock, holding, onClose }) {
         ticker: stock.ticker, action: "buy", shares: sharesNum,
         price_at_trade: stock.current_price, total_value: totalCost, order_type: orderType,
       });
-      const existingHoldings = await base44.entities.PaperHolding.filter({ ticker: stock.ticker });
+      const user = await base44.auth.me();
+      const existingHoldings = await base44.entities.PaperHolding.filter({ ticker: stock.ticker, created_by_id: user.id });
       if (existingHoldings.length > 0) {
         const h = existingHoldings[0];
         const newShares = h.shares + sharesNum;
@@ -97,6 +99,7 @@ export default function TradeModal({ action, stock, holding, onClose }) {
     queryClient.invalidateQueries({ queryKey: ["holdings"] });
     queryClient.invalidateQueries({ queryKey: ["portfolio"] });
     queryClient.invalidateQueries({ queryKey: ["trades"] });
+    queryClient.invalidateQueries({ queryKey: ["watchlist"] });
     setLoading(false);
     setStep("success");
   };

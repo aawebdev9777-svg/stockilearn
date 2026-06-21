@@ -83,12 +83,12 @@ export default function Lesson() {
     try {
       const user = await base44.auth.me();
       const streakDays = user?.streak_current || 0;
-      const isFirstTime = !(await base44.entities.LessonProgress.filter({ lesson_id: lessonId })).some(r => r.status === "complete");
+      const isFirstTime = !(await base44.entities.LessonProgress.filter({ lesson_id: lessonId, created_by_id: user.id })).some(r => r.status === "complete");
 
       // Apply streak and accuracy multipliers
       const finalXp = calcLessonXp({ baseXp, streakDays, accuracyPct: score, isFirstTime });
 
-      const existing = await base44.entities.LessonProgress.filter({ lesson_id: lessonId });
+      const existing = await base44.entities.LessonProgress.filter({ lesson_id: lessonId, created_by_id: user.id });
       if (existing.length > 0) {
         await base44.entities.LessonProgress.update(existing[0].id, {
           status: "complete",

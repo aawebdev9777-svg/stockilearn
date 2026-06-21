@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { base44 } from "@/api/base44Client";
 import { useDemo, DEMO_PORTFOLIO, DEMO_HOLDINGS, DEMO_TRADES } from "@/lib/DemoContext";
@@ -18,28 +18,36 @@ export default function PortfolioTab({ onNavigateToMarket }) {
   const [expandedHolding, setExpandedHolding] = useState(null);
   const [sortBy, setSortBy] = useState("value");
 
+  const [userId, setUserId] = useState(null);
+  useEffect(() => {
+    if (!isDemoMode) base44.auth.me().then(u => setUserId(u?.id)).catch(() => {});
+  }, [isDemoMode]);
+
   const { data: portfolio } = useQuery({
-    queryKey: ["portfolio"],
+    queryKey: ["portfolio", userId],
     queryFn: async () => {
       if (isDemoMode) return DEMO_PORTFOLIO;
-      const portfolios = await base44.entities.PaperPortfolio.list();
+      const portfolios = await base44.entities.PaperPortfolio.filter({ created_by_id: userId });
       if (portfolios.length === 0) {
         return await base44.entities.PaperPortfolio.create({ cash_balance: 10000, total_value: 10000 });
       }
       return portfolios[0];
     },
+    enabled: isDemoMode || !!userId,
     initialData: isDemoMode ? DEMO_PORTFOLIO : undefined,
   });
 
   const { data: holdings = [] } = useQuery({
-    queryKey: ["holdings"],
-    queryFn: () => isDemoMode ? Promise.resolve(DEMO_HOLDINGS) : base44.entities.PaperHolding.list(),
+    queryKey: ["holdings", userId],
+    queryFn: () => isDemoMode ? Promise.resolve(DEMO_HOLDINGS) : base44.entities.PaperHolding.filter({ created_by_id: userId }),
+    enabled: isDemoMode || !!userId,
     initialData: isDemoMode ? DEMO_HOLDINGS : [],
   });
 
   const { data: allTrades = [] } = useQuery({
-    queryKey: ["trades"],
-    queryFn: () => isDemoMode ? Promise.resolve(DEMO_TRADES) : base44.entities.PaperTrade.list(),
+    queryKey: ["trades", userId],
+    queryFn: () => isDemoMode ? Promise.resolve(DEMO_TRADES) : base44.entities.PaperTrade.filter({ created_by_id: userId }),
+    enabled: isDemoMode || !!userId,
     initialData: isDemoMode ? DEMO_TRADES : [],
   });
 

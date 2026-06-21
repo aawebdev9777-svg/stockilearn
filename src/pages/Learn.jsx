@@ -8,9 +8,15 @@ import SkillNode from "@/components/learn/SkillNode";
 
 export default function Learn() {
   const { isDemoMode } = useDemo();
+  const [userId, setUserId] = useState(null);
+  useEffect(() => {
+    if (!isDemoMode) base44.auth.me().then(u => setUserId(u?.id)).catch(() => {});
+  }, [isDemoMode]);
+
   const { data: progressData = [] } = useQuery({
-    queryKey: ["lesson-progress"],
-    queryFn: () => isDemoMode ? Promise.resolve(DEMO_LESSON_PROGRESS) : base44.entities.LessonProgress.list(),
+    queryKey: ["lesson-progress", userId],
+    queryFn: () => isDemoMode ? Promise.resolve(DEMO_LESSON_PROGRESS) : base44.entities.LessonProgress.filter({ created_by_id: userId }),
+    enabled: isDemoMode || !!userId,
     initialData: isDemoMode ? DEMO_LESSON_PROGRESS : [],
   });
 

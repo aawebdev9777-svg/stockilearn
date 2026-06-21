@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { base44 } from "@/api/base44Client";
@@ -44,15 +44,22 @@ export default function StockDetail() {
   const [tradeAction, setTradeAction] = useState(null);
   const [tipVisible, setTipVisible] = useState(null);
 
+  const [userId, setUserId] = useState(null);
+  useEffect(() => {
+    base44.auth.me().then(u => setUserId(u?.id)).catch(() => {});
+  }, []);
+
   const { data: watchlist = [] } = useQuery({
-    queryKey: ["watchlist"],
-    queryFn: () => base44.entities.Watchlist.list(),
+    queryKey: ["watchlist", userId],
+    queryFn: () => base44.entities.Watchlist.filter({ created_by_id: userId }),
+    enabled: !!userId,
     initialData: [],
   });
 
   const { data: holdings = [] } = useQuery({
-    queryKey: ["holdings"],
-    queryFn: () => base44.entities.PaperHolding.list(),
+    queryKey: ["holdings", userId],
+    queryFn: () => base44.entities.PaperHolding.filter({ created_by_id: userId }),
+    enabled: !!userId,
     initialData: [],
   });
 
