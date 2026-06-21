@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useDemo } from "@/lib/DemoContext";
 import { useNavigate } from "react-router-dom";
+import { ArrowRight } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 export default function DemoLogin() {
   const { loginDemo, signupDemo } = useDemo();
@@ -69,34 +71,43 @@ export default function DemoLogin() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-background px-4">
+    <div className="min-h-screen bg-background flex flex-col items-center justify-center px-6">
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
-        className="w-full max-w-sm"
+        className="w-full max-w-sm flex flex-col gap-8"
       >
         {/* Logo */}
-        <div className="text-center mb-8">
-          <div className="text-5xl mb-2">📈</div>
-          <h1 className="text-3xl font-black text-foreground">
-            Stocki<span className="text-primary">Learn</span>
-          </h1>
-          <p className="text-sm text-muted-foreground mt-1">The Duolingo of investing 📊</p>
+        <div className="text-center flex flex-col items-center gap-3">
+          <motion.div
+            animate={{ y: [0, -10, 0] }}
+            transition={{ duration: 2, repeat: Infinity }}
+            className="text-7xl"
+          >
+            📈
+          </motion.div>
+          <div>
+            <h1 className="text-3xl font-black text-foreground">
+              Stocki<span className="text-primary">Learn</span>
+            </h1>
+            <p className="text-sm font-bold text-primary mt-1">Turn confusion into confidence.</p>
+            <p className="text-xs text-muted-foreground mt-0.5">Learn investing the fun way.</p>
+          </div>
         </div>
 
-        {/* Tabs */}
-        <div className="flex bg-muted rounded-2xl p-1 mb-4">
-          {["signin", "signup"].map((t) => (
+        {/* Tab switcher */}
+        <div className="flex bg-card border border-border rounded-2xl p-1">
+          {[["signin", "Sign In"], ["signup", "Create Account"]].map(([t, l]) => (
             <button
               key={t}
               onClick={() => { setTab(t); setSiError(""); setSuError(""); }}
-              className={`flex-1 py-2 rounded-xl text-sm font-bold transition-all ${
+              className={`flex-1 py-2.5 rounded-xl text-sm font-black transition-all ${
                 tab === t
-                  ? "bg-card text-foreground shadow-sm"
+                  ? "bg-primary text-primary-foreground shadow-sm"
                   : "text-muted-foreground hover:text-foreground"
               }`}
             >
-              {t === "signin" ? "Sign In" : "Sign Up"}
+              {l}
             </button>
           ))}
         </div>
@@ -105,113 +116,111 @@ export default function DemoLogin() {
           {tab === "signin" ? (
             <motion.form
               key="signin"
-              initial={{ opacity: 0, x: -20 }}
+              initial={{ opacity: 0, x: -30 }}
               animate={siShaking ? { x: [-8, 8, -8, 8, 0], opacity: 1 } : { opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: 20 }}
+              exit={{ opacity: 0, x: 30 }}
               transition={{ duration: 0.2 }}
               onSubmit={handleSignIn}
-              className="bg-card border border-border rounded-2xl p-6 shadow-sm space-y-4"
+              className="flex flex-col gap-4"
             >
-              <div className="space-y-1">
-                <label className="text-xs font-bold text-muted-foreground uppercase tracking-wide">Username</label>
+              <div className="flex flex-col gap-1">
+                <label className="text-xs font-black text-muted-foreground uppercase tracking-wider">Username</label>
                 <input
                   type="text"
                   value={siUsername}
                   onChange={e => { setSiUsername(e.target.value); setSiError(""); }}
-                  placeholder="Enter username"
-                  className="w-full px-4 py-3 rounded-xl border border-border bg-background text-foreground text-sm font-medium focus:outline-none focus:ring-2 focus:ring-primary/40"
+                  placeholder="Enter your username"
+                  className="w-full px-4 py-4 rounded-2xl border-2 border-border bg-card text-foreground text-sm font-bold focus:outline-none focus:border-primary transition-colors"
                   autoComplete="username"
                 />
               </div>
 
-              <div className="space-y-1">
-                <label className="text-xs font-bold text-muted-foreground uppercase tracking-wide">Password</label>
+              <div className="flex flex-col gap-1">
+                <label className="text-xs font-black text-muted-foreground uppercase tracking-wider">Password</label>
                 <input
                   type="password"
                   value={siPassword}
                   onChange={e => { setSiPassword(e.target.value); setSiError(""); }}
-                  placeholder="Enter password"
-                  className="w-full px-4 py-3 rounded-xl border border-border bg-background text-foreground text-sm font-medium focus:outline-none focus:ring-2 focus:ring-primary/40"
+                  placeholder="Enter your password"
+                  className="w-full px-4 py-4 rounded-2xl border-2 border-border bg-card text-foreground text-sm font-bold focus:outline-none focus:border-primary transition-colors"
                   autoComplete="current-password"
                 />
               </div>
 
-              {siError && <p className="text-xs text-destructive font-semibold">{siError}</p>}
+              {siError && (
+                <p className="text-xs font-bold text-destructive bg-destructive/10 px-4 py-2 rounded-xl">{siError}</p>
+              )}
 
-              <button
+              <Button
                 type="submit"
                 disabled={siLoading}
-                className="w-full h-12 rounded-xl bg-primary text-primary-foreground font-black text-base hover:opacity-90 transition-opacity disabled:opacity-60"
+                className="w-full h-14 rounded-2xl text-base font-black gap-2 mt-2"
               >
-                {siLoading ? "Signing in..." : "Sign In"}
-              </button>
+                {siLoading ? "Signing in..." : <><span>SIGN IN</span><ArrowRight className="w-5 h-5" /></>}
+              </Button>
             </motion.form>
           ) : (
             <motion.form
               key="signup"
-              initial={{ opacity: 0, x: 20 }}
+              initial={{ opacity: 0, x: 30 }}
               animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -20 }}
+              exit={{ opacity: 0, x: -30 }}
               transition={{ duration: 0.2 }}
               onSubmit={handleSignUp}
-              className="bg-card border border-border rounded-2xl p-6 shadow-sm space-y-4"
+              className="flex flex-col gap-4"
             >
-              <div className="text-center space-y-1 mb-2">
-                <div className="text-4xl">🚀</div>
-                <h2 className="font-black text-lg text-foreground">Create your account</h2>
-                <p className="text-xs text-muted-foreground">Free forever. Start investing smarter today.</p>
+              <div className="text-center mb-1">
+                <div className="text-4xl mb-2">🚀</div>
+                <p className="text-xs text-muted-foreground">Free forever · No credit card needed</p>
               </div>
 
-              <div className="space-y-1">
-                <label className="text-xs font-bold text-muted-foreground uppercase tracking-wide">Username</label>
+              <div className="flex flex-col gap-1">
+                <label className="text-xs font-black text-muted-foreground uppercase tracking-wider">Username</label>
                 <input
                   type="text"
                   value={suName}
                   onChange={e => { setSuName(e.target.value); setSuError(""); }}
                   placeholder="Choose a username"
-                  className="w-full px-4 py-3 rounded-xl border border-border bg-background text-foreground text-sm font-medium focus:outline-none focus:ring-2 focus:ring-primary/40"
+                  className="w-full px-4 py-4 rounded-2xl border-2 border-border bg-card text-foreground text-sm font-bold focus:outline-none focus:border-primary transition-colors"
                   autoComplete="username"
                 />
               </div>
 
-              <div className="space-y-1">
-                <label className="text-xs font-bold text-muted-foreground uppercase tracking-wide">Password</label>
+              <div className="flex flex-col gap-1">
+                <label className="text-xs font-black text-muted-foreground uppercase tracking-wider">Password</label>
                 <input
                   type="password"
                   value={suPassword}
                   onChange={e => { setSuPassword(e.target.value); setSuError(""); }}
                   placeholder="Choose a password"
-                  className="w-full px-4 py-3 rounded-xl border border-border bg-background text-foreground text-sm font-medium focus:outline-none focus:ring-2 focus:ring-primary/40"
+                  className="w-full px-4 py-4 rounded-2xl border-2 border-border bg-card text-foreground text-sm font-bold focus:outline-none focus:border-primary transition-colors"
                   autoComplete="new-password"
                 />
               </div>
 
-              <div className="space-y-1">
-                <label className="text-xs font-bold text-muted-foreground uppercase tracking-wide">Confirm Password</label>
+              <div className="flex flex-col gap-1">
+                <label className="text-xs font-black text-muted-foreground uppercase tracking-wider">Confirm Password</label>
                 <input
                   type="password"
                   value={suPassword2}
                   onChange={e => { setSuPassword2(e.target.value); setSuError(""); }}
-                  placeholder="Repeat password"
-                  className="w-full px-4 py-3 rounded-xl border border-border bg-background text-foreground text-sm font-medium focus:outline-none focus:ring-2 focus:ring-primary/40"
+                  placeholder="Repeat your password"
+                  className="w-full px-4 py-4 rounded-2xl border-2 border-border bg-card text-foreground text-sm font-bold focus:outline-none focus:border-primary transition-colors"
                   autoComplete="new-password"
                 />
               </div>
 
-              {suError && <p className="text-xs text-destructive font-semibold">{suError}</p>}
+              {suError && (
+                <p className="text-xs font-bold text-destructive bg-destructive/10 px-4 py-2 rounded-xl">{suError}</p>
+              )}
 
-              <button
+              <Button
                 type="submit"
                 disabled={suLoading}
-                className="w-full h-12 rounded-xl bg-primary text-primary-foreground font-black text-base hover:opacity-90 transition-opacity disabled:opacity-60"
+                className="w-full h-14 rounded-2xl text-base font-black gap-2 mt-2"
               >
-                {suLoading ? "Creating account..." : "Create Account 🚀"}
-              </button>
-
-              <p className="text-center text-xs text-muted-foreground">
-                Already have an account?{" "}
-                <button type="button" onClick={() => setTab("signin")} className="text-primary font-bold">Sign in</button>
-              </p>
+                {suLoading ? "Creating account..." : <><span>CREATE ACCOUNT</span><ArrowRight className="w-5 h-5" /></>}
+              </Button>
             </motion.form>
           )}
         </AnimatePresence>
