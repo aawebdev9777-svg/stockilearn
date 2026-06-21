@@ -15,7 +15,7 @@ import Learn from '@/pages/Learn';
 import Lesson from '@/pages/Lesson';
 import Trade from '@/pages/Trade';
 import StockDetail from '@/pages/StockDetail';
-import Leagues from '@/pages/Leagues';
+import Leagues from '@/pages/Leagues.jsx';
 import Profile from '@/pages/Profile';
 import Settings from '@/pages/Settings';
 import Onboarding from '@/pages/Onboarding';
