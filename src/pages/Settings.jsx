@@ -2,7 +2,8 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
 import { useDemo } from "@/lib/DemoContext";
-import { Trash2 } from "lucide-react";
+import { Trash2, AlertTriangle } from "lucide-react";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
 import { Card } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
 import { Button } from "@/components/ui/button";
@@ -13,6 +14,8 @@ export default function Settings() {
   const navigate = useNavigate();
   const { isDemoMode, logoutDemo, demoUser } = useDemo();
   const [user, setUser] = useState(isDemoMode ? demoUser : null);
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   useEffect(() => {
     if (isDemoMode) return;
@@ -25,13 +28,32 @@ export default function Settings() {
     setUser(prev => ({ ...prev, [field]: value }));
   };
 
+  const handleDeleteAccount = async () => {
+    setIsDeleting(true);
+    try {
+      if (isDemoMode) {
+        localStorage.removeItem("stockilearn_users");
+        localStorage.removeItem("stockilearn_demo_session");
+        localStorage.removeItem("stockilearn_lesson_progress");
+        logoutDemo();
+      } else {
+        await base44.auth.logout();
+      }
+      navigate("/login");
+    } catch (error) {
+      console.error("Delete account error:", error);
+    } finally {
+      setIsDeleting(false);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-background">
-      <div className="sticky top-0 z-40 bg-background/90 backdrop-blur-md px-4 py-3 flex items-center gap-3">
-        <button onClick={() => navigate(-1)} className="text-foreground">
-          <ArrowLeft className="w-5 h-5" />
+      <div className="sticky top-0 z-40 bg-background/90 backdrop-blur-md px-4 py-3 flex items-center gap-3 pt-safe-area-top select-none">
+        <button onClick={() => navigate(-1)} className="text-foreground select-none">
+          <ArrowLeft className="w-5 h-5 select-none" />
         </button>
-        <h2 className="text-sm font-bold text-foreground">Settings</h2>
+        <h2 className="text-sm font-bold text-foreground select-none">Settings</h2>
       </div>
 
       <div className="px-4 pb-4 space-y-4 max-w-lg mx-auto">
@@ -83,18 +105,30 @@ export default function Settings() {
 
         <Button
           variant="outline"
-          onClick={() => {
-            if (confirm("This will delete ALL user data, portfolios, and progress. Everyone will need to re-register and complete onboarding again. Continue?")) {
-              localStorage.removeItem("stockilearn_users");
-              localStorage.removeItem("stockilearn_demo_session");
-              logoutDemo();
-              navigate("/login");
-            }
-          }}
-          className="w-full gap-2 text-destructive border-destructive/30"
+          onClick={() => setShowDeleteDialog(true)}
+          className="w-full gap-2 text-destructive border-destructive/30 select-none"
         >
-          <Trash2 className="w-4 h-4" /> Reset Everything (Admin Only)
+          <Trash2 className="w-4 h-4 select-none" /> Delete Account
         </Button>
+
+        <AlertDialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle className="flex items-center gap-2 text-destructive">
+                <AlertTriangle className="w-5 h-5 select-none" /> Delete Account?
+              </AlertDialogTitle>
+              <AlertDialogDescription>
+                This will permanently delete your account and all data including progress, portfolios, and achievements. This action cannot be undone.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel className="select-none">Cancel</AlertDialogCancel>
+              <AlertDialogAction onClick={handleDeleteAccount} disabled={isDeleting} className="bg-destructive text-destructive-foreground select-none">
+                {isDeleting ? "Deleting..." : "Delete Account"}
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
 
         <Link to="/upgrade">
           <Button variant="default" className="w-full gap-2 bg-primary text-primary-foreground">
@@ -114,18 +148,18 @@ export default function Settings() {
           variant="outline"
           onClick={() => {
             if (isDemoMode) {
-              // Clear all demo data
               localStorage.removeItem("stockilearn_users");
               localStorage.removeItem("stockilearn_demo_session");
+              localStorage.removeItem("stockilearn_lesson_progress");
               logoutDemo();
               navigate("/login");
             } else {
               base44.auth.logout();
             }
           }}
-          className="w-full gap-2 text-destructive border-destructive/20"
+          className="w-full gap-2 text-destructive border-destructive/20 select-none"
         >
-          <LogOut className="w-4 h-4" /> Reset All Data & Sign Out
+          <LogOut className="w-4 h-4 select-none" /> Sign Out
         </Button>
 
         <div className="text-center text-[10px] text-muted-foreground space-y-1 pt-4">

@@ -3,9 +3,11 @@ import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
-import { Search } from "lucide-react";
+import { Search, ChevronDown } from "lucide-react";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { getAllStocks, getTopMovers, searchStocks, generateSparkline, getIndices, getStocksByCategory, formatPrice } from "@/lib/stockData";
 import MiniSparkline from "@/components/common/MiniSparkline";
+import PullToRefresh from "@/components/common/PullToRefresh";
 
 const CATEGORIES = [
   { key: "popular", label: "🔥 All" },
@@ -66,6 +68,13 @@ function MarketStatusBanner() {
 export default function MarketTab() {
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState("popular");
+  const [refreshKey, setRefreshKey] = useState(0);
+
+  const handleRefresh = async () => {
+    // Trigger data refresh
+    setRefreshKey(k => k + 1);
+    await new Promise(resolve => setTimeout(resolve, 500));
+  };
 
   const indices = useMemo(() => getIndices(), []);
   const { gainers, losers } = useMemo(() => getTopMovers(), []);
@@ -76,7 +85,8 @@ export default function MarketTab() {
   }, [query, category]);
 
   return (
-    <div className="space-y-4 mt-4">
+    <PullToRefresh onRefresh={handleRefresh}>
+      <div key={refreshKey} className="space-y-4 mt-4 min-h-screen pb-4">
       <MarketStatusBanner />
 
       {/* Indices Strip */}
@@ -124,21 +134,35 @@ export default function MarketTab() {
 
       {/* Category Tabs */}
       {!query && (
-        <div className="flex gap-2 overflow-x-auto pb-1 -mx-1 px-1">
-          {CATEGORIES.map(tab => (
-            <button
-              key={tab.key}
-              onClick={() => setCategory(tab.key)}
-              className={`shrink-0 text-xs font-bold px-3 py-1.5 rounded-full transition-all whitespace-nowrap ${
-                category === tab.key
-                  ? "bg-primary text-primary-foreground"
-                  : "bg-muted/50 text-muted-foreground"
-              }`}
-            >
-              {tab.label}
-            </button>
-          ))}
-        </div>
+        <>
+          <div className="hidden sm:flex gap-2 overflow-x-auto pb-1 -mx-1 px-1">
+            {CATEGORIES.map(tab => (
+              <button
+                key={tab.key}
+                onClick={() => setCategory(tab.key)}
+                className={`shrink-0 text-xs font-bold px-3 py-1.5 rounded-full transition-all whitespace-nowrap select-none ${
+                  category === tab.key
+                    ? "bg-primary text-primary-foreground"
+                    : "bg-muted/50 text-muted-foreground"
+                }`}
+              >
+                {tab.label}
+              </button>
+            ))}
+          </div>
+          <div className="sm:hidden">
+            <Select value={category} onValueChange={setCategory}>
+              <SelectTrigger className="h-10 text-xs font-bold">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                {CATEGORIES.map(tab => (
+                  <SelectItem key={tab.key} value={tab.key}>{tab.label}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+        </>
       )}
 
       {/* Stock List */}
@@ -170,12 +194,13 @@ export default function MarketTab() {
           );
         })}
         {stocks.length === 0 && (
-          <div className="text-center py-10">
-            <p className="text-3xl mb-2">🔍</p>
-            <p className="text-sm text-muted-foreground">No stocks found for "{query}"</p>
+          <div className="text-center py-10 select-none">
+            <p className="text-3xl mb-2 select-none">🔍</p>
+            <p className="text-sm text-muted-foreground select-none">No stocks found for "{query}"</p>
           </div>
         )}
       </div>
-    </div>
+      </div>
+    </PullToRefresh>
   );
 }

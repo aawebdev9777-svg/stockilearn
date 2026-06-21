@@ -11,7 +11,8 @@ import DailyChallenge from "@/components/home/DailyChallenge";
 import MarketPulse from "@/components/home/MarketPulse";
 import ContinueCard from "@/components/home/ContinueCard";
 import NewsFeed from "@/components/home/NewsFeed";
-import { Gem } from "lucide-react";
+import { Gem, RefreshCw } from "lucide-react";
+import PullToRefresh from "@/components/common/PullToRefresh";
 
 function getGreeting(name) {
   const hour = new Date().getHours();
@@ -51,8 +52,18 @@ export default function Home() {
   const dailyXp = user?.daily_xp_earned_today || 0;
   const dailyGoal = user?.daily_goal_xp || 20;
 
+  const handleRefresh = async () => {
+    // Simulate refresh - in real app would refetch data
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    if (!isDemoMode) {
+      const user = await base44.auth.me().catch(() => null);
+      if (user) setUser(user);
+    }
+  };
+
   return (
-    <div className="px-4 pt-5 pb-4 space-y-5" style={{ fontFamily: "'Outfit', sans-serif" }}>
+    <PullToRefresh onRefresh={handleRefresh}>
+      <div className="px-4 pt-5 pb-4 space-y-5 min-h-screen" style={{ fontFamily: "'Outfit', sans-serif" }}>
       {/* Header */}
       <motion.div
         initial={{ opacity: 0, y: -10 }}
@@ -113,16 +124,17 @@ export default function Home() {
         <motion.div
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
-          className="rounded-3xl border border-orange-200/60 p-4 flex items-center gap-3"
+          className="rounded-3xl border border-orange-200/60 p-4 flex items-center gap-3 select-none"
         style={{ background: "rgba(255,237,213,0.65)", backdropFilter: "blur(12px)", WebkitBackdropFilter: "blur(12px)" }}
         >
-          <span className="text-2xl">⚠️</span>
+          <span className="text-2xl select-none">⚠️</span>
           <div>
             <p className="text-xs font-black text-orange-600">Your {streak}-day streak is at risk!</p>
             <p className="text-[10px] text-orange-400 font-bold">Quick — do one lesson before midnight.</p>
           </div>
         </motion.div>
       )}
-    </div>
+      </div>
+    </PullToRefresh>
   );
 }

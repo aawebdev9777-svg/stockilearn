@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { X, Bell, Plus } from "lucide-react";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { getStock, generateSparkline, formatPrice } from "@/lib/stockData";
 import MiniSparkline from "@/components/common/MiniSparkline";
 import { motion, AnimatePresence } from "framer-motion";
@@ -77,19 +78,20 @@ export default function WatchlistTab({ onNavigateToMarket }) {
   return (
     <div className="space-y-3 mt-4">
       <div className="flex items-center justify-between">
-        <p className="text-xs text-muted-foreground font-medium">
+        <p className="text-xs text-muted-foreground font-medium select-none">
           {watchlist.length}/30 stocks
         </p>
-        <select
-          value={sortBy}
-          onChange={(e) => setSortBy(e.target.value)}
-          className="text-[10px] font-bold bg-muted text-muted-foreground rounded-xl px-2 py-1 border-0 outline-none"
-        >
-          <option value="added">Added Order</option>
-          <option value="change">% Change</option>
-          <option value="price">Price</option>
-          <option value="az">A–Z</option>
-        </select>
+        <Select value={sortBy} onValueChange={setSortBy}>
+          <SelectTrigger className="w-[140px] h-8 text-[10px] font-bold bg-muted text-muted-foreground border-0 select-none">
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="added">Added Order</SelectItem>
+            <SelectItem value="change">% Change</SelectItem>
+            <SelectItem value="price">Price</SelectItem>
+            <SelectItem value="az">A–Z</SelectItem>
+          </SelectContent>
+        </Select>
       </div>
 
       <AnimatePresence>
@@ -134,10 +136,10 @@ export default function WatchlistTab({ onNavigateToMarket }) {
                     </div>
                   </Link>
                   <div className="flex flex-col gap-1.5 shrink-0">
-                    <button onClick={() => handleRemove(item.id)} className="text-muted-foreground/40 hover:text-red-400 transition-colors">
-                      <X className="w-3.5 h-3.5" />
+                    <button onClick={() => handleRemove(item.id)} className="text-muted-foreground/40 hover:text-red-400 transition-colors select-none">
+                      <X className="w-3.5 h-3.5 select-none" />
                     </button>
-                    <Bell className="w-3.5 h-3.5 text-muted-foreground/30" />
+                    <Bell className="w-3.5 h-3.5 text-muted-foreground/30 select-none" />
                   </div>
                 </div>
               </motion.div>
@@ -149,9 +151,9 @@ export default function WatchlistTab({ onNavigateToMarket }) {
       {watchlist.length < 30 && onNavigateToMarket && (
         <button
           onClick={onNavigateToMarket}
-          className="w-full py-3 border border-dashed border-border rounded-2xl text-xs font-bold text-muted-foreground flex items-center justify-center gap-2"
+          className="w-full py-3 border border-dashed border-border rounded-2xl text-xs font-bold text-muted-foreground flex items-center justify-center gap-2 select-none"
         >
-          <Plus className="w-3.5 h-3.5" /> Add more stocks
+          <Plus className="w-3.5 h-3.5 select-none" /> Add more stocks
         </button>
       )}
     </div>

@@ -140,14 +140,14 @@ export default function Lesson() {
   return (
     <div className="min-h-screen bg-background flex flex-col">
       {/* Top bar */}
-      <div className="sticky top-0 z-50 bg-background/90 backdrop-blur-md px-4 py-3 flex items-center gap-3">
-        <button onClick={() => navigate("/learn")} className="text-muted-foreground">
-          <X className="w-5 h-5" />
+      <div className="sticky top-0 z-50 bg-background/90 backdrop-blur-md px-4 py-3 flex items-center gap-3 pt-safe-area-top select-none">
+        <button onClick={() => navigate("/learn")} className="text-muted-foreground select-none">
+          <X className="w-5 h-5 select-none" />
         </button>
         <Progress value={progressPercent} className="flex-1 h-2.5" />
         <div className="flex items-center gap-0.5">
-          <Heart className="w-4 h-4 fill-red-500 text-red-500" />
-          <span className="text-xs font-bold text-red-400">{hearts}</span>
+          <Heart className="w-4 h-4 fill-red-500 text-red-500 select-none" />
+          <span className="text-xs font-bold text-red-400 select-none">{hearts}</span>
         </div>
       </div>
 
