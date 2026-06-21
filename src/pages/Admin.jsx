@@ -65,6 +65,16 @@ function OverviewTab({ users }) {
       <div className="grid grid-cols-2 gap-3">
         {stats.map(s => <StatCard key={s.label} {...s} />)}
       </div>
+      <Link to="/admin/analytics" className="block">
+        <Card className="p-4 bg-card/80 border-border/50 flex items-center gap-3 hover:bg-muted/30 transition-colors">
+          <BarChart3 className="w-5 h-5 text-[#58CC02]" />
+          <div className="flex-1 text-left">
+            <p className="text-sm font-black text-foreground">Google Analytics & Search Console</p>
+            <p className="text-xs text-muted-foreground">View traffic, search queries, and page performance</p>
+          </div>
+          <ChevronDown className="w-4 h-4 text-muted-foreground -rotate-90" />
+        </Card>
+      </Link>
       <Section title="Platform Architecture">
         <div className="space-y-2 text-xs text-muted-foreground">
           {[
