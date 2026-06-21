@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { base44 } from "@/api/base44Client";
-import { useDemo, DEMO_USER, DEMO_BADGES, DEMO_LESSON_PROGRESS } from "@/lib/DemoContext";
+import { useDemo, DEMO_BADGES, DEMO_LESSON_PROGRESS } from "@/lib/DemoContext";
 import { motion } from "framer-motion";
 import { Card } from "@/components/ui/card";
 import { useQuery } from "@tanstack/react-query";
@@ -14,8 +14,8 @@ import MasteryBar from "@/components/profile/MasteryBar";
 import { calculateAllMastery, TOPIC_META } from "@/lib/masteryEngine";
 
 export default function Profile() {
-  const { isDemoMode } = useDemo();
-  const [user, setUser] = useState(isDemoMode ? DEMO_USER : null);
+  const { isDemoMode, demoUser } = useDemo();
+  const [user, setUser] = useState(isDemoMode ? demoUser : null);
   const [loading, setLoading] = useState(!isDemoMode);
 
   useEffect(() => {

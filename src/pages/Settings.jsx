@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
-import { useDemo, DEMO_USER } from "@/lib/DemoContext";
+import { useDemo } from "@/lib/DemoContext";
 import { Trash2 } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
@@ -11,8 +11,8 @@ import { Link } from "react-router-dom";
 
 export default function Settings() {
   const navigate = useNavigate();
-  const { isDemoMode, logoutDemo } = useDemo();
-  const [user, setUser] = useState(isDemoMode ? DEMO_USER : null);
+  const { isDemoMode, logoutDemo, demoUser } = useDemo();
+  const [user, setUser] = useState(isDemoMode ? demoUser : null);
 
   useEffect(() => {
     if (isDemoMode) return;
