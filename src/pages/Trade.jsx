@@ -15,13 +15,13 @@ export default function Trade() {
           <p className="text-[10px] font-black uppercase tracking-widest text-[#58CC02]">Paper Trading</p>
           <h1 className="text-2xl font-black text-gray-900 mt-0.5">Markets</h1>
         </div>
-        <span className="text-xs text-amber-600 font-black bg-amber-50 border-b-4 border-amber-200 px-3 py-1.5 rounded-2xl">
+        <span className="text-xs text-amber-600 font-black border border-amber-200/60 px-3 py-1.5 rounded-2xl" style={{ background: "rgba(255,237,170,0.55)", backdropFilter: "blur(10px)", WebkitBackdropFilter: "blur(10px)" }}>
           📋 PAPER
         </span>
       </div>
 
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-        <TabsList className="w-full grid grid-cols-4 bg-gray-100 border-b-4 border-gray-200 rounded-2xl h-11 mb-0">
+        <TabsList className="w-full grid grid-cols-4 rounded-2xl h-11 mb-0 border border-white/50" style={{ background: "rgba(255,255,255,0.45)", backdropFilter: "blur(14px)", WebkitBackdropFilter: "blur(14px)" }}>
           <TabsTrigger value="portfolio" className="text-[10px] font-black rounded-xl uppercase">Portfolio</TabsTrigger>
           <TabsTrigger value="market" className="text-[10px] font-black rounded-xl uppercase">Market</TabsTrigger>
           <TabsTrigger value="watchlist" className="text-[10px] font-black rounded-xl uppercase">Watch</TabsTrigger>

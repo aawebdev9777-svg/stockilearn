@@ -165,7 +165,8 @@ export default function Leagues() {
       <motion.div
         initial={{ opacity: 0, y: -10 }}
         animate={{ opacity: 1, y: 0 }}
-        className={`rounded-2xl border-b-4 p-5 ${tierColors.bg} ${tierColors.border}`}
+        className={`rounded-2xl p-5 border border-white/50`}
+        style={{ background: "rgba(255,255,255,0.5)", backdropFilter: "blur(14px)", WebkitBackdropFilter: "blur(14px)" }}
       >
         <div className="flex items-center gap-4">
           <LeagueBadge tier={tier} />
@@ -227,7 +228,7 @@ export default function Leagues() {
       {/* Full leaderboard */}
       <div>
         <p className="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-2">Full Rankings</p>
-        <div className="rounded-2xl border-b-4 border-gray-200 overflow-hidden">
+        <div className="rounded-2xl border border-white/50 overflow-hidden" style={{ background: "rgba(255,255,255,0.45)", backdropFilter: "blur(14px)", WebkitBackdropFilter: "blur(14px)" }}>
           <ZoneBanner label="Promotion Zone" Icon={ChevronUp} bgClass="bg-green-50 border-b border-green-100" textClass="text-green-600" />
           {leaderboard.slice(0, 5).map(p => <LeaderboardRow key={p.name} player={p} />)}
 
@@ -246,7 +247,7 @@ export default function Leagues() {
         <p className="text-[10px] font-black uppercase tracking-widest text-[#58CC02] mb-2">Your Stats</p>
         <div className="grid grid-cols-2 gap-3">
           {stats.map(({ label, value, Icon, color }) => (
-            <div key={label} className="bg-white rounded-2xl border-b-4 border-gray-200 p-3.5 flex items-center gap-3">
+            <div key={label} className="rounded-2xl border border-white/50 p-3.5 flex items-center gap-3" style={{ background: "rgba(255,255,255,0.55)", backdropFilter: "blur(12px)", WebkitBackdropFilter: "blur(12px)" }}>
               <div className="w-9 h-9 rounded-xl bg-gray-100 flex items-center justify-center shrink-0">
                 <Icon className={`w-4 h-4 ${color}`} strokeWidth={2.5} />
               </div>
