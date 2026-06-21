@@ -177,11 +177,11 @@ function SlideTitle() {
         className="text-8xl mb-4 relative z-10">📈</motion.div>
       <motion.h1 initial={{y:40,opacity:0}} animate={{y:0,opacity:1}} transition={{delay:0.35}}
         className="font-black leading-none relative z-10" style={{fontSize:96,letterSpacing:"-4px",color:TEXT}}>
-        VSTOCK
+        Stocki<span style={{color:G}}>Learn</span>
       </motion.h1>
       <motion.p initial={{y:20,opacity:0}} animate={{y:0,opacity:1}} transition={{delay:0.55}}
         className="text-2xl mt-3 mb-8 relative z-10" style={{color:MUTED}}>
-        Building money-confident kids. The Duolingo of investing for the next generation. — VSTOCK
+        Building money-confident kids. The Duolingo of investing for the next generation. — StockiLearn
       </motion.p>
       <motion.div initial={{opacity:0,y:10}} animate={{opacity:1,y:0}} transition={{delay:0.85}}
         className="flex items-center gap-4 relative z-10">
@@ -557,7 +557,7 @@ function SlideVision() {
           The first generation that starts<br/>adult life <span style={{color:G}}>financially confident.</span>
         </h2>
         <p className="text-xl max-w-3xl mx-auto leading-relaxed" style={{color:MUTED}}>
-          In 10 years, every 16-year-old opens VSTOCK the same way they open Duolingo.
+          In 10 years, every 16-year-old opens StockiLearn the same way they open Duolingo.
           We won't just teach investing — we'll <strong style={{color:TEXT}}>give the next generation a 10-year head start.</strong>
         </p>
       </motion.div>
@@ -603,7 +603,7 @@ function SlideCta() {
         </p>
         <div className="flex flex-col items-start gap-2">
           <div className="text-3xl font-black" style={{color:TEXT}}>Let's talk. <span style={{color:G}}>📈</span></div>
-          <p className="text-base" style={{color:MUTED2}}>hello@vstock.app · vstock.app</p>
+          <p className="text-base" style={{color:MUTED2}}>hello@stockilearn.app · stockilearn.app</p>
         </div>
       </motion.div>
       {/* Right panel */}

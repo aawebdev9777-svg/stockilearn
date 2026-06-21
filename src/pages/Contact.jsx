@@ -15,7 +15,7 @@ export default function Contact() {
     setSending(true);
     await base44.integrations.Core.SendEmail({
       to: "aa.web.dev@outlook.com",
-      from_name: "VSTOCK Contact Form",
+      from_name: "StockiLearn Contact Form",
       subject: `New message from ${form.name}`,
       body: `Name: ${form.name}\nEmail: ${form.email}\n\nMessage:\n${form.message}`,
     });
@@ -31,7 +31,7 @@ export default function Contact() {
         <div className="max-w-4xl mx-auto px-6 py-3 flex items-center justify-between">
           <Link to="/" className="flex items-center gap-2">
             <span className="text-2xl">📈</span>
-            <span className="text-xl font-black text-gray-800">VSTOCK</span>
+            <span className="text-xl font-black text-gray-800">Stocki<span className="text-[#58CC02]">Learn</span></span>
           </Link>
           <Link to="/login"
             className="text-sm font-black px-5 py-2.5 rounded-xl bg-[#58CC02] text-white border-b-4 border-[#46A302] hover:brightness-105 transition-all">
@@ -140,9 +140,9 @@ export default function Contact() {
         <div className="max-w-4xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
           <Link to="/" className="flex items-center gap-2">
             <span className="text-xl">📈</span>
-            <span className="font-black text-gray-800">VSTOCK</span>
+            <span className="font-black text-gray-800">Stocki<span className="text-[#58CC02]">Learn</span></span>
           </Link>
-          <p className="text-xs text-gray-400">© 2026 VSTOCK · Educational purposes only</p>
+          <p className="text-xs text-gray-400">© 2026 StockiLearn · Educational purposes only</p>
           <div className="flex items-center gap-4 text-xs text-gray-400">
             <Link to="/about" className="hover:text-gray-700 transition-colors">About</Link>
             <Link to="/contact" className="hover:text-gray-700 transition-colors font-bold text-[#58CC02]">Contact</Link>

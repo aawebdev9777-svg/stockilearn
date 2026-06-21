@@ -19,7 +19,7 @@ export default function BrunoWidget() {
     setLoading(true);
     try {
       const res = await base44.integrations.Core.InvokeLLM({
-        prompt: `You are Bruno the Bull 🐂, a friendly, enthusiastic AI tutor for VSTOCK — a gamified investing education app for beginners.
+        prompt: `You are Bruno the Bull 🐂, a friendly, enthusiastic AI tutor for Vstock — a gamified investing education app for beginners.
 
 Answer in 2-3 short sentences max. Use plain English, one relevant emoji, be encouraging and fun. Never be condescending.
 
