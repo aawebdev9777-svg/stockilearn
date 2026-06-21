@@ -3,11 +3,18 @@ import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Zap, ArrowRight, Star, Target } from "lucide-react";
+import { LESSONS } from "@/lib/lessonData";
 
 export default function LessonComplete({ lesson, xpEarned, correctCount, totalQuestions }) {
   const isPerfect = correctCount === totalQuestions;
   const scorePercent = totalQuestions > 0 ? Math.round((correctCount / totalQuestions) * 100) : 100;
   const hasRun = useRef(false);
+
+  // Find next lesson in sequence
+  const currentUnit = lesson.unit;
+  const currentLessonIndex = LESSONS.findIndex(l => l.id === lesson.id);
+  const nextLesson = LESSONS[currentLessonIndex + 1];
+  const isNextLessonInSameUnit = nextLesson?.unit === currentUnit;
 
   useEffect(() => {
     if (hasRun.current) return;
@@ -165,11 +172,19 @@ export default function LessonComplete({ lesson, xpEarned, correctCount, totalQu
         transition={{ delay: 1.2 }}
         className="w-full space-y-2"
       >
-        <Link to="/learn">
-          <Button className="w-full h-12 rounded-2xl text-base font-bold gap-2">
-            CONTINUE LEARNING <ArrowRight className="w-5 h-5" />
-          </Button>
-        </Link>
+        {nextLesson ? (
+          <Link to={`/learn/lesson/${nextLesson.id}`}>
+            <Button className="w-full h-12 rounded-2xl text-base font-bold gap-2">
+              {isNextLessonInSameUnit ? "NEXT LESSON" : "NEXT UNIT"} <ArrowRight className="w-5 h-5" />
+            </Button>
+          </Link>
+        ) : (
+          <Link to="/learn">
+            <Button className="w-full h-12 rounded-2xl text-base font-bold gap-2">
+              VIEW PATH <ArrowRight className="w-5 h-5" />
+            </Button>
+          </Link>
+        )}
         <Link to="/home">
           <Button variant="ghost" className="w-full text-sm text-muted-foreground">
             Back to Home
