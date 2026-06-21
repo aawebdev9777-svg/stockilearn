@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
 import { useDemo } from "@/lib/DemoContext";
+
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
@@ -31,14 +32,23 @@ const DAILY_GOALS = [
 
 export default function Onboarding() {
   const navigate = useNavigate();
-  const { isDemoMode } = useDemo();
+  const { isDemoMode, updateDemoUser } = useDemo();
   const [step, setStep] = useState(0);
   const [goal, setGoal] = useState(null);
   const [level, setLevel] = useState(null);
   const [dailyGoal, setDailyGoal] = useState(null);
 
   const handleComplete = async () => {
-    if (isDemoMode) { navigate("/home"); return; }
+    if (isDemoMode) {
+      await updateDemoUser({
+        goal_type: goal,
+        knowledge_level: level,
+        daily_goal_xp: dailyGoal,
+        onboarding_complete: true,
+      });
+      navigate("/home");
+      return;
+    }
     try {
       await base44.auth.updateMe({
         goal_type: goal,

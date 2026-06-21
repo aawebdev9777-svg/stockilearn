@@ -1,0 +1,87 @@
+{
+  "name": "AppUser",
+  "type": "object",
+  "properties": {
+    "username": {
+      "type": "string",
+      "description": "Unique username (lowercase)"
+    },
+    "display_name": {
+      "type": "string"
+    },
+    "password_hash": {
+      "type": "string",
+      "description": "Stored password (plaintext for demo purposes)"
+    },
+    "role": {
+      "type": "string",
+      "enum": [
+        "user",
+        "admin"
+      ],
+      "default": "user"
+    },
+    "xp_total": {
+      "type": "number",
+      "default": 0
+    },
+    "level": {
+      "type": "number",
+      "default": 1
+    },
+    "streak_current": {
+      "type": "number",
+      "default": 0
+    },
+    "streak_longest": {
+      "type": "number",
+      "default": 0
+    },
+    "hearts_current": {
+      "type": "number",
+      "default": 5
+    },
+    "gems": {
+      "type": "number",
+      "default": 0
+    },
+    "daily_xp_earned_today": {
+      "type": "number",
+      "default": 0
+    },
+    "daily_goal_xp": {
+      "type": "number",
+      "default": 50
+    },
+    "league_tier": {
+      "type": "number",
+      "default": 1
+    },
+    "league_xp": {
+      "type": "number",
+      "default": 0
+    },
+    "onboarding_complete": {
+      "type": "boolean",
+      "default": false
+    },
+    "preferred_currency": {
+      "type": "string",
+      "default": "GBP"
+    },
+    "goal_type": {
+      "type": "string"
+    },
+    "knowledge_level": {
+      "type": "string"
+    },
+    "last_active_date": {
+      "type": "string",
+      "format": "date"
+    }
+  },
+  "required": [
+    "username",
+    "password_hash"
+  ]
+}

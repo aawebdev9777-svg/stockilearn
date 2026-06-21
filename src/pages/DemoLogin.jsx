@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useDemo } from "@/lib/DemoContext";
 import { useNavigate } from "react-router-dom";
-import { base44 } from "@/api/base44Client";
 
 export default function DemoLogin() {
   const { loginDemo, signupDemo } = useDemo();
@@ -13,18 +12,25 @@ export default function DemoLogin() {
   const [siUsername, setSiUsername] = useState("");
   const [siPassword, setSiPassword] = useState("");
   const [siError, setSiError] = useState("");
+  const [siLoading, setSiLoading] = useState(false);
   const [siShaking, setSiShaking] = useState(false);
 
   // Sign-up state
-  const [suName, setSuName] = useState(""); // username (not email)
+  const [suName, setSuName] = useState("");
   const [suPassword, setSuPassword] = useState("");
   const [suPassword2, setSuPassword2] = useState("");
   const [suError, setSuError] = useState("");
+  const [suLoading, setSuLoading] = useState(false);
 
-  const handleSignIn = (e) => {
+  const handleSignIn = async (e) => {
     e.preventDefault();
-    const result = loginDemo(siUsername, siPassword);
-    base44.entities.LoginLog.create({ username: siUsername, action: "signin", success: result.ok, timestamp: new Date().toISOString() });
+    if (!siUsername.trim() || !siPassword.trim()) {
+      setSiError("Please enter your username and password.");
+      return;
+    }
+    setSiLoading(true);
+    const result = await loginDemo(siUsername.trim(), siPassword);
+    setSiLoading(false);
     if (result.ok) {
       navigate(result.needsOnboarding ? "/onboarding" : "/home");
     } else {
@@ -34,7 +40,7 @@ export default function DemoLogin() {
     }
   };
 
-  const handleSignUp = (e) => {
+  const handleSignUp = async (e) => {
     e.preventDefault();
     if (!suName.trim() || !suPassword.trim()) {
       setSuError("Please fill in all fields.");
@@ -52,12 +58,13 @@ export default function DemoLogin() {
       setSuError("Passwords don't match.");
       return;
     }
-    const result = signupDemo(suName.trim(), suPassword);
-    base44.entities.LoginLog.create({ username: suName.trim(), action: "signup", success: result.ok, timestamp: new Date().toISOString() });
+    setSuLoading(true);
+    const result = await signupDemo(suName.trim(), suPassword);
+    setSuLoading(false);
     if (result.ok) {
       navigate("/onboarding");
     } else {
-      setSuError(result.error);
+      setSuError(result.error || "Something went wrong.");
     }
   };
 
@@ -133,12 +140,11 @@ export default function DemoLogin() {
 
               <button
                 type="submit"
-                className="w-full h-12 rounded-xl bg-primary text-primary-foreground font-black text-base hover:opacity-90 transition-opacity"
+                disabled={siLoading}
+                className="w-full h-12 rounded-xl bg-primary text-primary-foreground font-black text-base hover:opacity-90 transition-opacity disabled:opacity-60"
               >
-                Sign In
+                {siLoading ? "Signing in..." : "Sign In"}
               </button>
-
-
             </motion.form>
           ) : (
             <motion.form
@@ -196,9 +202,10 @@ export default function DemoLogin() {
 
               <button
                 type="submit"
-                className="w-full h-12 rounded-xl bg-primary text-primary-foreground font-black text-base hover:opacity-90 transition-opacity"
+                disabled={suLoading}
+                className="w-full h-12 rounded-xl bg-primary text-primary-foreground font-black text-base hover:opacity-90 transition-opacity disabled:opacity-60"
               >
-                Create Account 🚀
+                {suLoading ? "Creating account..." : "Create Account 🚀"}
               </button>
 
               <p className="text-center text-xs text-muted-foreground">
