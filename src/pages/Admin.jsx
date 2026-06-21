@@ -315,32 +315,32 @@ export default function Admin() {
 
   const fetchUsers = async () => {
     setUsersLoading(true);
-    const all = await base44.asServiceRole.entities.AppUser.list();
+    const all = await base44.entities.AppUser.list();
     setUsers(all);
     setUsersLoading(false);
   };
 
   const handleBan = async (u) => {
-    await base44.asServiceRole.entities.AppUser.update(u.id, { is_banned: true });
+    await base44.entities.AppUser.update(u.id, { is_banned: true });
     setUsers(prev => prev.map(x => x.id === u.id ? { ...x, is_banned: true } : x));
     showToast(`${u.display_name || u.username} has been banned.`);
   };
 
   const handleUnban = async (u) => {
-    await base44.asServiceRole.entities.AppUser.update(u.id, { is_banned: false });
+    await base44.entities.AppUser.update(u.id, { is_banned: false });
     setUsers(prev => prev.map(x => x.id === u.id ? { ...x, is_banned: false } : x));
     showToast(`${u.display_name || u.username} has been unbanned.`);
   };
 
   const handleMakeAdmin = async (u) => {
-    await base44.asServiceRole.entities.AppUser.update(u.id, { role: "admin" });
+    await base44.entities.AppUser.update(u.id, { role: "admin" });
     setUsers(prev => prev.map(x => x.id === u.id ? { ...x, role: "admin" } : x));
     showToast(`${u.display_name || u.username} is now an admin.`);
   };
 
   const handleRemoveAdmin = async (u) => {
     if (u.username === demoUser?.email) { showToast("You can't remove your own admin role.", "error"); return; }
-    await base44.asServiceRole.entities.AppUser.update(u.id, { role: "user" });
+    await base44.entities.AppUser.update(u.id, { role: "user" });
     setUsers(prev => prev.map(x => x.id === u.id ? { ...x, role: "user" } : x));
     showToast(`${u.display_name || u.username} is no longer an admin.`);
   };
