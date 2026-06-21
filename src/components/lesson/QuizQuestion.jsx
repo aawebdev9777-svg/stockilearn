@@ -6,6 +6,7 @@ export default function QuizQuestion({ question, onAnswer, index, total }) {
   const [selected, setSelected] = useState(null);
   const [submitted, setSubmitted] = useState(false);
   const [isCorrect, setIsCorrect] = useState(null);
+  const [showContinue, setShowContinue] = useState(false);
 
   const handleSelect = (optionIndex) => {
     if (submitted) return;
@@ -24,7 +25,7 @@ export default function QuizQuestion({ question, onAnswer, index, total }) {
     }
 
     setIsCorrect(correct);
-    setTimeout(() => onAnswer(correct), 400);
+    setShowContinue(true);
   };
 
   const options = question.type === "true_false" ? ["True ✅", "False ❌"] : question.options || [];
@@ -146,6 +147,23 @@ export default function QuizQuestion({ question, onAnswer, index, total }) {
               <p className="text-xs text-foreground leading-relaxed">{question.explanation}</p>
             </div>
           </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Continue button after submit */}
+      <AnimatePresence>
+        {showContinue && (
+          <motion.button
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0 }}
+            whileTap={{ scale: 0.97 }}
+            onClick={() => onAnswer(isCorrect)}
+            className="w-full h-12 rounded-2xl font-bold text-base transition-all"
+            style={{ background: "hsl(155 100% 50%)", color: "hsl(var(--primary-foreground))" }}
+          >
+            CONTINUE
+          </motion.button>
         )}
       </AnimatePresence>
 
