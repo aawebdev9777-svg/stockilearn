@@ -82,7 +82,7 @@ export default function Onboarding() {
         📈
       </motion.div>
       <div>
-        <h1 className="text-3xl font-black text-foreground">V<span className="text-primary">stock</span></h1>
+        <h1 className="text-3xl font-black text-foreground">Stocki<span className="text-primary">Learn</span></h1>
         <p className="text-lg font-bold text-primary mt-2">Turn confusion into confidence.</p>
         <p className="text-sm text-muted-foreground mt-1">Learn investing the fun way.</p>
       </div>

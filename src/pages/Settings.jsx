@@ -85,8 +85,8 @@ export default function Settings() {
           variant="outline"
           onClick={() => {
             if (confirm("This will delete ALL user data, portfolios, and progress. Everyone will need to re-register and complete onboarding again. Continue?")) {
-              localStorage.removeItem("vstock_users");
-              localStorage.removeItem("vstock_demo_session");
+              localStorage.removeItem("stockilearn_users");
+              localStorage.removeItem("stockilearn_demo_session");
               logoutDemo();
               navigate("/login");
             }
@@ -115,8 +115,8 @@ export default function Settings() {
           onClick={() => {
             if (isDemoMode) {
               // Clear all demo data
-              localStorage.removeItem("vstock_users");
-              localStorage.removeItem("vstock_demo_session");
+              localStorage.removeItem("stockilearn_users");
+              localStorage.removeItem("stockilearn_demo_session");
               logoutDemo();
               navigate("/login");
             } else {
@@ -129,7 +129,7 @@ export default function Settings() {
         </Button>
 
         <div className="text-center text-[10px] text-muted-foreground space-y-1 pt-4">
-          <p>StockMark v1.0</p>
+          <p>StockiLearn v1.0</p>
           <p>For educational purposes only. Not financial advice.</p>
         </div>
       </div>

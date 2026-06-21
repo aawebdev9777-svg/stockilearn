@@ -53,43 +53,43 @@ export const DEMO_PORTFOLIO = {
   cash_balance: 6284.50,
   total_value: 13921.30,
   deposits_used: 0,
-  created_by: "dragons@vstock.demo",
+  created_by: "dragons@stockilearn.demo",
 };
 
 export const DEMO_HOLDINGS = [
-  { id: "h1", ticker: "AAPL", shares: 8,  avg_buy_price: 178.50, created_by: "dragons@vstock.demo" },
-  { id: "h2", ticker: "NVDA", shares: 3,  avg_buy_price: 842.00, created_by: "dragons@vstock.demo" },
-  { id: "h3", ticker: "TSLA", shares: 5,  avg_buy_price: 210.00, created_by: "dragons@vstock.demo" },
-  { id: "h4", ticker: "MSFT", shares: 4,  avg_buy_price: 388.00, created_by: "dragons@vstock.demo" },
-  { id: "h5", ticker: "AMZN", shares: 6,  avg_buy_price: 182.00, created_by: "dragons@vstock.demo" },
+  { id: "h1", ticker: "AAPL", shares: 8,  avg_buy_price: 178.50, created_by: "dragons@stockilearn.demo" },
+  { id: "h2", ticker: "NVDA", shares: 3,  avg_buy_price: 842.00, created_by: "dragons@stockilearn.demo" },
+  { id: "h3", ticker: "TSLA", shares: 5,  avg_buy_price: 210.00, created_by: "dragons@stockilearn.demo" },
+  { id: "h4", ticker: "MSFT", shares: 4,  avg_buy_price: 388.00, created_by: "dragons@stockilearn.demo" },
+  { id: "h5", ticker: "AMZN", shares: 6,  avg_buy_price: 182.00, created_by: "dragons@stockilearn.demo" },
 ];
 
 export const DEMO_TRADES = [
-  { id: "t1", ticker: "AAPL", action: "buy",  shares: 8, price_at_trade: 178.50, total_value: 1428.00, realised_pnl: 0,     order_type: "market", created_by: "dragons@vstock.demo", created_date: "2026-04-10T09:30:00Z" },
-  { id: "t2", ticker: "NVDA", action: "buy",  shares: 5, price_at_trade: 820.00, total_value: 4100.00, realised_pnl: 0,     order_type: "market", created_by: "dragons@vstock.demo", created_date: "2026-04-12T10:00:00Z" },
-  { id: "t3", ticker: "NVDA", action: "sell", shares: 2, price_at_trade: 895.00, total_value: 1790.00, realised_pnl: 150.00, order_type: "limit",  created_by: "dragons@vstock.demo", created_date: "2026-04-20T14:00:00Z" },
-  { id: "t4", ticker: "TSLA", action: "buy",  shares: 5, price_at_trade: 210.00, total_value: 1050.00, realised_pnl: 0,     order_type: "market", created_by: "dragons@vstock.demo", created_date: "2026-04-25T11:00:00Z" },
-  { id: "t5", ticker: "MSFT", action: "buy",  shares: 4, price_at_trade: 388.00, total_value: 1552.00, realised_pnl: 0,     order_type: "market", created_by: "dragons@vstock.demo", created_date: "2026-05-01T09:30:00Z" },
-  { id: "t6", ticker: "AMZN", action: "buy",  shares: 6, price_at_trade: 182.00, total_value: 1092.00, realised_pnl: 0,     order_type: "limit",  created_by: "dragons@vstock.demo", created_date: "2026-05-05T10:30:00Z" },
+  { id: "t1", ticker: "AAPL", action: "buy",  shares: 8, price_at_trade: 178.50, total_value: 1428.00, realised_pnl: 0,     order_type: "market", created_by: "dragons@stockilearn.demo", created_date: "2026-04-10T09:30:00Z" },
+  { id: "t2", ticker: "NVDA", action: "buy",  shares: 5, price_at_trade: 820.00, total_value: 4100.00, realised_pnl: 0,     order_type: "market", created_by: "dragons@stockilearn.demo", created_date: "2026-04-12T10:00:00Z" },
+  { id: "t3", ticker: "NVDA", action: "sell", shares: 2, price_at_trade: 895.00, total_value: 1790.00, realised_pnl: 150.00, order_type: "limit",  created_by: "dragons@stockilearn.demo", created_date: "2026-04-20T14:00:00Z" },
+  { id: "t4", ticker: "TSLA", action: "buy",  shares: 5, price_at_trade: 210.00, total_value: 1050.00, realised_pnl: 0,     order_type: "market", created_by: "dragons@stockilearn.demo", created_date: "2026-04-25T11:00:00Z" },
+  { id: "t5", ticker: "MSFT", action: "buy",  shares: 4, price_at_trade: 388.00, total_value: 1552.00, realised_pnl: 0,     order_type: "market", created_by: "dragons@stockilearn.demo", created_date: "2026-05-01T09:30:00Z" },
+  { id: "t6", ticker: "AMZN", action: "buy",  shares: 6, price_at_trade: 182.00, total_value: 1092.00, realised_pnl: 0,     order_type: "limit",  created_by: "dragons@stockilearn.demo", created_date: "2026-05-05T10:30:00Z" },
 ];
 
 export const DEMO_WATCHLIST = [
-  { id: "w1", ticker: "GOOGL", created_by: "dragons@vstock.demo" },
-  { id: "w2", ticker: "META",  created_by: "dragons@vstock.demo" },
-  { id: "w3", ticker: "SPY",   created_by: "dragons@vstock.demo" },
+  { id: "w1", ticker: "GOOGL", created_by: "dragons@stockilearn.demo" },
+  { id: "w2", ticker: "META",  created_by: "dragons@stockilearn.demo" },
+  { id: "w3", ticker: "SPY",   created_by: "dragons@stockilearn.demo" },
 ];
 
 export const DEMO_BADGES = [
-  { id: "b1", badge_slug: "market_seedling", badge_name: "Market Seedling", badge_emoji: "🌱", created_by: "dragons@vstock.demo" },
-  { id: "b2", badge_slug: "week_warrior",    badge_name: "Week Warrior",    badge_emoji: "🔥", created_by: "dragons@vstock.demo" },
-  { id: "b3", badge_slug: "first_trade",     badge_name: "First Trade",     badge_emoji: "💰", created_by: "dragons@vstock.demo" },
+  { id: "b1", badge_slug: "market_seedling", badge_name: "Market Seedling", badge_emoji: "🌱", created_by: "dragons@stockilearn.demo" },
+  { id: "b2", badge_slug: "week_warrior",    badge_name: "Week Warrior",    badge_emoji: "🔥", created_by: "dragons@stockilearn.demo" },
+  { id: "b3", badge_slug: "first_trade",     badge_name: "First Trade",     badge_emoji: "💰", created_by: "dragons@stockilearn.demo" },
 ];
 
 // ── Context ───────────────────────────────────────────────────
 const DemoContext = createContext(null);
 
-const STORAGE_KEY = "vstock_demo_session";
-const USERS_KEY = "vstock_users";
+const STORAGE_KEY = "stockilearn_demo_session";
+const USERS_KEY = "stockilearn_users";
 
 function getStoredUsers() {
   try { return JSON.parse(localStorage.getItem(USERS_KEY) || "[]"); } catch { return []; }
