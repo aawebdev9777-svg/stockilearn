@@ -115,6 +115,10 @@ export default function Lesson() {
         const isNewDay = user.streak_last_activity_date !== today;
         const dailyXp = (isNewDay || user.daily_goal_date !== today) ? finalXp : (user.daily_xp_earned_today || 0) + finalXp;
         const newStreak = isNewDay ? (user.streak_current || 0) + 1 : (user.streak_current || 0);
+        const completedLessons = user.completed_lessons || [];
+        if (!completedLessons.includes(lessonId)) {
+          completedLessons.push(lessonId);
+        }
         await base44.auth.updateMe({
           xp_total: (user.xp_total || 0) + finalXp,
           daily_xp_earned_today: dailyXp,
@@ -123,6 +127,7 @@ export default function Lesson() {
           streak_longest: Math.max(newStreak, user.streak_longest || 0),
           streak_last_activity_date: today,
           league_season_xp: (user.league_season_xp || 0) + finalXp,
+          completed_lessons: completedLessons,
         });
       }
     } catch (e) {

@@ -78,6 +78,14 @@
     "last_active_date": {
       "type": "string",
       "format": "date"
+    },
+    "completed_lessons": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": [],
+      "description": "Array of completed lesson IDs"
     }
   },
   "required": [
