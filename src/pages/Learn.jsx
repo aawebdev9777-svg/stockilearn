@@ -15,12 +15,17 @@ export default function Learn() {
     if (!isDemoMode) base44.auth.me().then(u => setUserId(u?.id)).catch(() => {});
   }, [isDemoMode]);
 
-  // Refetch progress when page comes into focus or mounts (e.g., after completing a lesson)
+  // Refetch progress on mount, focus, and when lesson progress changes
   useEffect(() => {
     const onFocus = () => queryClient.invalidateQueries({ queryKey: ["lesson-progress"] });
+    const onProgressChange = () => queryClient.invalidateQueries({ queryKey: ["lesson-progress"] });
     window.addEventListener("focus", onFocus);
+    window.addEventListener("lesson-progress-changed", onProgressChange);
     queryClient.invalidateQueries({ queryKey: ["lesson-progress"] });
-    return () => window.removeEventListener("focus", onFocus);
+    return () => {
+      window.removeEventListener("focus", onFocus);
+      window.removeEventListener("lesson-progress-changed", onProgressChange);
+    };
   }, [queryClient]);
 
   const { data: progressData = [] } = useQuery({

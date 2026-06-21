@@ -32,6 +32,8 @@ export const saveDemoLessonProgress = (lessonId, unitId, score, xp) => {
     });
   }
   localStorage.setItem("stockilearn_lesson_progress", JSON.stringify(progress));
+  // Trigger custom event for real-time UI updates
+  window.dispatchEvent(new CustomEvent("lesson-progress-changed"));
 };
 
 // ── Demo portfolio/holdings/trades/watchlist/badges (empty for real users) ──

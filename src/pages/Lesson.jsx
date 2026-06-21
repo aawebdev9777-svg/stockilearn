@@ -129,6 +129,8 @@ export default function Lesson() {
           league_season_xp: (user.league_season_xp || 0) + finalXp,
           completed_lessons: completedLessons,
         });
+        // Trigger custom event for real-time UI updates
+        window.dispatchEvent(new CustomEvent("lesson-progress-changed"));
       }
     } catch (e) {
       console.error("Save error:", e);
