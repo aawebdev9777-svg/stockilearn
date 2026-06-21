@@ -29,7 +29,7 @@ export function DemoProvider({ children }) {
   // Sign in: check username+password against DB entity
   const loginDemo = async (username, password) => {
     try {
-      const users = await base44.asServiceRole.entities.AppUser.filter({ username: username.toLowerCase() });
+      const users = await base44.entities.AppUser.filter({ username: username.toLowerCase() });
       if (!users || users.length === 0) return { ok: false };
       const found = users[0];
       if (found.password_hash !== password) return { ok: false };
@@ -68,15 +68,15 @@ export function DemoProvider({ children }) {
   const signupDemo = async (username, password) => {
     try {
       // Check if username already taken
-      const existing = await base44.asServiceRole.entities.AppUser.filter({ username: username.toLowerCase() });
+      const existing = await base44.entities.AppUser.filter({ username: username.toLowerCase() });
       if (existing && existing.length > 0) {
         return { ok: false, error: "Username already taken. Try another." };
       }
       // Count users to determine if first (admin)
-      const allUsers = await base44.asServiceRole.entities.AppUser.list();
+      const allUsers = await base44.entities.AppUser.list();
       const isFirst = !allUsers || allUsers.length === 0;
 
-      const newUser = await base44.asServiceRole.entities.AppUser.create({
+      const newUser = await base44.entities.AppUser.create({
         username: username.toLowerCase(),
         display_name: username,
         password_hash: password,
@@ -130,7 +130,7 @@ export function DemoProvider({ children }) {
   const updateDemoUser = async (updates) => {
     if (!demoUser?.db_id) return;
     try {
-      await base44.asServiceRole.entities.AppUser.update(demoUser.db_id, updates);
+      await base44.entities.AppUser.update(demoUser.db_id, updates);
       const updated = { ...demoUser, ...updates };
       localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
       setDemoUser(updated);
