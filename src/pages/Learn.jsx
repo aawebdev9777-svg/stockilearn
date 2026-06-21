@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { base44 } from "@/api/base44Client";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useDemo, DEMO_LESSON_PROGRESS } from "@/lib/DemoContext";
 import { motion } from "framer-motion";
 import { UNITS, LESSONS, getLessonsForUnit } from "@/lib/lessonData";
@@ -9,9 +9,18 @@ import SkillNode from "@/components/learn/SkillNode";
 export default function Learn() {
   const { isDemoMode } = useDemo();
   const [userId, setUserId] = useState(null);
+  const queryClient = useQueryClient();
+
   useEffect(() => {
     if (!isDemoMode) base44.auth.me().then(u => setUserId(u?.id)).catch(() => {});
   }, [isDemoMode]);
+
+  // Refetch progress when page comes into focus (e.g., after completing a lesson)
+  useEffect(() => {
+    const onFocus = () => queryClient.invalidateQueries({ queryKey: ["lesson-progress"] });
+    window.addEventListener("focus", onFocus);
+    return () => window.removeEventListener("focus", onFocus);
+  }, [queryClient]);
 
   const { data: progressData = [] } = useQuery({
     queryKey: ["lesson-progress", userId],
