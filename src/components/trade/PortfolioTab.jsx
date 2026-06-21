@@ -108,7 +108,7 @@ export default function PortfolioTab({ onNavigateToMarket }) {
   return (
     <div className="space-y-4 mt-4 pb-4">
       {/* Hero Value Card */}
-      <Card className="p-5 bg-gradient-to-br from-card to-card/60 border-border/50">
+      <Card className="p-5 rounded-2xl border border-white/50" style={{ background: "rgba(255,255,255,0.55)", backdropFilter: "blur(14px)", WebkitBackdropFilter: "blur(14px)" }}>
         <p className="text-xs text-muted-foreground font-medium">Total Portfolio Value</p>
         <motion.p
           key={totalValue}
@@ -143,7 +143,7 @@ export default function PortfolioTab({ onNavigateToMarket }) {
       </Card>
 
       {/* Cash Balance Card */}
-      <Card className="p-4 bg-card/80 border-border/50">
+      <Card className="p-4 rounded-2xl border border-white/50" style={{ background: "rgba(255,255,255,0.55)", backdropFilter: "blur(14px)", WebkitBackdropFilter: "blur(14px)" }}>
         <div className="flex items-center gap-2 mb-3">
           <Wallet className="w-4 h-4 text-primary" />
           <span className="text-sm font-bold text-foreground">Cash Balance</span>
@@ -210,9 +210,9 @@ export default function PortfolioTab({ onNavigateToMarket }) {
             const pnlIsUp = h.pnl >= 0;
 
             return (
-              <div key={h.id} className={`rounded-2xl border overflow-hidden ${pnlIsUp ? "border-green-500/20" : "border-red-500/20"}`}>
+              <div key={h.id} className={`rounded-2xl border overflow-hidden ${pnlIsUp ? "border-green-500/30" : "border-red-500/30"}`} style={{ background: pnlIsUp ? "rgba(220,252,231,0.5)" : "rgba(254,226,226,0.5)", backdropFilter: "blur(12px)", WebkitBackdropFilter: "blur(12px)" }}>
                 <div
-                  className={`flex items-center gap-3 p-3 cursor-pointer ${pnlIsUp ? "bg-green-500/5" : "bg-red-500/5"}`}
+                  className="flex items-center gap-3 p-3 cursor-pointer"
                   onClick={() => setExpandedHolding(isExpanded ? null : h.id)}
                 >
                   <div className={`w-1.5 self-stretch rounded-full ${pnlIsUp ? "bg-green-500" : "bg-red-500"}`} />
@@ -276,7 +276,7 @@ export default function PortfolioTab({ onNavigateToMarket }) {
 
       {/* Allocation Donut */}
       {donutData.length > 0 && (
-        <Card className="p-4 bg-card/80 border-border/50">
+        <Card className="p-4 rounded-2xl border border-white/50" style={{ background: "rgba(255,255,255,0.55)", backdropFilter: "blur(14px)", WebkitBackdropFilter: "blur(14px)" }}>
           <h3 className="text-sm font-bold text-foreground mb-3">Portfolio Allocation</h3>
           <ResponsiveContainer width="100%" height={180}>
             <PieChart>
@@ -325,7 +325,7 @@ export default function PortfolioTab({ onNavigateToMarket }) {
       )}
 
       {/* Portfolio Health Score */}
-      <Card className="p-4 bg-card/80 border-border/50">
+      <Card className="p-4 rounded-2xl border border-white/50" style={{ background: "rgba(255,255,255,0.55)", backdropFilter: "blur(14px)", WebkitBackdropFilter: "blur(14px)" }}>
         <div className="flex items-center justify-between mb-3">
           <h3 className="text-sm font-bold text-foreground">Portfolio Health</h3>
           <div className="text-right">

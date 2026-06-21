@@ -63,7 +63,7 @@ export default function HistoryTab() {
   return (
     <div className="space-y-4 mt-4">
       {/* Overview Stats */}
-      <Card className="p-4 bg-card/80 border-border/50">
+      <Card className="p-4 rounded-2xl border border-white/50" style={{ background: "rgba(255,255,255,0.55)", backdropFilter: "blur(14px)", WebkitBackdropFilter: "blur(14px)" }}>
         <div className="grid grid-cols-3 gap-3 text-center mb-3">
           <div>
             <p className="text-lg font-black text-foreground">{trades.length}</p>
@@ -100,7 +100,7 @@ export default function HistoryTab() {
 
       {/* Monthly Chart */}
       {monthlyPnl.length > 0 && (
-        <Card className="p-4 bg-card/80 border-border/50">
+        <Card className="p-4 rounded-2xl border border-white/50" style={{ background: "rgba(255,255,255,0.55)", backdropFilter: "blur(14px)", WebkitBackdropFilter: "blur(14px)" }}>
           <p className="text-xs font-bold text-foreground mb-3">Monthly Realised P&L</p>
           <ResponsiveContainer width="100%" height={80}>
             <BarChart data={monthlyPnl}>
@@ -148,7 +148,8 @@ export default function HistoryTab() {
             return (
               <motion.div key={trade.id} layout>
                 <Card
-                  className={`border-border/50 cursor-pointer transition-colors ${isBuy ? "bg-green-500/5 border-green-500/20" : "bg-red-500/5 border-red-500/20"}`}
+                  className={`cursor-pointer transition-colors rounded-2xl border ${isBuy ? "border-green-500/30" : "border-red-500/30"}`}
+                  style={{ background: isBuy ? "rgba(220,252,231,0.55)" : "rgba(254,226,226,0.55)", backdropFilter: "blur(12px)", WebkitBackdropFilter: "blur(12px)" }}
                   onClick={() => setExpanded(isExpanded ? null : trade.id)}
                 >
                   <div className="p-3">

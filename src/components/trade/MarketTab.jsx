@@ -81,7 +81,7 @@ export default function MarketTab() {
       {/* Indices Strip */}
       <div className="flex gap-2 overflow-x-auto pb-1 -mx-1 px-1">
         {indices.map((idx) => (
-          <Card key={idx.ticker} className={`shrink-0 p-2.5 bg-card/80 border-border/50 min-w-[100px]`}>
+          <Card key={idx.ticker} className="shrink-0 p-2.5 rounded-2xl border border-white/50 min-w-[100px]" style={{ background: "rgba(255,255,255,0.55)", backdropFilter: "blur(14px)", WebkitBackdropFilter: "blur(14px)" }}>
             <p className="text-[9px] text-muted-foreground font-bold">{idx.name}</p>
             <p className="text-sm font-black text-foreground">{idx.price.toLocaleString()}</p>
             <p className={`text-[10px] font-bold ${idx.change >= 0 ? "text-green-400" : "text-red-400"}`}>
@@ -147,7 +147,7 @@ export default function MarketTab() {
           const isUp = stock.change >= 0;
           return (
             <Link key={stock.ticker} to={`/trade/stock/${stock.ticker}`}>
-              <Card className={`p-3 border-border/50 hover:bg-muted/50 transition-colors ${i % 2 === 0 ? "bg-card/80" : "bg-card/50"}`}>
+              <Card className="p-3 rounded-2xl border border-white/50 hover:bg-white/70 transition-colors" style={{ background: "rgba(255,255,255,0.55)", backdropFilter: "blur(12px)", WebkitBackdropFilter: "blur(12px)" }}>
                 <div className="flex items-center gap-3">
                   <div className="w-9 h-9 rounded-full bg-muted flex items-center justify-center text-xs font-black text-foreground shrink-0">
                     {stock.sectorEmoji}

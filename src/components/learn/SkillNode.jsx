@@ -33,7 +33,8 @@ export default function SkillNode({ lesson, status = "locked", index, unitColor 
         <motion.div
           initial={{ opacity: 0, y: 5 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-white border-2 border-[#58CC02] rounded-xl px-3 py-1 text-[10px] font-black text-[#58CC02] shadow-sm"
+          className="border border-[#58CC02]/60 rounded-xl px-3 py-1 text-[10px] font-black text-[#58CC02]"
+          style={{ background: "rgba(255,255,255,0.7)", backdropFilter: "blur(10px)", WebkitBackdropFilter: "blur(10px)" }}
         >
           +{lesson.xp} XP
         </motion.div>

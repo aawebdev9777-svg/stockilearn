@@ -105,7 +105,7 @@ export default function WatchlistTab({ onNavigateToMarket }) {
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: 60, height: 0 }}
             >
-              <Card className="p-3 bg-card/80 border-border/50">
+              <Card className="p-3 rounded-2xl border border-white/50" style={{ background: "rgba(255,255,255,0.55)", backdropFilter: "blur(12px)", WebkitBackdropFilter: "blur(12px)" }}>
                 <div className="flex items-center gap-3">
                   <Link to={`/trade/stock/${item.ticker}`} className="flex items-center gap-3 flex-1 min-w-0">
                     <div className="w-9 h-9 rounded-full bg-muted flex items-center justify-center text-base shrink-0 relative">
