@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useDemo, getDemoLessonProgress } from "@/lib/DemoContext";
 import { motion } from "framer-motion";
 import { UNITS, LESSONS, getLessonsForUnit } from "@/lib/lessonData";
+import { FLASHCARD_TERMS } from "@/lib/flashcardData";
+import { getStats } from "@/lib/spacedRepetition";
 import SkillNode from "@/components/learn/SkillNode";
 
 export default function Learn() {
@@ -67,6 +70,31 @@ export default function Learn() {
         <p className="text-[10px] font-black uppercase tracking-widest text-[#58CC02]">Your Journey</p>
         <h1 className="text-2xl font-black text-gray-900 mt-0.5">Learn</h1>
       </div>
+
+      {/* Flashcard Practice */}
+      <Link to="/flashcards" className="block mb-6">
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.98 }}
+          className="flex items-center gap-4 p-4 rounded-2xl border border-white/50"
+          style={{ background: "linear-gradient(135deg, rgba(88,204,2,0.08), rgba(56,189,248,0.08))", backdropFilter: "blur(14px)", WebkitBackdropFilter: "blur(14px)" }}
+        >
+          <div className="w-12 h-12 rounded-2xl bg-[#58CC02]/10 flex items-center justify-center text-2xl shrink-0">
+            🃏
+          </div>
+          <div className="flex-1">
+            <p className="text-base font-black text-foreground">Flashcard Practice</p>
+            <p className="text-xs text-muted-foreground">
+              {getStats(FLASHCARD_TERMS).due > 0
+                ? `${getStats(FLASHCARD_TERMS).due} cards due for review`
+                : `${FLASHCARD_TERMS.length} terms to learn — start your first session`}
+            </p>
+          </div>
+          <div className="text-[#58CC02] font-black text-lg">→</div>
+        </motion.div>
+      </Link>
 
       <div className="space-y-8">
         {UNITS.map((unit) => {

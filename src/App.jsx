@@ -13,6 +13,7 @@ import AppLayout from '@/components/layout/AppLayout';
 import Home from '@/pages/Home';
 import Learn from '@/pages/Learn';
 import Lesson from '@/pages/Lesson';
+import Flashcards from '@/pages/Flashcards';
 import Trade from '@/pages/Trade';
 import StockDetail from '@/pages/StockDetail';
 import Leagues from '@/pages/Leagues.jsx';
@@ -53,6 +54,7 @@ const AuthenticatedApp = () => {
         <Route path="/login" element={<Navigate to="/home" replace />} />
         <Route path="/onboarding" element={<Onboarding />} />
         <Route path="/learn/lesson/:lessonId" element={<Lesson />} />
+        <Route path="/flashcards" element={<Flashcards />} />
         <Route path="/trade/stock/:ticker" element={<StockDetail />} />
         <Route path="/settings" element={<Settings />} />
         <Route path="/upgrade" element={<Upgrade />} />
@@ -102,6 +104,7 @@ const AuthenticatedApp = () => {
     <Route path="/login" element={<DemoLogin />} />
     <Route path="/onboarding" element={<Onboarding />} />
       <Route path="/learn/lesson/:lessonId" element={<Lesson />} />
+      <Route path="/flashcards" element={<Flashcards />} />
       <Route path="/trade/stock/:ticker" element={<StockDetail />} />
       <Route path="/settings" element={<Settings />} />
       <Route path="/upgrade" element={<Upgrade />} />
