@@ -39,7 +39,7 @@ const AdminOnly = ({ children }) => {
     base44.auth.me().then(u => setAllowed(u?.role === "admin")).catch(() => setAllowed(false));
   }, [isDemoMode]);
   if (allowed === null) return null;
-  if (!allowed) return <Navigate to="/home" replace />;
+  if (!allowed) return <Navigate to="/" replace />;
   return children;
 };
 
@@ -53,8 +53,9 @@ const AuthenticatedApp = () => {
   if (isDemoMode) {
     return (
       <Routes>
-        <Route path="/" element={<Landing />} />
-        <Route path="/login" element={<Navigate to="/home" replace />} />
+        <Route path="/landing" element={<Landing />} />
+        <Route path="/login" element={<Navigate to="/" replace />} />
+        <Route path="/home" element={<Navigate to="/" replace />} />
         <Route path="/onboarding" element={<Onboarding />} />
         <Route path="/learn/lesson/:lessonId" element={<Lesson />} />
         <Route path="/flashcards" element={<Flashcards />} />
@@ -69,7 +70,7 @@ const AuthenticatedApp = () => {
         <Route path="/claude" element={<Claude />} />
         <Route path="/founders" element={<Founders />} />
         <Route element={<AppLayout />}>
-          <Route path="/home" element={<Home />} />
+          <Route path="/" element={<Home />} />
           <Route path="/learn" element={<Learn />} />
           <Route path="/trade" element={<Trade />} />
           <Route path="/leagues" element={<Leagues />} />
@@ -106,8 +107,9 @@ const AuthenticatedApp = () => {
 
   return (
     <Routes>
-    <Route path="/" element={<Landing />} />
+    <Route path="/landing" element={<Landing />} />
     <Route path="/login" element={<DemoLogin />} />
+    <Route path="/home" element={<Navigate to="/" replace />} />
     <Route path="/onboarding" element={<Onboarding />} />
       <Route path="/learn/lesson/:lessonId" element={<Lesson />} />
       <Route path="/flashcards" element={<Flashcards />} />
@@ -121,7 +123,7 @@ const AuthenticatedApp = () => {
       <Route path="/claude" element={<Claude />} />
       <Route path="/founders" element={<Founders />} />
       <Route element={<AppLayout />}>
-        <Route path="/home" element={<Home />} />
+        <Route path="/" element={<Home />} />
         <Route path="/learn" element={<Learn />} />
         <Route path="/trade" element={<Trade />} />
         <Route path="/leagues" element={<Leagues />} />
