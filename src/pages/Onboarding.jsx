@@ -96,6 +96,13 @@ export default function Onboarding() {
         <p className="text-lg font-bold text-primary mt-2">Turn confusion into confidence.</p>
         <p className="text-sm text-muted-foreground mt-1">Learn investing the fun way.</p>
       </div>
+      <div className="space-y-1">
+        <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Created by</p>
+        <p className="text-sm font-bold text-foreground">Ahmetzhan Aldiyar</p>
+        <p className="text-xs text-muted-foreground">CEO &amp; Co-Founder</p>
+        <p className="text-sm font-bold text-foreground mt-1">Sander Rosingholm</p>
+        <p className="text-xs text-muted-foreground">COO &amp; Co-Founder</p>
+      </div>
       <Button onClick={() => setStep(1)} className="w-full max-w-xs h-14 rounded-2xl text-lg font-black gap-2">
         LET'S GO <ArrowRight className="w-5 h-5" />
       </Button>
