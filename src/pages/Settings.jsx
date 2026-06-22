@@ -32,11 +32,11 @@ export default function Settings() {
     setIsDeleting(true);
     try {
       if (isDemoMode) {
+        localStorage.removeItem("stockilearn_session");
         localStorage.removeItem("stockilearn_lesson_progress");
-        logoutDemo();
-        window.location.href = "/login";
+        window.location.replace("/login");
       } else {
-        await base44.auth.logout();
+        await base44.auth.logout("/login");
       }
     } catch (error) {
       console.error("Delete account error:", error);
@@ -146,11 +146,11 @@ export default function Settings() {
           variant="outline"
           onClick={() => {
             if (isDemoMode) {
+              localStorage.removeItem("stockilearn_session");
               localStorage.removeItem("stockilearn_lesson_progress");
-              logoutDemo();
-              window.location.href = "/login";
+              window.location.replace("/login");
             } else {
-              base44.auth.logout();
+              base44.auth.logout("/login");
             }
           }}
           className="w-full gap-2 text-destructive border-destructive/20 select-none"
