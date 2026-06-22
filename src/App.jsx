@@ -28,6 +28,7 @@ import Upgrade from '@/pages/Upgrade';
 import About from '@/pages/About';
 import Contact from '@/pages/Contact';
 import Claude from '@/pages/Claude';
+import Founders from '@/pages/Founders';
 
 // Guard: only admin users can access wrapped routes
 const AdminOnly = ({ children }) => {
@@ -66,6 +67,7 @@ const AuthenticatedApp = () => {
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/claude" element={<Claude />} />
+        <Route path="/founders" element={<Founders />} />
         <Route element={<AppLayout />}>
           <Route path="/home" element={<Home />} />
           <Route path="/learn" element={<Learn />} />

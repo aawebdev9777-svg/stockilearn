@@ -415,6 +415,7 @@ export default function Landing() {
           <p className="text-xs text-gray-400">© 2026 StockiLearn · Educational purposes only</p>
           <div className="flex items-center gap-4 text-xs text-gray-400">
             <Link to="/about" className="hover:text-gray-700 transition-colors">About</Link>
+            <Link to="/founders" className="hover:text-gray-700 transition-colors">Founders</Link>
             <Link to="/contact" className="hover:text-gray-700 transition-colors">Contact</Link>
             <Link to="/login" className="hover:text-gray-700 transition-colors">Sign In</Link>
           </div>
