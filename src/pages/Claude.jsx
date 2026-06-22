@@ -4,10 +4,16 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { FileCode, Download, Loader2 } from "lucide-react";
 
-const codeModules = import.meta.glob("../**/*.{js,jsx,ts,tsx,json,css}", {
-  query: "?raw",
-  import: "default",
-});
+const codeModules = import.meta.glob(
+  [
+    "../**/*.{js,jsx,ts,tsx,json,css}",
+    "../../index.html",
+    "../../tailwind.config.js",
+    "../../vite.config.js",
+    "../../package.json",
+  ],
+  { query: "?raw", import: "default" }
+);
 
 export default function Claude() {
   const [generating, setGenerating] = useState(false);
