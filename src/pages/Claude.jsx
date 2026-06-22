@@ -143,6 +143,13 @@ export default function Claude() {
           {generating ? <Loader2 className="w-4 h-4 animate-spin" /> : <Download className="w-4 h-4" />}
           {generating ? "Generating..." : "Download PDF"}
         </Button>
+        <div className="pt-4 border-t border-border space-y-1">
+          <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Created by</p>
+          <p className="text-sm font-bold text-foreground">Ahmetzhan Aldiyar</p>
+          <p className="text-xs text-muted-foreground">CEO &amp; Co-Founder</p>
+          <p className="text-sm font-bold text-foreground mt-2">Sander Rosingholm</p>
+          <p className="text-xs text-muted-foreground">COO &amp; Co-Founder</p>
+        </div>
       </Card>
     </div>
   );
