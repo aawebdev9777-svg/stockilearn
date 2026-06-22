@@ -14,7 +14,7 @@ import { useDemo, saveDemoLessonProgress } from "@/lib/DemoContext";
 
 export default function Lesson() {
   const navigate = useNavigate();
-  const { isDemoMode } = useDemo();
+  const { isDemoMode, saveLessonProgress } = useDemo();
   const lessonId = window.location.pathname.split("/lesson/")[1] || "1.1";
   const lesson = getLesson(lessonId);
 
@@ -77,8 +77,9 @@ export default function Lesson() {
 
   const saveProgress = async (score, baseXp) => {
     if (isDemoMode) {
-      // Demo mode - save to localStorage
+      // Demo mode - save to localStorage for immediate UI, then persist to AppUser in DB
       saveDemoLessonProgress(lessonId, lesson.unit, score, baseXp);
+      await saveLessonProgress(lessonId, score, baseXp);
       return;
     }
     try {

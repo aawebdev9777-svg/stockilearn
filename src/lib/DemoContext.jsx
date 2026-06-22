@@ -77,6 +77,7 @@ export function DemoProvider({ children }) {
         league_xp: found.league_xp || 0,
         onboarding_complete: found.onboarding_complete || false,
         preferred_currency: found.preferred_currency || "GBP",
+        completed_lessons: found.completed_lessons || [],
         created_date: found.created_date,
         db_id: found.id,
       };
@@ -147,6 +148,37 @@ export function DemoProvider({ children }) {
     setDemoUser(null);
   };
 
+  // Save completed lesson to AppUser entity in DB
+  const saveLessonProgress = async (lessonId, score, xpEarned) => {
+    if (!demoUser?.db_id) return { ok: false };
+    try {
+      const res = await base44.functions.invoke('saveLessonProgress', {
+        appUserId: demoUser.db_id,
+        lessonId,
+        score,
+        xpEarned,
+      });
+      if (!res.data?.ok) return { ok: false };
+      const updated = res.data.user;
+      const updatedProfile = {
+        ...demoUser,
+        completed_lessons: updated.completed_lessons || [],
+        xp_total: updated.xp_total || 0,
+        streak_current: updated.streak_current || 0,
+        streak_longest: updated.streak_longest || 0,
+        daily_xp_earned_today: updated.daily_xp_earned_today || 0,
+        league_xp: updated.league_xp || 0,
+        last_active_date: updated.last_active_date,
+      };
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedProfile));
+      setDemoUser(updatedProfile);
+      return { ok: true };
+    } catch (e) {
+      console.error("Save lesson progress error:", e);
+      return { ok: false };
+    }
+  };
+
   const resetAllDemoData = () => {
     localStorage.removeItem(STORAGE_KEY);
     setIsDemoMode(false);
@@ -154,7 +186,7 @@ export function DemoProvider({ children }) {
   };
 
   return (
-    <DemoContext.Provider value={{ isDemoMode, demoUser, loginDemo, signupDemo, logoutDemo, resetAllDemoData, updateDemoUser, getDemoLessonProgress, saveDemoLessonProgress }}>
+    <DemoContext.Provider value={{ isDemoMode, demoUser, loginDemo, signupDemo, logoutDemo, resetAllDemoData, updateDemoUser, saveLessonProgress, getDemoLessonProgress, saveDemoLessonProgress }}>
       {children}
     </DemoContext.Provider>
   );

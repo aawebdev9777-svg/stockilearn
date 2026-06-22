@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { useDemo, getDemoLessonProgress } from "@/lib/DemoContext";
+import { useDemo } from "@/lib/DemoContext";
 import { motion } from "framer-motion";
 import { UNITS, LESSONS, getLessonsForUnit } from "@/lib/lessonData";
 import { FLASHCARD_TERMS } from "@/lib/flashcardData";
@@ -10,7 +10,7 @@ import { getStats } from "@/lib/spacedRepetition";
 import SkillNode from "@/components/learn/SkillNode";
 
 export default function Learn() {
-  const { isDemoMode } = useDemo();
+  const { isDemoMode, demoUser } = useDemo();
   const [userId, setUserId] = useState(null);
   const queryClient = useQueryClient();
 
@@ -33,13 +33,17 @@ export default function Learn() {
 
   const { data: progressData = [] } = useQuery({
     queryKey: ["lesson-progress", userId],
-    queryFn: () => isDemoMode ? Promise.resolve(getDemoLessonProgress()) : base44.entities.LessonProgress.filter({ created_by_id: userId }),
-    enabled: isDemoMode || !!userId,
-    initialData: isDemoMode ? getDemoLessonProgress() : [],
+    queryFn: () => base44.entities.LessonProgress.filter({ created_by_id: userId }),
+    enabled: !isDemoMode && !!userId,
+    initialData: [],
   });
 
-  const completedIds = progressData.filter(p => p.status === "complete").map(p => p.lesson_id);
-  const inProgressIds = progressData.filter(p => p.status === "in_progress").map(p => p.lesson_id);
+  const completedIds = isDemoMode
+    ? (demoUser?.completed_lessons || [])
+    : progressData.filter(p => p.status === "complete").map(p => p.lesson_id);
+  const inProgressIds = isDemoMode
+    ? []
+    : progressData.filter(p => p.status === "in_progress").map(p => p.lesson_id);
 
   function getStatus(lessonId, index, unitLessons) {
     if (completedIds.includes(lessonId)) return "complete";
