@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import { jsPDF } from "jspdf";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { FileCode, Download, Loader2 } from "lucide-react";
+import { FileCode, Download, Loader2, Lock } from "lucide-react";
+import { Input } from "@/components/ui/input";
 
 const codeModules = import.meta.glob(
   [
@@ -15,9 +16,24 @@ const codeModules = import.meta.glob(
   { query: "?raw", import: "default" }
 );
 
+const PASSWORD = "AA9777";
+
 export default function Claude() {
+  const [unlocked, setUnlocked] = useState(false);
+  const [passwordInput, setPasswordInput] = useState("");
+  const [error, setError] = useState(false);
   const [generating, setGenerating] = useState(false);
   const filePaths = Object.keys(codeModules).sort();
+
+  const handleUnlock = (e) => {
+    e.preventDefault();
+    if (passwordInput === PASSWORD) {
+      setUnlocked(true);
+      setError(false);
+    } else {
+      setError(true);
+    }
+  };
 
   const generatePdf = async () => {
     setGenerating(true);
@@ -73,6 +89,40 @@ export default function Claude() {
       setGenerating(false);
     }
   };
+
+  if (!unlocked) {
+    return (
+      <div className="min-h-screen flex items-center justify-center p-6 bg-background">
+        <Card className="max-w-sm w-full p-8 text-center space-y-6">
+          <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center mx-auto">
+            <Lock className="w-8 h-8 text-primary" />
+          </div>
+          <div>
+            <h1 className="text-2xl font-black text-foreground">Password Required</h1>
+            <p className="text-sm text-muted-foreground mt-2">
+              Enter the password to access the source code download.
+            </p>
+          </div>
+          <form onSubmit={handleUnlock} className="space-y-3">
+            <Input
+              type="password"
+              value={passwordInput}
+              onChange={(e) => { setPasswordInput(e.target.value); setError(false); }}
+              placeholder="Enter password"
+              autoFocus
+              className={error ? "border-destructive" : ""}
+            />
+            {error && (
+              <p className="text-xs text-destructive font-medium">Incorrect password. Try again.</p>
+            )}
+            <Button type="submit" size="lg" className="w-full">
+              Unlock
+            </Button>
+          </form>
+        </Card>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen flex items-center justify-center p-6 bg-background">
