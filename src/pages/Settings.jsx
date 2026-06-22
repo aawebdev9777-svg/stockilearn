@@ -32,14 +32,12 @@ export default function Settings() {
     setIsDeleting(true);
     try {
       if (isDemoMode) {
-        localStorage.removeItem("stockilearn_users");
-        localStorage.removeItem("stockilearn_demo_session");
         localStorage.removeItem("stockilearn_lesson_progress");
         logoutDemo();
+        window.location.href = "/login";
       } else {
         await base44.auth.logout();
       }
-      navigate("/login");
     } catch (error) {
       console.error("Delete account error:", error);
     } finally {
@@ -148,11 +146,9 @@ export default function Settings() {
           variant="outline"
           onClick={() => {
             if (isDemoMode) {
-              localStorage.removeItem("stockilearn_users");
-              localStorage.removeItem("stockilearn_demo_session");
               localStorage.removeItem("stockilearn_lesson_progress");
               logoutDemo();
-              navigate("/login");
+              window.location.href = "/login";
             } else {
               base44.auth.logout();
             }
