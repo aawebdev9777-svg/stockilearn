@@ -10,7 +10,6 @@ import { DemoProvider, useDemo } from '@/lib/DemoContext';
 import DemoLogin from '@/pages/DemoLogin';
 
 import AppLayout from '@/components/layout/AppLayout';
-import AuthGuard from '@/components/AuthGuard';
 import Home from '@/pages/Home';
 import Learn from '@/pages/Learn';
 import Lesson from '@/pages/Lesson';
@@ -69,7 +68,7 @@ const AuthenticatedApp = () => {
         <Route path="/contact" element={<Contact />} />
         <Route path="/claude" element={<Claude />} />
         <Route path="/founders" element={<Founders />} />
-        <Route element={<AuthGuard><AppLayout /></AuthGuard>}>
+        <Route element={<AppLayout />}>
           <Route path="/home" element={<Home />} />
           <Route path="/learn" element={<Learn />} />
           <Route path="/trade" element={<Trade />} />
@@ -121,7 +120,7 @@ const AuthenticatedApp = () => {
       <Route path="/contact" element={<Contact />} />
       <Route path="/claude" element={<Claude />} />
       <Route path="/founders" element={<Founders />} />
-      <Route element={<AuthGuard><AppLayout /></AuthGuard>}>
+      <Route element={<AppLayout />}>
         <Route path="/home" element={<Home />} />
         <Route path="/learn" element={<Learn />} />
         <Route path="/trade" element={<Trade />} />
