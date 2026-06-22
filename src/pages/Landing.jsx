@@ -2,6 +2,10 @@ import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
+import {
+  ChartUp, Trophy, Bull, Flame, Bolt, Book, Bars, Lock,
+  Books, Money, Robot, Gem, Heart, Medal, Chick, Rocket, Gear,
+} from "@/components/landing/AnimatedIcons";
 
 const glass = {
   background: "rgba(255,255,255,0.55)",
@@ -15,7 +19,7 @@ const glassStrong = {
   WebkitBackdropFilter: "blur(20px)",
 };
 
-function LessonNode({ emoji, label, status, delay }) {
+function LessonNode({ icon, label, status, delay }) {
   const styles = {
     done:   "bg-[#58CC02] border-[#46A302] shadow-[0_4px_0_#46A302]",
     active: "bg-[#58CC02] border-[#46A302] shadow-[0_4px_0_#46A302] ring-4 ring-[#58CC02]/30",
@@ -29,8 +33,8 @@ function LessonNode({ emoji, label, status, delay }) {
       transition={{ delay, type: "spring", stiffness: 200 }}
       className="flex flex-col items-center gap-1"
     >
-      <div className={`w-14 h-14 rounded-full border-b-4 flex items-center justify-center text-xl ${styles[status]}`}>
-        {status === "locked" ? "🔒" : emoji}
+      <div className={`w-14 h-14 rounded-full border-b-4 flex items-center justify-center ${styles[status]}`}>
+        {status === "locked" ? <Lock size={22} /> : icon}
       </div>
       <p className={`text-[10px] font-bold ${status === "locked" ? "text-white/40" : "text-white/80"}`}>{label}</p>
     </motion.div>
@@ -48,7 +52,7 @@ function FeatureCard({ icon, title, desc, delay }) {
       style={glass}
       className="rounded-3xl p-6 border border-white/50 cursor-default"
     >
-      <div className="text-4xl mb-3">{icon}</div>
+      <div className="mb-3">{icon}</div>
       <h3 className="font-black text-gray-800 text-base mb-2">{title}</h3>
       <p className="text-sm text-gray-500 leading-relaxed">{desc}</p>
     </motion.div>
@@ -80,7 +84,7 @@ export default function Landing() {
       >
         <div className="max-w-5xl mx-auto px-6 py-3 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <span className="text-2xl">📈</span>
+            <ChartUp size={28} />
             <span className="text-xl font-black text-gray-800">Stocki<span className="text-[#58CC02]">Learn</span></span>
           </div>
           <div className="flex items-center gap-3">
@@ -111,7 +115,7 @@ export default function Landing() {
               className="inline-flex items-center gap-2 border border-[#58CC02]/40 text-[#46A302] text-xs font-black tracking-widest uppercase px-4 py-2 rounded-full mb-6"
               style={{ background: "rgba(88,204,2,0.1)", backdropFilter: "blur(8px)" }}
             >
-              🏆 #1 investing app for teens
+              <Trophy size={16} /> #1 investing app for teens
             </motion.div>
 
             <motion.h1
@@ -179,10 +183,11 @@ export default function Landing() {
               initial={{ opacity: 0, scale: 0.8, y: 10 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               transition={{ delay: 0.6, type: "spring", stiffness: 200 }}
-              className="relative rounded-2xl px-4 py-3 border border-white/50 max-w-[200px]"
+              className="relative rounded-2xl px-4 py-3 border border-white/50 max-w-[200px] flex items-center gap-2"
               style={glassStrong}
             >
-              <p className="text-sm font-bold text-gray-800">Let's learn about stocks! 📈</p>
+              <p className="text-sm font-bold text-gray-800">Let's learn about stocks!</p>
+              <ChartUp size={18} />
               <div className="absolute -bottom-2 left-6 w-4 h-4 rotate-45 border-b border-r border-white/40" style={{ background: "rgba(255,255,255,0.70)" }} />
             </motion.div>
 
@@ -190,19 +195,19 @@ export default function Landing() {
               initial={{ opacity: 0, scale: 0 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.4, type: "spring" }}
-              className="text-[90px] select-none leading-none text-center"
+              className="select-none leading-none text-center"
             >
-              🐂
+              <Bull size={90} />
             </motion.div>
 
             {/* Gamification badges */}
             <div className="flex gap-3">
               {[
-                { icon: "🔥", value: "14", label: "day streak", border: "border-orange-300/50", bg: "rgba(255,237,213,0.65)" },
-                { icon: "⚡", value: "350", label: "XP today", border: "border-yellow-300/50", bg: "rgba(254,249,195,0.65)" },
+                { icon: <Flame size={28} />, value: "14", label: "day streak", border: "border-orange-300/50", bg: "rgba(255,237,213,0.65)" },
+                { icon: <Bolt size={28} />, value: "350", label: "XP today", border: "border-yellow-300/50", bg: "rgba(254,249,195,0.65)" },
               ].map(({ icon, value, label, border, bg }) => (
                 <div key={label} className={`flex items-center gap-1.5 border-b-4 ${border} rounded-2xl px-4 py-2`} style={{ background: bg, backdropFilter: "blur(12px)", WebkitBackdropFilter: "blur(12px)" }}>
-                  <span className="text-2xl">{icon}</span>
+                  {icon}
                   <div>
                     <p className="text-2xl font-black text-gray-800 leading-none">{value}</p>
                     <p className="text-[10px] font-bold text-gray-500 uppercase tracking-wide">{label}</p>
@@ -215,10 +220,10 @@ export default function Landing() {
             <div className="rounded-3xl p-5 border border-white/50 w-72" style={glass}>
               <p className="text-xs font-black text-gray-400 uppercase tracking-widest mb-4 text-center">Unit 1 · The Basics</p>
               <div className="flex justify-around items-end">
-                <LessonNode emoji="📖" label="What's a stock?" status="done" delay={0.7} />
-                <LessonNode emoji="💹" label="The market" status="done" delay={0.8} />
-                <LessonNode emoji="🐂" label="Bulls & Bears" status="active" delay={0.9} />
-                <LessonNode emoji="📊" label="P/E ratios" status="locked" delay={1.0} />
+                <LessonNode icon={<Book size={22} />} label="What's a stock?" status="done" delay={0.7} />
+                <LessonNode icon={<ChartUp size={22} />} label="The market" status="done" delay={0.8} />
+                <LessonNode icon={<Bull size={22} />} label="Bulls & Bears" status="active" delay={0.9} />
+                <LessonNode icon={<Bars size={22} />} label="P/E ratios" status="locked" delay={1.0} />
               </div>
             </div>
           </motion.div>
@@ -229,21 +234,20 @@ export default function Landing() {
       <section className="py-8 border-y border-white/40" style={glass}>
         <div className="max-w-4xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-6">
           {[
-            { value: "25+", label: "Lessons", icon: "📚" },
-            { value: "50+", label: "Stocks to trade", icon: "📈" },
-            { value: "£10K", label: "Virtual money", icon: "💰" },
-            { value: "7", label: "League tiers", icon: "🏆" },
-          ].map(({ value, label, icon }) => (
+            { icon: <Books size={36} />, label: "Lessons" },
+            { icon: <ChartUp size={36} />, label: "Stocks to trade" },
+            { icon: <Money size={36} />, label: "Virtual money" },
+            { icon: <Trophy size={36} />, label: "League tiers" },
+          ].map(({ icon, label }) => (
             <motion.div
               key={label}
               initial={{ opacity: 0, y: 10 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="text-center"
+              className="text-center flex flex-col items-center gap-1"
             >
-              <div className="text-3xl mb-1">{icon}</div>
-              <p className="text-3xl font-black text-gray-900">{value}</p>
-              <p className="text-sm text-gray-500 font-medium">{label}</p>
+              {icon}
+              <p className="text-sm text-gray-500 font-medium mt-1">{label}</p>
             </motion.div>
           ))}
         </div>
@@ -264,12 +268,12 @@ export default function Landing() {
             </h2>
           </motion.div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            <FeatureCard icon="📚" title="Structured Curriculum" desc="25+ bite-sized lessons across 5 units. Start from zero, master the fundamentals." delay={0} />
-            <FeatureCard icon="📈" title="Paper Trading" desc="£10,000 virtual fund. 50+ real stocks. Build real intuition with zero risk." delay={0.08} />
-            <FeatureCard icon="🤖" title="Bruno the AI Tutor" desc="Ask anything in plain English. Bruno explains concepts and analyses your portfolio instantly." delay={0.16} />
-            <FeatureCard icon="🔥" title="Daily Streaks" desc="Build the habit. Miss a day and lose your streak. Use gems to freeze it." delay={0.24} />
-            <FeatureCard icon="🏆" title="Leagues & Leaderboards" desc="Compete in 7 tiers. Top 5 promote each week. Bottom 5 get demoted." delay={0.32} />
-            <FeatureCard icon="⚡" title="XP & 50 Levels" desc="From Market Newbie to Market Legend. Earn XP for lessons, quizzes, and smart trades." delay={0.40} />
+            <FeatureCard icon={<Books size={40} />} title="Structured Curriculum" desc="25+ bite-sized lessons across 5 units. Start from zero, master the fundamentals." delay={0} />
+            <FeatureCard icon={<ChartUp size={40} />} title="Paper Trading" desc="£10,000 virtual fund. 50+ real stocks. Build real intuition with zero risk." delay={0.08} />
+            <FeatureCard icon={<Robot size={40} />} title="Bruno the AI Tutor" desc="Ask anything in plain English. Bruno explains concepts and analyses your portfolio instantly." delay={0.16} />
+            <FeatureCard icon={<Flame size={40} />} title="Daily Streaks" desc="Build the habit. Miss a day and lose your streak. Use gems to freeze it." delay={0.24} />
+            <FeatureCard icon={<Trophy size={40} />} title="Leagues & Leaderboards" desc="Compete in 7 tiers. Top 5 promote each week. Bottom 5 get demoted." delay={0.32} />
+            <FeatureCard icon={<Bolt size={40} />} title="XP & 50 Levels" desc="From Market Newbie to Market Legend. Earn XP for lessons, quizzes, and smart trades." delay={0.40} />
           </div>
         </div>
       </section>
@@ -288,10 +292,10 @@ export default function Landing() {
           </motion.div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
             {[
-              { n: "1", icon: "🐣", title: "Set your goal", desc: "Tell us your experience level. Your personalised curriculum is ready in 60 seconds." },
-              { n: "2", icon: "📚", title: "Complete daily lessons", desc: "Short, fun lessons with quizzes. Earn XP, protect your streak, unlock the next unit." },
-              { n: "3", icon: "📈", title: "Trade with virtual money", desc: "Apply what you learned in a real-feeling paper market. No risk — all the fun." },
-              { n: "4", icon: "🏆", title: "Climb the leagues", desc: "Compete weekly. Promote or demote. The same dopamine loop as Duolingo — but for money." },
+              { n: "1", icon: <Chick size={36} />, title: "Set your goal", desc: "Tell us your experience level. Your personalised curriculum is ready in 60 seconds." },
+              { n: "2", icon: <Books size={36} />, title: "Complete daily lessons", desc: "Short, fun lessons with quizzes. Earn XP, protect your streak, unlock the next unit." },
+              { n: "3", icon: <ChartUp size={36} />, title: "Trade with virtual money", desc: "Apply what you learned in a real-feeling paper market. No risk — all the fun." },
+              { n: "4", icon: <Trophy size={36} />, title: "Climb the leagues", desc: "Compete weekly. Promote or demote. The same dopamine loop as Duolingo — but for money." },
             ].map((step, i) => (
               <motion.div
                 key={i}
@@ -307,7 +311,7 @@ export default function Landing() {
                   {step.n}
                 </div>
                 <div>
-                  <div className="text-2xl mb-1">{step.icon}</div>
+                  <div className="mb-1">{step.icon}</div>
                   <h3 className="font-black text-gray-900 text-base mb-1">{step.title}</h3>
                   <p className="text-sm text-gray-500 leading-relaxed">{step.desc}</p>
                 </div>
@@ -351,12 +355,12 @@ export default function Landing() {
             className="flex-shrink-0 grid grid-cols-2 gap-3 w-72"
           >
             {[
-              { icon: "🔥", label: "14-day streak", sub: "Keep going!" },
-              { icon: "⚡", label: "350 XP", sub: "Level 8" },
-              { icon: "🏆", label: "Gold League", sub: "Rank #3 this week" },
-              { icon: "💎", label: "120 Gems", sub: "Streak freeze ready" },
-              { icon: "❤️", label: "5 Hearts", sub: "Full health" },
-              { icon: "🥇", label: "3 Badges", sub: "Collected" },
+              { icon: <Flame size={32} />, label: "14-day streak", sub: "Keep going!" },
+              { icon: <Bolt size={32} />, label: "350 XP", sub: "Level 8" },
+              { icon: <Trophy size={32} />, label: "Gold League", sub: "Rank #3 this week" },
+              { icon: <Gem size={32} />, label: "120 Gems", sub: "Streak freeze ready" },
+              { icon: <Heart size={32} />, label: "5 Hearts", sub: "Full health" },
+              { icon: <Medal size={32} />, label: "3 Badges", sub: "Collected" },
             ].map((item, i) => (
               <motion.div
                 key={i}
@@ -368,7 +372,7 @@ export default function Landing() {
                 style={glass}
                 className="rounded-2xl p-3 border border-white/50"
               >
-                <div className="text-2xl mb-1">{item.icon}</div>
+                <div className="mb-1">{item.icon}</div>
                 <p className="text-sm font-black text-gray-800">{item.label}</p>
                 <p className="text-[10px] text-gray-400 font-medium">{item.sub}</p>
               </motion.div>
@@ -387,7 +391,7 @@ export default function Landing() {
             className="rounded-3xl p-12 border border-white/50"
             style={glassStrong}
           >
-            <div className="text-6xl mb-4">📈</div>
+            <div className="flex justify-center mb-4"><ChartUp size={64} /></div>
             <h2 className="text-4xl font-black text-gray-900 leading-tight mb-4">
               Your streak starts today.
             </h2>
@@ -420,8 +424,8 @@ export default function Landing() {
           </motion.div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
             {[
-              { emoji: "🚀", name: "Ahmetzhan Aldiyar", title: "CEO & Co-Founder", bio: "Leads StockiLearn's vision and product strategy — turning the mission of making investing accessible into a gamified, habit-forming experience." },
-              { emoji: "⚙️", name: "Sander Rosingholm", title: "COO & Co-Founder", bio: "Oversees operations and partnerships — ensuring StockiLearn runs smoothly as it scales to reach more learners across the UK." },
+              { icon: <Rocket size={48} />, name: "Ahmetzhan Aldiyar", title: "CEO & Co-Founder", bio: "Leads StockiLearn's vision and product strategy — turning the mission of making investing accessible into a gamified, habit-forming experience." },
+              { icon: <Gear size={48} />, name: "Sander Rosingholm", title: "COO & Co-Founder", bio: "Oversees operations and partnerships — ensuring StockiLearn runs smoothly as it scales to reach more learners across the UK." },
             ].map((f, i) => (
               <motion.div
                 key={f.name}
@@ -433,8 +437,8 @@ export default function Landing() {
                 style={glass}
                 className="rounded-3xl p-6 border border-white/50 flex flex-col items-center text-center"
               >
-                <div className="w-16 h-16 rounded-2xl bg-white/60 border border-white/50 flex items-center justify-center text-3xl mb-4">
-                  {f.emoji}
+                <div className="w-16 h-16 rounded-2xl bg-white/60 border border-white/50 flex items-center justify-center mb-4">
+                  {f.icon}
                 </div>
                 <h3 className="text-lg font-black text-gray-900">{f.name}</h3>
                 <p className="text-sm font-bold text-[#58CC02] mb-2">{f.title}</p>
@@ -454,7 +458,7 @@ export default function Landing() {
       <footer className="border-t border-white/40 py-8 px-6" style={glass}>
         <div className="max-w-5xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-2">
-            <span className="text-xl">📈</span>
+            <ChartUp size={24} />
             <span className="font-black text-gray-800">Stocki<span className="text-[#58CC02]">Learn</span></span>
           </div>
           <p className="text-xs text-gray-400">© 2026 StockiLearn · Educational purposes only</p>
