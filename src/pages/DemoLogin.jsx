@@ -8,7 +8,10 @@ import { Button } from "@/components/ui/button";
 export default function DemoLogin() {
   const { loginDemo, signupDemo } = useDemo();
   const navigate = useNavigate();
-  const [tab, setTab] = useState("signin");
+  const [tab, setTab] = useState(() => {
+    const params = new URLSearchParams(window.location.search);
+    return params.get("tab") === "signup" ? "signup" : "signin";
+  });
 
   // Sign-in state
   const [siUsername, setSiUsername] = useState("");

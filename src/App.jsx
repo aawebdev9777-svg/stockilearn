@@ -95,10 +95,15 @@ const AuthenticatedApp = () => {
     if (authError.type === 'user_not_registered') {
       return <UserNotRegisteredError />;
     } else if (authError.type === 'auth_required') {
-      // Show demo login instead of redirecting to platform auth
+      // Unauthenticated visitors see the landing page; login is at /login
       return (
         <Routes>
-          <Route path="*" element={<DemoLogin />} />
+          <Route path="/" element={<Landing />} />
+          <Route path="/login" element={<DemoLogin />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/founders" element={<Founders />} />
+          <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       );
     }
