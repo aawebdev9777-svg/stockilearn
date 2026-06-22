@@ -419,6 +419,11 @@ export default function Landing() {
             <Link to="/login" className="hover:text-gray-700 transition-colors">Sign In</Link>
           </div>
         </div>
+        <div className="mt-6 text-center space-y-0.5">
+          <p className="text-[10px] font-black uppercase tracking-widest text-gray-400">Created by</p>
+          <p className="text-xs font-bold text-gray-600">Ahmetzhan Aldiyar <span className="text-gray-400 font-medium">· CEO &amp; Co-Founder</span></p>
+          <p className="text-xs font-bold text-gray-600">Sander Rosingholm <span className="text-gray-400 font-medium">· COO &amp; Co-Founder</span></p>
+        </div>
       </footer>
     </div>
   );
