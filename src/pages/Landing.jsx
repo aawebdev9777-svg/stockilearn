@@ -406,6 +406,50 @@ export default function Landing() {
         </div>
       </section>
 
+      {/* ── Founders ── */}
+      <section className="py-20 px-6">
+        <div className="max-w-4xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-12"
+          >
+            <p className="text-xs font-black tracking-widest uppercase text-[#58CC02] mb-2">The Team</p>
+            <h2 className="text-4xl font-black text-gray-900 leading-tight">Meet the Founders</h2>
+          </motion.div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+            {[
+              { emoji: "🚀", name: "Ahmetzhan Aldiyar", title: "CEO & Co-Founder", bio: "Leads StockiLearn's vision and product strategy — turning the mission of making investing accessible into a gamified, habit-forming experience." },
+              { emoji: "⚙️", name: "Sander Rosingholm", title: "COO & Co-Founder", bio: "Oversees operations and partnerships — ensuring StockiLearn runs smoothly as it scales to reach more learners across the UK." },
+            ].map((f, i) => (
+              <motion.div
+                key={f.name}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.1 }}
+                whileHover={{ scale: 1.02 }}
+                style={glass}
+                className="rounded-3xl p-6 border border-white/50 flex flex-col items-center text-center"
+              >
+                <div className="w-16 h-16 rounded-2xl bg-white/60 border border-white/50 flex items-center justify-center text-3xl mb-4">
+                  {f.emoji}
+                </div>
+                <h3 className="text-lg font-black text-gray-900">{f.name}</h3>
+                <p className="text-sm font-bold text-[#58CC02] mb-2">{f.title}</p>
+                <p className="text-sm text-gray-500 leading-relaxed">{f.bio}</p>
+              </motion.div>
+            ))}
+          </div>
+          <div className="text-center mt-8">
+            <Link to="/founders" className="inline-flex items-center gap-2 text-sm font-black text-[#46A302] hover:text-[#58CC02] transition-colors">
+              Learn more about the founders <ArrowRight className="w-4 h-4" />
+            </Link>
+          </div>
+        </div>
+      </section>
+
       {/* ── Footer ── */}
       <footer className="border-t border-white/40 py-8 px-6" style={glass}>
         <div className="max-w-5xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
