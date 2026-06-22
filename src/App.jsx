@@ -27,6 +27,7 @@ import AdminAnalytics from '@/pages/AdminAnalytics';
 import Upgrade from '@/pages/Upgrade';
 import About from '@/pages/About';
 import Contact from '@/pages/Contact';
+import Claude from '@/pages/Claude';
 
 // Guard: only admin users can access wrapped routes
 const AdminOnly = ({ children }) => {
@@ -64,6 +65,7 @@ const AuthenticatedApp = () => {
         <Route path="/admin/analytics" element={<AdminOnly><AdminAnalytics /></AdminOnly>} />
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
+        <Route path="/claude" element={<Claude />} />
         <Route element={<AppLayout />}>
           <Route path="/home" element={<Home />} />
           <Route path="/learn" element={<Learn />} />
@@ -114,6 +116,7 @@ const AuthenticatedApp = () => {
       <Route path="/admin" element={<Admin />} />
       <Route path="/about" element={<About />} />
       <Route path="/contact" element={<Contact />} />
+      <Route path="/claude" element={<Claude />} />
       <Route element={<AppLayout />}>
         <Route path="/home" element={<Home />} />
         <Route path="/learn" element={<Learn />} />
