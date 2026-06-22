@@ -125,7 +125,8 @@ export function DemoProvider({ children }) {
       return { ok: true };
     } catch (e) {
       console.error("Signup error:", e);
-      return { ok: false, error: "Something went wrong. Please try again." };
+      const msg = e?.response?.data?.error || e?.data?.error || "Something went wrong. Please try again.";
+      return { ok: false, error: msg };
     }
   };
 
