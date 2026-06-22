@@ -33,6 +33,12 @@ Deno.serve(async (req) => {
     if (!username || !password) {
       return withHeaders({ ok: false, error: "Missing fields" }, 400);
     }
+    if (username.length < 3) {
+      return withHeaders({ ok: false, error: "Username must be at least 3 characters" }, 400);
+    }
+    if (password.length < 8) {
+      return withHeaders({ ok: false, error: "Password must be at least 8 characters" }, 400);
+    }
 
     const existing = await base44.asServiceRole.entities.AppUser.filter({ username: username.toLowerCase() });
     if (existing && existing.length > 0) {
