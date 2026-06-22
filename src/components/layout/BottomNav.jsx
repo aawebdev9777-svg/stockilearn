@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { Home, BookOpen, TrendingUp, Trophy, User } from "lucide-react";
 
 const tabs = [
-  { path: "/", label: "Home", icon: Home },
+  { path: "/home", label: "Home", icon: Home },
   { path: "/learn", label: "Learn", icon: BookOpen },
   { path: "/trade", label: "Trade", icon: TrendingUp },
   { path: "/leagues", label: "Leagues", icon: Trophy },
@@ -19,7 +19,7 @@ export default function BottomNav() {
     <nav className="fixed bottom-0 left-0 right-0 z-50 border-t border-white/30 shadow-2xl select-none" style={{ background: "rgba(255,255,255,0.55)", backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)" }}>
       <div className="flex items-center justify-around max-w-lg mx-auto h-18 px-2 pt-1" style={{ paddingBottom: "calc(0.5rem + env(safe-area-inset-bottom, 0px))" }}>
         {tabs.map((tab) => {
-          const isActive = tab.path === "/" ? currentPath === "/" : currentPath.startsWith(tab.path);
+          const isActive = currentPath.startsWith(tab.path);
           const Icon = tab.icon;
           return (
             <Link
