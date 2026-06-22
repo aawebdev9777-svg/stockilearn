@@ -47,6 +47,7 @@ export default function BottomNav() {
           );
         })}
       </div>
+      <p className="text-center text-[8px] text-gray-400 font-bold pb-1">Created by Ahmetzhan Aldiyar</p>
       <div className="h-safe-area-bottom" />
     </nav>
   );

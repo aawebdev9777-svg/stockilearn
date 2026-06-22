@@ -134,6 +134,7 @@ export default function Home() {
           </div>
         </motion.div>
       )}
+        <p className="text-center text-[10px] text-gray-400 font-bold pt-2">Created by Ahmetzhan Aldiyar</p>
       </div>
     </PullToRefresh>
   );
