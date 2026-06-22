@@ -11,7 +11,7 @@
     },
     "password_hash": {
       "type": "string",
-      "description": "Stored password (plaintext for demo purposes)"
+      "description": "PBKDF2 password hash with salt (never stored as plaintext)"
     },
     "role": {
       "type": "string",
@@ -93,7 +93,11 @@
     "password_hash"
   ],
   "rls": {
-    "create": {},
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
     "read": {
       "$or": [
         {
