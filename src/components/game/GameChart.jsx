@@ -6,6 +6,9 @@ const HEIGHT = 200;
 const PAD_X = 4;
 const PAD_Y = 12;
 
+const GREEN = "#58CC02";
+const RED = "#ef4444";
+
 export default function GameChart({ prices, currentIndex, position, startPrice }) {
   const data = useMemo(() => {
     const start = Math.max(0, currentIndex - VISIBLE_COUNT + 1);
@@ -38,7 +41,7 @@ export default function GameChart({ prices, currentIndex, position, startPrice }
   if (!data) return null;
 
   const { pts, currentPrice, isUp, visibleStart, count } = data;
-  const lineColor = isUp ? "#22c55e" : "#ef4444";
+  const lineColor = isUp ? GREEN : RED;
 
   const pathD = pts.map((p, i) => `${i === 0 ? "M" : "L"} ${p.x.toFixed(1)} ${p.y.toFixed(1)}`).join(" ");
   const lastPt = pts[pts.length - 1];
@@ -54,14 +57,14 @@ export default function GameChart({ prices, currentIndex, position, startPrice }
       const fillPath = `M ${buyPt.x.toFixed(1)} ${buyPt.y.toFixed(1)} L ${lastPt.x.toFixed(1)} ${lastPt.y.toFixed(1)} L ${lastPt.x.toFixed(1)} ${buyPt.y.toFixed(1)} Z`;
       positionElements = (
         <>
-          <path d={fillPath} fill={profit ? "rgba(34,197,94,0.25)" : "rgba(239,68,68,0.25)"} />
+          <path d={fillPath} fill={profit ? "rgba(88,204,2,0.18)" : "rgba(239,68,68,0.18)"} />
           <line
             x1={buyPt.x} y1={buyPt.y}
             x2={lastPt.x} y2={buyPt.y}
-            stroke="white" strokeDasharray="4 4" strokeWidth="1" opacity="0.4"
+            stroke="hsl(var(--muted-foreground))" strokeDasharray="4 4" strokeWidth="1" opacity="0.4"
             vectorEffect="non-scaling-stroke"
           />
-          <circle cx={buyPt.x} cy={buyPt.y} r="3" fill="white" />
+          <circle cx={buyPt.x} cy={buyPt.y} r="3" fill="hsl(var(--foreground))" />
         </>
       );
     }
@@ -71,13 +74,13 @@ export default function GameChart({ prices, currentIndex, position, startPrice }
     <svg viewBox={`0 0 ${WIDTH} ${HEIGHT}`} className="w-full h-full" preserveAspectRatio="none">
       <defs>
         <linearGradient id="areaGrad" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor={lineColor} stopOpacity="0.25" />
+          <stop offset="0%" stopColor={lineColor} stopOpacity="0.22" />
           <stop offset="100%" stopColor={lineColor} stopOpacity="0" />
         </linearGradient>
       </defs>
 
       {[0.2, 0.4, 0.6, 0.8].map((f) => (
-        <line key={f} x1={0} y1={f * HEIGHT} x2={WIDTH} y2={f * HEIGHT} stroke="rgba(255,255,255,0.04)" strokeWidth="1" />
+        <line key={f} x1={0} y1={f * HEIGHT} x2={WIDTH} y2={f * HEIGHT} stroke="hsl(var(--border))" strokeWidth="1" opacity="0.5" />
       ))}
 
       {pts.length > 1 && <path d={areaD} fill="url(#areaGrad)" />}

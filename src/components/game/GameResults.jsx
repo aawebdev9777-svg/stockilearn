@@ -5,8 +5,11 @@ import { RefreshCw, Home } from "lucide-react";
 import { Link } from "react-router-dom";
 import { getResultMessage } from "@/lib/gameEngine";
 
+const fmt = (n) => n.toLocaleString("en-GB", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
 export default function GameResults({ round, results, xp, onPlayAgain }) {
   const { playerReturn, buyHoldReturn, beatMarket, finalCash } = results;
+  const currencySymbol = round.currency === "GBP" ? "£" : "$";
 
   return (
     <motion.div
@@ -20,9 +23,9 @@ export default function GameResults({ round, results, xp, onPlayAgain }) {
         transition={{ type: "spring", stiffness: 200, delay: 0.1 }}
         className="text-center"
       >
-        <p className="text-xs font-bold uppercase tracking-widest text-white/40 mb-2">You were trading</p>
-        <h2 className="text-3xl font-black text-white">{round.stockName}</h2>
-        <p className="text-sm text-white/50 mt-1">{round.ticker} · {round.sector}</p>
+        <p className="text-xs font-black uppercase tracking-widest text-muted-foreground mb-2">You were trading</p>
+        <h2 className="text-3xl font-black text-foreground">{round.stockName}</h2>
+        <p className="text-sm text-muted-foreground mt-1">{round.ticker} · {round.sector}</p>
       </motion.div>
 
       <motion.div
@@ -31,24 +34,24 @@ export default function GameResults({ round, results, xp, onPlayAgain }) {
         transition={{ delay: 0.3 }}
         className="w-full max-w-sm space-y-3"
       >
-        <div className={`rounded-2xl p-4 border ${beatMarket ? "bg-green-500/10 border-green-500/30" : "bg-white/5 border-white/10"}`}>
+        <div className={`rounded-2xl p-4 border ${beatMarket ? "bg-[#58CC02]/10 border-[#58CC02]/30" : "bg-card border-border"}`}>
           <div className="flex items-center justify-between">
-            <span className="text-sm text-white/60 font-medium">Your Return</span>
-            <span className={`text-2xl font-black tabular-nums ${playerReturn >= 0 ? "text-green-400" : "text-red-400"}`}>
+            <span className="text-sm text-muted-foreground font-medium">Your Return</span>
+            <span className={`text-2xl font-black tabular-nums ${playerReturn >= 0 ? "text-[#58CC02]" : "text-destructive"}`}>
               {playerReturn >= 0 ? "+" : ""}{playerReturn.toFixed(2)}%
             </span>
           </div>
-          <p className="text-xs text-white/40 mt-1">£{finalCash.toFixed(2)} final balance</p>
+          <p className="text-xs text-muted-foreground/70 mt-1">{currencySymbol}{fmt(finalCash)} final balance</p>
         </div>
 
-        <div className="rounded-2xl p-4 border border-white/10 bg-white/5">
+        <div className="rounded-2xl p-4 border border-border bg-card">
           <div className="flex items-center justify-between">
-            <span className="text-sm text-white/60 font-medium">Buy &amp; Hold</span>
-            <span className="text-2xl font-black text-white/80 tabular-nums">
+            <span className="text-sm text-muted-foreground font-medium">Buy &amp; Hold</span>
+            <span className="text-2xl font-black text-foreground/80 tabular-nums">
               {buyHoldReturn >= 0 ? "+" : ""}{buyHoldReturn.toFixed(2)}%
             </span>
           </div>
-          <p className="text-xs text-white/40 mt-1">If you just held the whole time</p>
+          <p className="text-xs text-muted-foreground/70 mt-1">If you just held the whole time</p>
         </div>
       </motion.div>
 
@@ -56,9 +59,9 @@ export default function GameResults({ round, results, xp, onPlayAgain }) {
         initial={{ scale: 0.8, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         transition={{ delay: 0.5, type: "spring" }}
-        className={`px-6 py-3 rounded-2xl ${beatMarket ? "bg-green-500/20" : "bg-white/5"}`}
+        className={`px-6 py-3 rounded-2xl ${beatMarket ? "bg-[#58CC02]/15" : "bg-muted"}`}
       >
-        <p className="text-sm font-bold text-white text-center">{getResultMessage(results)}</p>
+        <p className="text-sm font-bold text-foreground text-center">{getResultMessage(results)}</p>
       </motion.div>
 
       <motion.div
@@ -68,16 +71,19 @@ export default function GameResults({ round, results, xp, onPlayAgain }) {
         className="flex items-center gap-2"
       >
         <span className="text-2xl">⚡</span>
-        <span className="text-xl font-black text-yellow-400">+{xp} XP</span>
+        <span className="text-xl font-black text-accent-foreground">+{xp.toLocaleString()} XP</span>
       </motion.div>
 
       <div className="flex gap-3 w-full max-w-sm">
-        <Button onClick={onPlayAgain} className="flex-1 h-12 rounded-2xl font-bold bg-green-500 hover:bg-green-600 text-white border-0">
+        <Button
+          onClick={onPlayAgain}
+          className="flex-1 h-12 rounded-2xl font-bold bg-[#58CC02] hover:bg-[#58CC02]/90 text-white border-b-4 border-[#46A302] active:border-b-0 active:translate-y-0.5 transition-all"
+        >
           <RefreshCw className="w-4 h-4 mr-2" />
           Play Again
         </Button>
         <Link to="/home" className="flex-1">
-          <Button variant="outline" className="w-full h-12 rounded-2xl font-bold border-white/20 bg-transparent text-white hover:bg-white/10 hover:text-white">
+          <Button variant="outline" className="w-full h-12 rounded-2xl font-bold border-border bg-card text-foreground hover:bg-muted hover:text-foreground">
             <Home className="w-4 h-4 mr-2" />
             Home
           </Button>

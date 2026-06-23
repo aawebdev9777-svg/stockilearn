@@ -7,6 +7,8 @@ import { generateGameRound, calculateResults, calculateGameXp, STARTING_CASH, TI
 
 const BEST_SCORE_KEY = "stockilearn_game_best";
 
+const fmt = (n) => n.toLocaleString("en-GB", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
 export default function Play() {
   const [gameState, setGameState] = useState("ready");
   const [round, setRound] = useState(null);
@@ -126,22 +128,23 @@ export default function Play() {
   const unrealizedPnl = isHolding && buyPrice ? ((currentPrice - buyPrice) / buyPrice) * 100 : 0;
   const unrealizedValue = isHolding ? shares * currentPrice : cash;
   const progress = round ? (priceIndex / (round.points.length - 1)) * 100 : 0;
+  const currencySymbol = round?.currency === "GBP" ? "£" : "$";
 
   return (
-    <div className="min-h-screen bg-[#0a0e1a] text-white flex flex-col select-none">
+    <div className="min-h-screen bg-background text-foreground flex flex-col select-none">
       {gameState === "ready" && <StartScreen onStart={startGame} bestScore={bestScore} />}
 
       {gameState === "playing" && round && (
         <div className="flex-1 flex flex-col px-4 pt-6 pb-4">
           <div className="flex items-center justify-between mb-2">
             <div>
-              <p className="text-[10px] font-bold uppercase tracking-widest text-white/40">Mystery Stock</p>
-              <p className="text-sm font-bold text-white/70">??? · ???</p>
+              <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Mystery Stock</p>
+              <p className="text-sm font-bold text-muted-foreground/70">??? · ???</p>
             </div>
             <div className="text-right">
-              <p className="text-[10px] font-bold uppercase tracking-widest text-white/40">{isHolding ? "Position" : "Cash"}</p>
-              <p className="text-lg font-black text-white tabular-nums">
-                {isHolding ? `£${unrealizedValue.toFixed(2)}` : `£${cash.toFixed(2)}`}
+              <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">{isHolding ? "Position" : "Cash"}</p>
+              <p className="text-lg font-black text-foreground tabular-nums">
+                {currencySymbol}{fmt(isHolding ? unrealizedValue : cash)}
               </p>
             </div>
           </div>
@@ -151,7 +154,7 @@ export default function Play() {
               <motion.span
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
-                className={`text-sm font-bold tabular-nums ${unrealizedPnl >= 0 ? "text-green-400" : "text-red-400"}`}
+                className={`text-sm font-bold tabular-nums ${unrealizedPnl >= 0 ? "text-[#58CC02]" : "text-destructive"}`}
               >
                 {unrealizedPnl >= 0 ? "+" : ""}{unrealizedPnl.toFixed(2)}% {unrealizedPnl >= 0 ? "▲" : "▼"}
               </motion.span>
@@ -159,7 +162,7 @@ export default function Play() {
           </div>
 
           <div
-            className="flex-1 relative rounded-2xl overflow-hidden border border-white/10 bg-[#0d1320] min-h-[200px]"
+            className="flex-1 relative rounded-2xl overflow-hidden border border-border bg-card min-h-[200px]"
             onPointerDown={handlePointerDown}
             onPointerUp={handlePointerUp}
             onPointerCancel={handlePointerUp}
@@ -174,22 +177,22 @@ export default function Play() {
 
             <div className="absolute bottom-3 left-0 right-0 text-center pointer-events-none">
               {isHolding ? (
-                <motion.p initial={{ scale: 0.9 }} animate={{ scale: 1 }} className="text-sm font-bold text-white/80">
+                <motion.p initial={{ scale: 0.9 }} animate={{ scale: 1 }} className="text-sm font-bold text-foreground/80">
                   HOLDING · Release to sell
                 </motion.p>
               ) : (
-                <p className="text-sm font-bold text-white/30">Tap &amp; hold to buy</p>
+                <p className="text-sm font-bold text-muted-foreground/50">Tap &amp; hold to buy</p>
               )}
             </div>
           </div>
 
-          <div className="mt-3 h-1.5 rounded-full bg-white/10 overflow-hidden">
-            <div className="h-full bg-green-500 transition-all duration-100" style={{ width: `${progress}%` }} />
+          <div className="mt-3 h-1.5 rounded-full bg-muted overflow-hidden">
+            <div className="h-full bg-primary transition-all duration-100" style={{ width: `${progress}%` }} />
           </div>
 
           <div className="mt-3 text-center">
-            <p className="text-2xl font-black tabular-nums text-white">
-              {round.currency === "GBP" ? "£" : "$"}{currentPrice.toFixed(2)}
+            <p className="text-2xl font-black tabular-nums text-foreground">
+              {currencySymbol}{fmt(currentPrice)}
             </p>
           </div>
         </div>
