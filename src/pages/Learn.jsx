@@ -100,6 +100,49 @@ export default function Learn() {
         </motion.div>
       </Link>
 
+      {/* Quick Tools */}
+      <div className="grid grid-cols-3 gap-3 mb-6">
+        <Link to="/glossary">
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            className="flex flex-col items-center gap-2 p-4 rounded-2xl border border-white/50"
+            style={{ background: "rgba(255,255,255,0.55)", backdropFilter: "blur(14px)", WebkitBackdropFilter: "blur(14px)" }}
+          >
+            <div className="w-10 h-10 rounded-xl bg-blue-400/10 flex items-center justify-center text-xl">📖</div>
+            <p className="text-xs font-black text-foreground text-center">Glossary</p>
+          </motion.div>
+        </Link>
+        <Link to="/calculators">
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            className="flex flex-col items-center gap-2 p-4 rounded-2xl border border-white/50"
+            style={{ background: "rgba(255,255,255,0.55)", backdropFilter: "blur(14px)", WebkitBackdropFilter: "blur(14px)" }}
+          >
+            <div className="w-10 h-10 rounded-xl bg-amber-400/10 flex items-center justify-center text-xl">🧮</div>
+            <p className="text-xs font-black text-foreground text-center">Calculators</p>
+          </motion.div>
+        </Link>
+        <Link to="/scenarios">
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            className="flex flex-col items-center gap-2 p-4 rounded-2xl border border-white/50"
+            style={{ background: "rgba(255,255,255,0.55)", backdropFilter: "blur(14px)", WebkitBackdropFilter: "blur(14px)" }}
+          >
+            <div className="w-10 h-10 rounded-xl bg-purple-400/10 flex items-center justify-center text-xl">🎭</div>
+            <p className="text-xs font-black text-foreground text-center">Scenarios</p>
+          </motion.div>
+        </Link>
+      </div>
+
       <div className="space-y-8">
         {UNITS.map((unit) => {
           const unitLessons = getLessonsForUnit(unit.id);
