@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { FileCode, Download, Loader2, Lock } from "lucide-react";
 import { Input } from "@/components/ui/input";
+import { base44 } from "@/api/base44Client";
 
 const codeModules = import.meta.glob(
   [
@@ -16,22 +17,30 @@ const codeModules = import.meta.glob(
   { query: "?raw", import: "default" }
 );
 
-const PASSWORD = "AA9777";
-
 export default function Claude() {
   const [unlocked, setUnlocked] = useState(false);
   const [passwordInput, setPasswordInput] = useState("");
   const [error, setError] = useState(false);
+  const [verifying, setVerifying] = useState(false);
   const [generating, setGenerating] = useState(false);
   const filePaths = Object.keys(codeModules).sort();
 
-  const handleUnlock = (e) => {
+  const handleUnlock = async (e) => {
     e.preventDefault();
-    if (passwordInput === PASSWORD) {
-      setUnlocked(true);
-      setError(false);
-    } else {
+    if (!passwordInput) return;
+    setVerifying(true);
+    setError(false);
+    try {
+      const res = await base44.functions.invoke("verifyClaudeAccess", { password: passwordInput });
+      if (res.data?.ok) {
+        setUnlocked(true);
+      } else {
+        setError(true);
+      }
+    } catch {
       setError(true);
+    } finally {
+      setVerifying(false);
     }
   };
 
@@ -115,8 +124,9 @@ export default function Claude() {
             {error && (
               <p className="text-xs text-destructive font-medium">Incorrect password. Try again.</p>
             )}
-            <Button type="submit" size="lg" className="w-full">
-              Unlock
+            <Button type="submit" size="lg" className="w-full" disabled={verifying}>
+              {verifying ? <Loader2 className="w-4 h-4 animate-spin" /> : null}
+              {verifying ? "Verifying..." : "Unlock"}
             </Button>
           </form>
         </Card>
