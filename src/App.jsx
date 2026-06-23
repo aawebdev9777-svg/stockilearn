@@ -14,7 +14,7 @@ import Home from '@/pages/Home';
 import Learn from '@/pages/Learn';
 import Lesson from '@/pages/Lesson';
 import Flashcards from '@/pages/Flashcards';
-import Trade from '@/pages/Trade';
+import Play from '@/pages/Play';
 import StockDetail from '@/pages/StockDetail';
 import Leagues from '@/pages/Leagues.jsx';
 import Profile from '@/pages/Profile';
@@ -71,7 +71,7 @@ const AuthenticatedApp = () => {
         <Route element={<AppLayout />}>
           <Route path="/home" element={<Home />} />
           <Route path="/learn" element={<Learn />} />
-          <Route path="/trade" element={<Trade />} />
+          <Route path="/play" element={<Play />} />
           <Route path="/leagues" element={<Leagues />} />
           <Route path="/profile" element={<Profile />} />
         </Route>
@@ -128,7 +128,7 @@ const AuthenticatedApp = () => {
       <Route element={<AppLayout />}>
         <Route path="/home" element={<Home />} />
         <Route path="/learn" element={<Learn />} />
-        <Route path="/trade" element={<Trade />} />
+        <Route path="/play" element={<Play />} />
         <Route path="/leagues" element={<Leagues />} />
         <Route path="/profile" element={<Profile />} />
       </Route>

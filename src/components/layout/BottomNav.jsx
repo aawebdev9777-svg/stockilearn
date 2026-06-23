@@ -1,12 +1,12 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Home, BookOpen, TrendingUp, Trophy, User } from "lucide-react";
+import { Home, BookOpen, Gamepad2, Trophy, User } from "lucide-react";
 
 const tabs = [
   { path: "/home", label: "Home", icon: Home },
   { path: "/learn", label: "Learn", icon: BookOpen },
-  { path: "/trade", label: "Trade", icon: TrendingUp },
+  { path: "/play", label: "Play", icon: Gamepad2 },
   { path: "/leagues", label: "Leagues", icon: Trophy },
   { path: "/profile", label: "Profile", icon: User },
 ];
