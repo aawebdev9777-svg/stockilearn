@@ -29,9 +29,6 @@ import About from '@/pages/About';
 import Contact from '@/pages/Contact';
 import Claude from '@/pages/Claude';
 import Founders from '@/pages/Founders';
-import Glossary from '@/pages/Glossary';
-import Calculators from '@/pages/Calculators';
-import Scenarios from '@/pages/Scenarios';
 
 // Guard: only admin users can access wrapped routes
 const AdminOnly = ({ children }) => {
@@ -61,9 +58,6 @@ const AuthenticatedApp = () => {
         <Route path="/onboarding" element={<Onboarding />} />
         <Route path="/learn/lesson/:lessonId" element={<Lesson />} />
         <Route path="/flashcards" element={<Flashcards />} />
-        <Route path="/glossary" element={<Glossary />} />
-        <Route path="/calculators" element={<Calculators />} />
-        <Route path="/scenarios" element={<Scenarios />} />
         <Route path="/trade/stock/:ticker" element={<StockDetail />} />
         <Route path="/settings" element={<Settings />} />
         <Route path="/upgrade" element={<Upgrade />} />
@@ -122,9 +116,6 @@ const AuthenticatedApp = () => {
     <Route path="/onboarding" element={<Onboarding />} />
       <Route path="/learn/lesson/:lessonId" element={<Lesson />} />
       <Route path="/flashcards" element={<Flashcards />} />
-      <Route path="/glossary" element={<Glossary />} />
-      <Route path="/calculators" element={<Calculators />} />
-      <Route path="/scenarios" element={<Scenarios />} />
       <Route path="/trade/stock/:ticker" element={<StockDetail />} />
       <Route path="/settings" element={<Settings />} />
       <Route path="/upgrade" element={<Upgrade />} />
