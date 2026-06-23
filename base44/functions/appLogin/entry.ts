@@ -79,8 +79,10 @@ Deno.serve(async (req) => {
     }
 
     clearFailures(rateKey);
+    const sessionToken = crypto.randomUUID();
+    await base44.asServiceRole.entities.AppUser.update(found.id, { session_token: sessionToken });
     const { password_hash, ...safeUser } = found;
-    return withHeaders({ ok: true, user: safeUser });
+    return withHeaders({ ok: true, user: { ...safeUser, session_token: sessionToken } });
   } catch (error) {
     return withHeaders({ ok: false, error: error.message }, 500);
   }

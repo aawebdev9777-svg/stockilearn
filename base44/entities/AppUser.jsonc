@@ -13,6 +13,10 @@
       "type": "string",
       "description": "PBKDF2 password hash with salt (never stored as plaintext)"
     },
+    "session_token": {
+      "type": "string",
+      "description": "Random session token for authenticating backend function calls"
+    },
     "role": {
       "type": "string",
       "enum": [

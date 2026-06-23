@@ -80,6 +80,7 @@ export function DemoProvider({ children }) {
         completed_lessons: found.completed_lessons || [],
         created_date: found.created_date,
         db_id: found.id,
+        session_token: found.session_token,
       };
       localStorage.setItem(STORAGE_KEY, JSON.stringify(profile));
       setIsDemoMode(true);
@@ -117,6 +118,7 @@ export function DemoProvider({ children }) {
         preferred_currency: "GBP",
         created_date: newUser.created_date,
         db_id: newUser.id,
+        session_token: newUser.session_token,
       };
 
       localStorage.setItem(STORAGE_KEY, JSON.stringify(profile));
@@ -154,7 +156,7 @@ export function DemoProvider({ children }) {
     if (!demoUser?.db_id) return { ok: false };
     try {
       const res = await base44.functions.invoke('saveLessonProgress', {
-        appUserId: demoUser.db_id,
+        sessionToken: demoUser.session_token,
         lessonId,
         score,
         xpEarned,

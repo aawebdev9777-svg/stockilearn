@@ -12,15 +12,17 @@ function withHeaders(body, status = 200) {
 Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
-    const { appUserId, lessonId, score, xpEarned } = await req.json();
+    const { sessionToken, lessonId, score, xpEarned } = await req.json();
 
-    if (!appUserId || !lessonId) {
+    if (!sessionToken || !lessonId) {
       return withHeaders({ ok: false, error: "Missing required fields" }, 400);
     }
 
-    const users = await base44.asServiceRole.entities.AppUser.filter({ id: appUserId });
+    // Verify the session token to authorize the request — the user ID is
+    // derived from the token, never trusted from the client payload.
+    const users = await base44.asServiceRole.entities.AppUser.filter({ session_token: sessionToken });
     if (!users || users.length === 0) {
-      return withHeaders({ ok: false, error: "User not found" }, 404);
+      return withHeaders({ ok: false, error: "Unauthorized" }, 401);
     }
     const user = users[0];
 
@@ -34,7 +36,7 @@ Deno.serve(async (req) => {
     const newDailyXp = isNewDay ? xpEarned : (user.daily_xp_earned_today || 0) + xpEarned;
     const newStreak = isNewDay ? (user.streak_current || 0) + 1 : (user.streak_current || 0);
 
-    const updated = await base44.asServiceRole.entities.AppUser.update(appUserId, {
+    const updated = await base44.asServiceRole.entities.AppUser.update(user.id, {
       completed_lessons: completedLessons,
       xp_total: (user.xp_total || 0) + xpEarned,
       daily_xp_earned_today: newDailyXp,

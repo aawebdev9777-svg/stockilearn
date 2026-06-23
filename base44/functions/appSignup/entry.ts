@@ -50,10 +50,12 @@ Deno.serve(async (req) => {
 
     const passwordHash = await hashPassword(password);
 
+    const sessionToken = crypto.randomUUID();
     const newUser = await base44.asServiceRole.entities.AppUser.create({
       username: username.toLowerCase(),
       display_name: username,
       password_hash: passwordHash,
+      session_token: sessionToken,
       role: isFirst ? "admin" : "user",
       xp_total: 0, level: 1, streak_current: 0, streak_longest: 0,
       hearts_current: 5, gems: 0, daily_xp_earned_today: 0,
