@@ -420,7 +420,7 @@ export default function Landing() {
           </motion.div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
             {[
-              { emoji: "🚀", name: "Ahmetzhan Ali", title: "CEO & Co-Founder", bio: "Leads StockiLearn's vision and product strategy — turning the mission of making investing accessible into a gamified, habit-forming experience." },
+              { emoji: "🚀", name: "Ahmetzhan Aldiyar", title: "CEO & Co-Founder", bio: "Leads StockiLearn's vision and product strategy — turning the mission of making investing accessible into a gamified, habit-forming experience." },
               { emoji: "⚙️", name: "Sander Rosingholm", title: "COO & Co-Founder", bio: "Oversees operations and partnerships — ensuring StockiLearn runs smoothly as it scales to reach more learners across the UK." },
             ].map((f, i) => (
               <motion.div
@@ -467,7 +467,7 @@ export default function Landing() {
         </div>
         <div className="mt-6 text-center space-y-0.5">
           <p className="text-[10px] font-black uppercase tracking-widest text-gray-400">Created by</p>
-          <p className="text-xs font-bold text-gray-600">Ahmetzhan Ali <span className="text-gray-400 font-medium">· CEO &amp; Co-Founder</span></p>
+          <p className="text-xs font-bold text-gray-600">Ahmetzhan Aldiyar <span className="text-gray-400 font-medium">· CEO &amp; Co-Founder</span></p>
           <p className="text-xs font-bold text-gray-600">Sander Rosingholm <span className="text-gray-400 font-medium">· COO &amp; Co-Founder</span></p>
         </div>
       </footer>

@@ -12,7 +12,7 @@ const glass = {
 const FOUNDERS = [
   {
     emoji: "🚀",
-    name: "Ahmetzhan Ali",
+    name: "Ahmetzhan Aldiyar",
     title: "CEO & Co-Founder",
     bio: "Leads StockiLearn's vision, product strategy, and growth — turning the mission of making investing accessible to young people into a gamified, habit-forming experience.",
   },
