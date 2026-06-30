@@ -1,29 +1,4 @@
-# robots.txt for StockiLearn
-# https://stockilearn.com/
-
 User-agent: *
 Allow: /
-Disallow: /admin
-Disallow: /settings
-Disallow: /onboarding
-Disallow: /upgrade
-Disallow: /present
-
-# Allow all crawlers access to public content
-User-agent: Googlebot
-Allow: /
-
-User-agent: Bingbot
-Allow: /
-
-# Block AI training crawlers (optional)
-User-agent: GPTBot
-Disallow: /
-
-User-agent: CCBot
-Disallow: /
-
-User-agent: anthropic-ai
-Disallow: /
 
 Sitemap: https://stockilearn.com/sitemap.xml

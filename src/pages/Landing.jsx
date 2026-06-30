@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
+import ShareButtons from "@/components/landing/ShareButtons";
 
 const glass = {
   background: "rgba(255,255,255,0.55)",
@@ -403,6 +404,13 @@ export default function Landing() {
             </Link>
             <p className="text-gray-400 text-sm mt-5">Free forever · No credit card needed</p>
           </motion.div>
+        </div>
+      </section>
+
+      {/* ── Share ── */}
+      <section className="py-16 px-6">
+        <div className="max-w-2xl mx-auto">
+          <ShareButtons />
         </div>
       </section>
 
