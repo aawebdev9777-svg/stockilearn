@@ -55,8 +55,8 @@ export default function DemoLogin() {
       setSuError("Username must be at least 3 characters.");
       return;
     }
-    if (suPassword.length < 8) {
-      setSuError("Password must be at least 8 characters.");
+    if (suPassword.length < 4) {
+      setSuError("Password must be at least 4 characters.");
       return;
     }
     if (suPassword !== suPassword2) {
@@ -195,7 +195,7 @@ export default function DemoLogin() {
                   type="password"
                   value={suPassword}
                   onChange={e => { setSuPassword(e.target.value); setSuError(""); }}
-                  placeholder="At least 8 characters"
+                  placeholder="At least 4 characters"
                   className="w-full px-4 py-4 rounded-2xl border-2 border-border bg-card text-foreground text-sm font-bold focus:outline-none focus:border-primary transition-colors"
                   autoComplete="new-password"
                 />

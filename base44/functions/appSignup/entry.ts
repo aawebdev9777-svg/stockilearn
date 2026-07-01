@@ -36,8 +36,8 @@ Deno.serve(async (req) => {
     if (username.length < 3) {
       return withHeaders({ ok: false, error: "Username must be at least 3 characters" }, 400);
     }
-    if (password.length < 8) {
-      return withHeaders({ ok: false, error: "Password must be at least 8 characters" }, 400);
+    if (password.length < 4) {
+      return withHeaders({ ok: false, error: "Password must be at least 4 characters" }, 400);
     }
 
     const existing = await base44.asServiceRole.entities.AppUser.filter({ username: username.toLowerCase() });
