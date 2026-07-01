@@ -1,9 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { jsPDF } from "jspdf";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { FileCode, Download, Loader2, Lock } from "lucide-react";
-import { Input } from "@/components/ui/input";
+import { FileCode, Download, Loader2, ShieldAlert, CheckCircle2 } from "lucide-react";
 import { base44 } from "@/api/base44Client";
 
 const codeModules = import.meta.glob(
@@ -18,31 +17,31 @@ const codeModules = import.meta.glob(
 );
 
 export default function Claude() {
+  const [checking, setChecking] = useState(true);
   const [unlocked, setUnlocked] = useState(false);
-  const [passwordInput, setPasswordInput] = useState("");
-  const [error, setError] = useState(false);
-  const [verifying, setVerifying] = useState(false);
+  const [denied, setDenied] = useState(false);
   const [generating, setGenerating] = useState(false);
   const filePaths = Object.keys(codeModules).sort();
 
-  const handleUnlock = async (e) => {
-    e.preventDefault();
-    if (!passwordInput) return;
-    setVerifying(true);
-    setError(false);
-    try {
-      const res = await base44.functions.invoke("verifyClaudeAccess", { password: passwordInput });
-      if (res.data?.ok) {
-        setUnlocked(true);
-      } else {
-        setError(true);
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      try {
+        const res = await base44.functions.invoke("verifyClaudeAccess", {});
+        if (cancelled) return;
+        if (res.data?.ok) {
+          setUnlocked(true);
+        } else {
+          setDenied(true);
+        }
+      } catch {
+        if (!cancelled) setDenied(true);
+      } finally {
+        if (!cancelled) setChecking(false);
       }
-    } catch {
-      setError(true);
-    } finally {
-      setVerifying(false);
-    }
-  };
+    })();
+    return () => { cancelled = true; };
+  }, []);
 
   const generatePdf = async () => {
     setGenerating(true);
@@ -99,36 +98,27 @@ export default function Claude() {
     }
   };
 
-  if (!unlocked) {
+  if (checking) {
+    return (
+      <div className="min-h-screen flex items-center justify-center p-6 bg-background">
+        <Loader2 className="w-8 h-8 animate-spin text-primary" />
+      </div>
+    );
+  }
+
+  if (denied) {
     return (
       <div className="min-h-screen flex items-center justify-center p-6 bg-background">
         <Card className="max-w-sm w-full p-8 text-center space-y-6">
-          <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center mx-auto">
-            <Lock className="w-8 h-8 text-primary" />
+          <div className="w-16 h-16 rounded-2xl bg-destructive/10 flex items-center justify-center mx-auto">
+            <ShieldAlert className="w-8 h-8 text-destructive" />
           </div>
           <div>
-            <h1 className="text-2xl font-black text-foreground">Password Required</h1>
+            <h1 className="text-2xl font-black text-foreground">Admin Access Required</h1>
             <p className="text-sm text-muted-foreground mt-2">
-              Enter the password to access the source code download.
+              You need to be signed in as an admin to download the source code.
             </p>
           </div>
-          <form onSubmit={handleUnlock} className="space-y-3">
-            <Input
-              type="password"
-              value={passwordInput}
-              onChange={(e) => { setPasswordInput(e.target.value); setError(false); }}
-              placeholder="Enter password"
-              autoFocus
-              className={error ? "border-destructive" : ""}
-            />
-            {error && (
-              <p className="text-xs text-destructive font-medium">Incorrect password. Try again.</p>
-            )}
-            <Button type="submit" size="lg" className="w-full" disabled={verifying}>
-              {verifying ? <Loader2 className="w-4 h-4 animate-spin" /> : null}
-              {verifying ? "Verifying..." : "Unlock"}
-            </Button>
-          </form>
         </Card>
       </div>
     );

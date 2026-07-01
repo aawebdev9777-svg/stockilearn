@@ -12,38 +12,45 @@ function withHeaders(body, status = 200) {
 Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
-    const { sessionToken, lessonId, score, xpEarned } = await req.json();
 
-    if (!sessionToken || !lessonId) {
+    // Identify the authenticated user via platform auth — identity comes
+    // from the request's auth context, never from a client-provided token.
+    const user = await base44.auth.me();
+    if (!user) {
+      return withHeaders({ ok: false, error: "Unauthorized" }, 401);
+    }
+
+    const { lessonId, score, xpEarned } = await req.json();
+
+    if (!lessonId) {
       return withHeaders({ ok: false, error: "Missing required fields" }, 400);
     }
 
-    // Verify the session token to authorize the request — the user ID is
-    // derived from the token, never trusted from the client payload.
-    const users = await base44.asServiceRole.entities.AppUser.filter({ session_token: sessionToken });
+    // Find the AppUser record owned by this authenticated user.
+    const users = await base44.asServiceRole.entities.AppUser.filter({ created_by_id: user.id });
     if (!users || users.length === 0) {
-      return withHeaders({ ok: false, error: "Unauthorized" }, 401);
+      return withHeaders({ ok: false, error: "User profile not found" }, 404);
     }
-    const user = users[0];
+    const appUser = users[0];
 
-    const completedLessons = user.completed_lessons || [];
+    const completedLessons = appUser.completed_lessons || [];
     if (!completedLessons.includes(lessonId)) {
       completedLessons.push(lessonId);
     }
 
     const today = new Date().toISOString().split("T")[0];
-    const isNewDay = user.last_active_date !== today;
-    const newDailyXp = isNewDay ? xpEarned : (user.daily_xp_earned_today || 0) + xpEarned;
-    const newStreak = isNewDay ? (user.streak_current || 0) + 1 : (user.streak_current || 0);
+    const isNewDay = appUser.last_active_date !== today;
+    const newDailyXp = isNewDay ? xpEarned : (appUser.daily_xp_earned_today || 0) + xpEarned;
+    const newStreak = isNewDay ? (appUser.streak_current || 0) + 1 : (appUser.streak_current || 0);
 
-    const updated = await base44.asServiceRole.entities.AppUser.update(user.id, {
+    const updated = await base44.asServiceRole.entities.AppUser.update(appUser.id, {
       completed_lessons: completedLessons,
-      xp_total: (user.xp_total || 0) + xpEarned,
+      xp_total: (appUser.xp_total || 0) + xpEarned,
       daily_xp_earned_today: newDailyXp,
       streak_current: newStreak,
-      streak_longest: Math.max(newStreak, user.streak_longest || 0),
+      streak_longest: Math.max(newStreak, appUser.streak_longest || 0),
       last_active_date: today,
-      league_xp: (user.league_xp || 0) + xpEarned,
+      league_xp: (appUser.league_xp || 0) + xpEarned,
     });
 
     const { password_hash, ...safeUser } = updated;

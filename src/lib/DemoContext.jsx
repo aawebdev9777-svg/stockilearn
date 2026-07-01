@@ -151,35 +151,59 @@ export function DemoProvider({ children }) {
     setDemoUser(null);
   };
 
-  // Save completed lesson to AppUser entity in DB
+  // Save completed lesson — updates local profile immediately, then tries
+  // to persist to the backend (which requires platform auth via base44.auth.me()).
   const saveLessonProgress = async (lessonId, score, xpEarned) => {
     if (!demoUser?.db_id) return { ok: false };
+
+    // Optimistically update local profile so demo UX is preserved even
+    // when the backend call is unavailable (e.g. no platform auth session).
+    const today = new Date().toISOString().split("T")[0];
+    const isNewDay = demoUser.last_active_date !== today;
+    const newDailyXp = isNewDay ? xpEarned : (demoUser.daily_xp_earned_today || 0) + xpEarned;
+    const newStreak = isNewDay ? (demoUser.streak_current || 0) + 1 : (demoUser.streak_current || 0);
+    const completedLessons = [...(demoUser.completed_lessons || [])];
+    if (!completedLessons.includes(lessonId)) completedLessons.push(lessonId);
+
+    const updatedProfile = {
+      ...demoUser,
+      completed_lessons: completedLessons,
+      xp_total: (demoUser.xp_total || 0) + xpEarned,
+      daily_xp_earned_today: newDailyXp,
+      streak_current: newStreak,
+      streak_longest: Math.max(newStreak, demoUser.streak_longest || 0),
+      last_active_date: today,
+      league_xp: (demoUser.league_xp || 0) + xpEarned,
+    };
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedProfile));
+    setDemoUser(updatedProfile);
+
+    // Persist to backend — the function identifies the user via base44.auth.me()
     try {
       const res = await base44.functions.invoke('saveLessonProgress', {
-        sessionToken: demoUser.session_token,
         lessonId,
         score,
         xpEarned,
       });
-      if (!res.data?.ok) return { ok: false };
-      const updated = res.data.user;
-      const updatedProfile = {
-        ...demoUser,
-        completed_lessons: updated.completed_lessons || [],
-        xp_total: updated.xp_total || 0,
-        streak_current: updated.streak_current || 0,
-        streak_longest: updated.streak_longest || 0,
-        daily_xp_earned_today: updated.daily_xp_earned_today || 0,
-        league_xp: updated.league_xp || 0,
-        last_active_date: updated.last_active_date,
-      };
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedProfile));
-      setDemoUser(updatedProfile);
-      return { ok: true };
+      if (res.data?.ok && res.data.user) {
+        const u = res.data.user;
+        const backendProfile = {
+          ...updatedProfile,
+          completed_lessons: u.completed_lessons || [],
+          xp_total: u.xp_total || 0,
+          streak_current: u.streak_current || 0,
+          streak_longest: u.streak_longest || 0,
+          daily_xp_earned_today: u.daily_xp_earned_today || 0,
+          league_xp: u.league_xp || 0,
+          last_active_date: u.last_active_date,
+        };
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(backendProfile));
+        setDemoUser(backendProfile);
+      }
     } catch (e) {
       console.error("Save lesson progress error:", e);
-      return { ok: false };
     }
+    return { ok: true };
   };
 
   const resetAllDemoData = () => {

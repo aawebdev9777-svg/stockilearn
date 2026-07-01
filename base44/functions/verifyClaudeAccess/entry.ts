@@ -12,27 +12,16 @@ function withHeaders(body, status = 200) {
 Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
-    const { password } = await req.json();
 
-    if (!password) {
-      return withHeaders({ ok: false, error: "Missing password" }, 400);
+    // Authenticate via platform auth — access is granted based on the
+    // authenticated user's role, not a shared password.
+    const user = await base44.auth.me();
+    if (!user) {
+      return withHeaders({ ok: false, error: "Unauthorized" }, 401);
     }
 
-    const storedPassword = Deno.env.get("CLAUDE_ACCESS_PASSWORD");
-    if (!storedPassword) {
-      return withHeaders({ ok: false, error: "Access not configured" }, 500);
-    }
-
-    // Constant-time comparison to prevent timing attacks
-    const a = new TextEncoder().encode(password);
-    const b = new TextEncoder().encode(storedPassword);
-    if (a.length !== b.length) {
-      return withHeaders({ ok: false, error: "Incorrect password" }, 401);
-    }
-    let diff = 0;
-    for (let i = 0; i < a.length; i++) diff |= a[i] ^ b[i];
-    if (diff !== 0) {
-      return withHeaders({ ok: false, error: "Incorrect password" }, 401);
+    if (user.role !== "admin") {
+      return withHeaders({ ok: false, error: "Forbidden — admin access required" }, 403);
     }
 
     return withHeaders({ ok: true });
