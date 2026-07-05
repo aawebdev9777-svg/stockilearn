@@ -27,12 +27,6 @@ const RedditLogo = () => (
   </svg>
 );
 
-const glass = {
-  background: "rgba(255,255,255,0.03)",
-  backdropFilter: "blur(16px)",
-  WebkitBackdropFilter: "blur(16px)",
-};
-
 const SHARE_URL = "https://stockilearn.com";
 const SHARE_TEXT = "Just found StockiLearn — the Duolingo of investing! Learn stocks with gamified lessons, paper trading & an AI tutor. Free forever 📈🐂";
 
@@ -43,25 +37,25 @@ export default function ShareButtons() {
     {
       label: "X",
       Icon: XLogo,
-      color: "border-gray-700/30 bg-gray-900 text-white hover:bg-gray-800",
+      color: "bg-black text-white",
       url: `https://twitter.com/intent/tweet?text=${encodeURIComponent(SHARE_TEXT)}&url=${encodeURIComponent(SHARE_URL)}`,
     },
     {
       label: "Facebook",
       Icon: FacebookLogo,
-      color: "border-blue-700/30 bg-[#1877F2] text-white hover:brightness-110",
+      color: "bg-[#1877F2] text-white",
       url: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(SHARE_URL)}`,
     },
     {
       label: "WhatsApp",
       Icon: WhatsAppLogo,
-      color: "border-green-600/30 bg-[#25D366] text-white hover:brightness-110",
+      color: "bg-[#25D366] text-white",
       url: `https://wa.me/?text=${encodeURIComponent(SHARE_TEXT + " " + SHARE_URL)}`,
     },
     {
       label: "Reddit",
       Icon: RedditLogo,
-      color: "border-orange-600/30 bg-[#FF4500] text-white hover:brightness-110",
+      color: "bg-[#FF4500] text-white",
       url: `https://www.reddit.com/submit?url=${encodeURIComponent(SHARE_URL)}&title=${encodeURIComponent(SHARE_TEXT)}`,
     },
   ];
@@ -81,15 +75,14 @@ export default function ShareButtons() {
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
-      className="rounded-3xl p-8 border border-white/5 text-center"
-      style={glass}
+      className="bg-[#D7FFB8] border-2 border-black rounded-3xl p-8 text-center shadow-[0_5px_0_#000]"
     >
       <div className="flex items-center justify-center gap-2 mb-2">
-        <Share2 className="w-5 h-5 text-[#58CC02]" />
-        <p className="text-xs font-bold tracking-widest uppercase text-[#58CC02]">Spread the word</p>
+        <Share2 className="w-5 h-5 text-[#58CC02]" strokeWidth={2.5} />
+        <p className="text-xs font-black tracking-widest uppercase text-[#58CC02]">Spread the word</p>
       </div>
-      <h3 className="text-2xl font-black text-white mb-2">Share StockiLearn</h3>
-      <p className="text-sm text-white/40 mb-6">Know someone who should learn investing? Share it with one tap.</p>
+      <h3 className="text-2xl font-black text-[#1B1B1B] mb-2">Share StockiLearn</h3>
+      <p className="text-sm text-[#1B1B1B]/60 mb-6 font-semibold">Know someone who should learn investing? Share it with one tap.</p>
 
       <div className="flex flex-wrap justify-center gap-3 mb-4">
         {shareLinks.map((link) => {
@@ -101,7 +94,8 @@ export default function ShareButtons() {
               target="_blank"
               rel="noopener noreferrer"
               whileTap={{ scale: 0.85 }}
-              className={`w-12 h-12 rounded-2xl border-b-4 flex items-center justify-center transition-all active:border-b-0 ${link.color}`}
+              whileHover={{ y: -3 }}
+              className={`w-12 h-12 rounded-2xl border-2 border-black flex items-center justify-center shadow-[0_4px_0_#000] hover:shadow-[0_2px_0_#000] hover:translate-y-[2px] transition-all ${link.color}`}
               aria-label={`Share on ${link.label}`}
             >
               <Icon />
@@ -112,9 +106,9 @@ export default function ShareButtons() {
 
       <button
         onClick={copyLink}
-        className="inline-flex items-center gap-2 text-sm font-bold text-white/60 hover:text-white transition-colors px-4 py-2 rounded-xl hover:bg-white/5"
+        className="inline-flex items-center gap-2 text-sm font-black text-[#1B1B1B] bg-white border-2 border-black px-4 py-2 rounded-xl shadow-[0_3px_0_#000] hover:shadow-[0_1px_0_#000] hover:translate-y-[2px] transition-all"
       >
-        {copied ? <Check className="w-4 h-4 text-[#58CC02]" /> : <Copy className="w-4 h-4" />}
+        {copied ? <Check className="w-4 h-4 text-[#58CC02]" strokeWidth={3} /> : <Copy className="w-4 h-4" strokeWidth={3} />}
         {copied ? "Link copied!" : "Copy link"}
       </button>
     </motion.div>
