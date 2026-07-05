@@ -18,7 +18,7 @@ const FOUNDERS = [
   },
   {
     emoji: "⚙️",
-    name: "Sander Rosingholm",
+    name: "Sander Andrieu Rosingholm",
     title: "COO & Co-Founder",
     bio: "Oversees operations, partnerships, and execution — ensuring StockiLearn runs smoothly as it scales to reach more learners across the UK and beyond.",
   },
