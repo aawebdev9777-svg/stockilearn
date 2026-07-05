@@ -75,7 +75,7 @@ export default function ShareButtons() {
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
-      className="bg-[#D7FFB8] border-2 border-black rounded-3xl p-8 text-center shadow-[0_5px_0_#000]"
+      className="bg-[#D7FFB8] border-2 border-gray-300 rounded-3xl p-8 text-center shadow-[0_5px_0_#999]"
     >
       <div className="flex items-center justify-center gap-2 mb-2">
         <Share2 className="w-5 h-5 text-[#58CC02]" strokeWidth={2.5} />
@@ -95,7 +95,7 @@ export default function ShareButtons() {
               rel="noopener noreferrer"
               whileTap={{ scale: 0.85 }}
               whileHover={{ y: -3 }}
-              className={`w-12 h-12 rounded-2xl border-2 border-black flex items-center justify-center shadow-[0_4px_0_#000] hover:shadow-[0_2px_0_#000] hover:translate-y-[2px] transition-all ${link.color}`}
+              className={`w-12 h-12 rounded-2xl border-2 border-gray-300 flex items-center justify-center shadow-[0_4px_0_#999] hover:shadow-[0_2px_0_#999] hover:translate-y-[2px] transition-all ${link.color}`}
               aria-label={`Share on ${link.label}`}
             >
               <Icon />
@@ -106,7 +106,7 @@ export default function ShareButtons() {
 
       <button
         onClick={copyLink}
-        className="inline-flex items-center gap-2 text-sm font-black text-[#1B1B1B] bg-white border-2 border-black px-4 py-2 rounded-xl shadow-[0_3px_0_#000] hover:shadow-[0_1px_0_#000] hover:translate-y-[2px] transition-all"
+        className="inline-flex items-center gap-2 text-sm font-black text-[#1B1B1B] bg-white border-2 border-gray-300 px-4 py-2 rounded-xl shadow-[0_3px_0_#999] hover:shadow-[0_1px_0_#999] hover:translate-y-[2px] transition-all"
       >
         {copied ? <Check className="w-4 h-4 text-[#58CC02]" strokeWidth={3} /> : <Copy className="w-4 h-4" strokeWidth={3} />}
         {copied ? "Link copied!" : "Copy link"}

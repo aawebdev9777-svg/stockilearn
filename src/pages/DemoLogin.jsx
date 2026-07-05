@@ -72,7 +72,7 @@ export default function DemoLogin() {
     }
   };
 
-  const inputClass = "w-full px-4 py-4 rounded-2xl border-2 border-black bg-white text-[#1B1B1B] text-sm font-bold focus:outline-none focus:border-[#58CC02] transition-colors";
+  const inputClass = "w-full px-4 py-4 rounded-2xl border-2 border-gray-300 bg-white text-[#1B1B1B] text-sm font-bold focus:outline-none focus:border-[#58CC02] transition-colors";
 
   return (
     <div className="min-h-screen bg-white flex flex-col items-center justify-center px-6 font-nunito">
@@ -86,7 +86,7 @@ export default function DemoLogin() {
           <motion.div
             animate={{ y: [0, -10, 0] }}
             transition={{ duration: 2, repeat: Infinity }}
-            className="w-20 h-20 rounded-3xl bg-[#58CC02] border-2 border-black flex items-center justify-center shadow-[0_5px_0_#000]"
+            className="w-20 h-20 rounded-3xl bg-[#58CC02] border-2 border-gray-300 flex items-center justify-center shadow-[0_5px_0_#999]"
           >
             <TrendingUp className="w-10 h-10 text-white" strokeWidth={3} />
           </motion.div>
@@ -100,14 +100,14 @@ export default function DemoLogin() {
         </div>
 
         {/* Tab switcher */}
-        <div className="flex bg-gray-100 border-2 border-black rounded-2xl p-1">
+        <div className="flex bg-gray-100 border-2 border-gray-300 rounded-2xl p-1">
           {[["signin", "Sign In"], ["signup", "Create Account"]].map(([t, l]) => (
             <button
               key={t}
               onClick={() => { setTab(t); setSiError(""); setSuError(""); }}
               className={`flex-1 py-2.5 rounded-xl text-sm font-black transition-all ${
                 tab === t
-                  ? "bg-[#58CC02] text-white border-2 border-black shadow-[0_3px_0_#000]"
+                  ? "bg-[#58CC02] text-white border-2 border-gray-300 shadow-[0_3px_0_#999]"
                   : "text-[#1B1B1B]/50 hover:text-[#1B1B1B] border-2 border-transparent"
               }`}
             >
@@ -158,7 +158,7 @@ export default function DemoLogin() {
               <button
                 type="submit"
                 disabled={siLoading}
-                className="w-full h-14 rounded-2xl text-base font-black text-white bg-[#58CC02] border-2 border-black shadow-[0_5px_0_#000] hover:shadow-[0_2px_0_#000] hover:translate-y-[3px] transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 mt-2"
+                className="w-full h-14 rounded-2xl text-base font-black text-white bg-[#58CC02] border-2 border-gray-300 shadow-[0_5px_0_#999] hover:shadow-[0_2px_0_#999] hover:translate-y-[3px] transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 mt-2"
               >
                 {siLoading ? "Signing in..." : <><span>SIGN IN</span><ArrowRight className="w-5 h-5" strokeWidth={3} /></>}
               </button>
@@ -221,7 +221,7 @@ export default function DemoLogin() {
               <button
                 type="submit"
                 disabled={suLoading}
-                className="w-full h-14 rounded-2xl text-base font-black text-white bg-[#58CC02] border-2 border-black shadow-[0_5px_0_#000] hover:shadow-[0_2px_0_#000] hover:translate-y-[3px] transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 mt-2"
+                className="w-full h-14 rounded-2xl text-base font-black text-white bg-[#58CC02] border-2 border-gray-300 shadow-[0_5px_0_#999] hover:shadow-[0_2px_0_#999] hover:translate-y-[3px] transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 mt-2"
               >
                 {suLoading ? "Creating account..." : <><span>CREATE ACCOUNT</span><ArrowRight className="w-5 h-5" strokeWidth={3} /></>}
               </button>

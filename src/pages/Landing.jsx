@@ -16,10 +16,10 @@ export default function Landing() {
   return (
     <div className="min-h-screen bg-white text-[#1B1B1B] overflow-x-hidden font-nunito">
       {/* ── Nav ── */}
-      <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? "bg-white/90 backdrop-blur-md border-b-2 border-black" : "bg-white"}`}>
+      <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? "bg-white/90 backdrop-blur-md border-b-2 border-gray-300" : "bg-white"}`}>
         <div className="max-w-6xl mx-auto px-6 py-3 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <div className="w-9 h-9 rounded-xl bg-[#58CC02] border-2 border-black flex items-center justify-center shadow-[0_3px_0_#000]">
+            <div className="w-9 h-9 rounded-xl bg-[#58CC02] border-2 border-gray-300 flex items-center justify-center shadow-[0_3px_0_#999]">
               <TrendingUp className="w-5 h-5 text-white" strokeWidth={3} />
             </div>
             <span className="text-xl font-black tracking-tight">Stocki<span className="text-[#58CC02]">Learn</span></span>
@@ -31,7 +31,7 @@ export default function Landing() {
             <Link to="/login" className="text-sm font-bold text-[#1B1B1B]/80 hover:text-[#1B1B1B] transition-colors px-4 py-2 rounded-xl hover:bg-gray-100">Sign In</Link>
             <Link
               to="/login?tab=signup"
-              className="text-sm font-black px-5 py-2.5 rounded-2xl text-white bg-[#58CC02] border-2 border-black shadow-[0_4px_0_#000] hover:shadow-[0_2px_0_#000] hover:translate-y-[2px] transition-all"
+              className="text-sm font-black px-5 py-2.5 rounded-2xl text-white bg-[#58CC02] border-2 border-gray-300 shadow-[0_4px_0_#999] hover:shadow-[0_2px_0_#999] hover:translate-y-[2px] transition-all"
             >
               Get Started
             </Link>
@@ -45,7 +45,7 @@ export default function Landing() {
           <motion.div
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="inline-flex items-center gap-1.5 bg-[#D7FFB8] border-2 border-black text-[#1B1B1B] text-xs font-black tracking-widest uppercase px-4 py-2 rounded-full mb-6 shadow-[0_3px_0_#000]"
+            className="inline-flex items-center gap-1.5 bg-[#D7FFB8] border-2 border-gray-300 text-[#1B1B1B] text-xs font-black tracking-widest uppercase px-4 py-2 rounded-full mb-6 shadow-[0_3px_0_#999]"
           >
             <Sparkles className="w-3.5 h-3.5" />
             #1 Investing App for Teens
@@ -80,14 +80,14 @@ export default function Landing() {
           >
             <Link
               to="/login"
-              className="group flex items-center justify-center gap-2 px-8 py-4 rounded-2xl font-black text-lg text-white bg-[#58CC02] border-2 border-black shadow-[0_5px_0_#000] hover:shadow-[0_2px_0_#000] hover:translate-y-[3px] transition-all"
+              className="group flex items-center justify-center gap-2 px-8 py-4 rounded-2xl font-black text-lg text-white bg-[#58CC02] border-2 border-gray-300 shadow-[0_5px_0_#999] hover:shadow-[0_2px_0_#999] hover:translate-y-[3px] transition-all"
             >
               Start For Free
               <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" strokeWidth={3} />
             </Link>
             <Link
               to="/login"
-              className="flex items-center justify-center gap-2 px-8 py-4 rounded-2xl font-black text-base text-[#1B1B1B] bg-[#D7FFB8] border-2 border-black shadow-[0_5px_0_#000] hover:shadow-[0_2px_0_#000] hover:translate-y-[3px] transition-all"
+              className="flex items-center justify-center gap-2 px-8 py-4 rounded-2xl font-black text-base text-[#1B1B1B] bg-[#D7FFB8] border-2 border-gray-300 shadow-[0_5px_0_#999] hover:shadow-[0_2px_0_#999] hover:translate-y-[3px] transition-all"
             >
               I have an account
             </Link>
@@ -125,7 +125,7 @@ export default function Landing() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.08 }}
-                className={`bg-white border-2 border-black rounded-3xl p-5 shadow-[0_5px_0_#000] hover:translate-y-[2px] hover:shadow-[0_3px_0_#000] transition-all`}
+                className={`bg-white border-2 border-gray-300 rounded-3xl p-5 shadow-[0_5px_0_#999] hover:translate-y-[2px] hover:shadow-[0_3px_0_#999] transition-all`}
               >
                 <div className={`w-12 h-12 rounded-2xl ${item.bg} border-2 ${item.border} flex items-center justify-center mb-3`}>
                   <Icon className={`w-6 h-6 ${item.iconColor}`} strokeWidth={2.5} />
@@ -192,9 +192,9 @@ export default function Landing() {
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.07 }}
                 whileHover={{ y: -4 }}
-                className="group bg-white border-2 border-black rounded-3xl p-6 shadow-[0_5px_0_#000] hover:shadow-[0_7px_0_#000] transition-all"
+                className="group bg-white border-2 border-gray-300 rounded-3xl p-6 shadow-[0_5px_0_#999] hover:shadow-[0_7px_0_#999] transition-all"
               >
-                <div className="w-14 h-14 rounded-2xl bg-gray-100 border-2 border-black flex items-center justify-center text-2xl mb-4">{feat.icon}</div>
+                <div className="w-14 h-14 rounded-2xl bg-gray-100 border-2 border-gray-300 flex items-center justify-center text-2xl mb-4">{feat.icon}</div>
                 <h3 className="font-black text-lg mb-2">{feat.title}</h3>
                 <p className="text-sm text-[#1B1B1B]/60 leading-relaxed">{feat.desc}</p>
               </motion.div>
@@ -228,9 +228,9 @@ export default function Landing() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.1 }}
-                className="bg-white border-2 border-black rounded-3xl p-6 flex gap-5 items-start shadow-[0_5px_0_#000] hover:shadow-[0_7px_0_#000] transition-all"
+                className="bg-white border-2 border-gray-300 rounded-3xl p-6 flex gap-5 items-start shadow-[0_5px_0_#999] hover:shadow-[0_7px_0_#999] transition-all"
               >
-                <div className="w-12 h-12 rounded-2xl bg-[#58CC02] border-2 border-black flex items-center justify-center font-black text-white text-lg shrink-0 shadow-[0_3px_0_#000]">
+                <div className="w-12 h-12 rounded-2xl bg-[#58CC02] border-2 border-gray-300 flex items-center justify-center font-black text-white text-lg shrink-0 shadow-[0_3px_0_#999]">
                   {step.n}
                 </div>
                 <div>
@@ -263,7 +263,7 @@ export default function Landing() {
             </p>
             <Link
               to="/login"
-              className="group inline-flex items-center gap-2 px-7 py-3.5 rounded-2xl font-black text-white bg-[#58CC02] border-2 border-black shadow-[0_5px_0_#000] hover:shadow-[0_2px_0_#000] hover:translate-y-[3px] transition-all"
+              className="group inline-flex items-center gap-2 px-7 py-3.5 rounded-2xl font-black text-white bg-[#58CC02] border-2 border-gray-300 shadow-[0_5px_0_#999] hover:shadow-[0_2px_0_#999] hover:translate-y-[3px] transition-all"
             >
               Try it free <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" strokeWidth={3} />
             </Link>
@@ -290,7 +290,7 @@ export default function Landing() {
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.07 }}
                 whileHover={{ y: -4 }}
-                className={`bg-white border-2 border-black rounded-2xl p-4 shadow-[0_4px_0_#000]`}
+                className={`bg-white border-2 border-gray-300 rounded-2xl p-4 shadow-[0_4px_0_#999]`}
               >
                 <div className="text-2xl mb-1">{item.icon}</div>
                 <p className="text-sm font-black">{item.label}</p>
@@ -308,9 +308,9 @@ export default function Landing() {
             initial={{ opacity: 0, scale: 0.95 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
-            className="bg-[#D7FFB8] border-2 border-black rounded-3xl p-10 md:p-14 shadow-[0_7px_0_#000]"
+            className="bg-[#D7FFB8] border-2 border-gray-300 rounded-3xl p-10 md:p-14 shadow-[0_7px_0_#999]"
           >
-            <div className="w-16 h-16 rounded-2xl bg-[#58CC02] border-2 border-black flex items-center justify-center mx-auto mb-6 shadow-[0_4px_0_#000]">
+            <div className="w-16 h-16 rounded-2xl bg-[#58CC02] border-2 border-gray-300 flex items-center justify-center mx-auto mb-6 shadow-[0_4px_0_#999]">
               <TrendingUp className="w-8 h-8 text-white" strokeWidth={3} />
             </div>
             <h2 className="text-4xl md:text-5xl font-black tracking-tight leading-tight mb-4">
@@ -321,7 +321,7 @@ export default function Landing() {
             </p>
             <Link
               to="/login"
-              className="group inline-flex items-center justify-center gap-2 px-10 py-4 rounded-2xl font-black text-xl text-white bg-[#58CC02] border-2 border-black shadow-[0_5px_0_#000] hover:shadow-[0_2px_0_#000] hover:translate-y-[3px] transition-all"
+              className="group inline-flex items-center justify-center gap-2 px-10 py-4 rounded-2xl font-black text-xl text-white bg-[#58CC02] border-2 border-gray-300 shadow-[0_5px_0_#999] hover:shadow-[0_2px_0_#999] hover:translate-y-[3px] transition-all"
             >
               Get Started Free <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" strokeWidth={3} />
             </Link>
@@ -360,9 +360,9 @@ export default function Landing() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.1 }}
-                className="bg-white border-2 border-black rounded-3xl p-6 flex flex-col items-center text-center shadow-[0_5px_0_#000] hover:shadow-[0_7px_0_#000] transition-all"
+                className="bg-white border-2 border-gray-300 rounded-3xl p-6 flex flex-col items-center text-center shadow-[0_5px_0_#999] hover:shadow-[0_7px_0_#999] transition-all"
               >
-                <div className="w-16 h-16 rounded-2xl bg-gray-100 border-2 border-black flex items-center justify-center text-3xl mb-4">{f.emoji}</div>
+                <div className="w-16 h-16 rounded-2xl bg-gray-100 border-2 border-gray-300 flex items-center justify-center text-3xl mb-4">{f.emoji}</div>
                 <h3 className="text-lg font-black">{f.name}</h3>
                 <p className="text-sm font-black text-[#58CC02] mb-2">{f.title}</p>
                 <p className="text-sm text-[#1B1B1B]/60 leading-relaxed">{f.bio}</p>
@@ -378,10 +378,10 @@ export default function Landing() {
       </section>
 
       {/* ── Footer ── */}
-      <footer className="border-t-2 border-black py-8 px-6 bg-white">
+      <footer className="border-t-2 border-gray-300 py-8 px-6 bg-white">
         <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-2">
-            <div className="w-7 h-7 rounded-lg bg-[#58CC02] border-2 border-black flex items-center justify-center">
+            <div className="w-7 h-7 rounded-lg bg-[#58CC02] border-2 border-gray-300 flex items-center justify-center">
               <TrendingUp className="w-4 h-4 text-white" strokeWidth={3} />
             </div>
             <span className="font-black">Stocki<span className="text-[#58CC02]">Learn</span></span>

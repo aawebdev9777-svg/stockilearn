@@ -16,7 +16,7 @@ export default function BottomNav() {
   const currentPath = location.pathname;
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-50 border-t-2 border-black bg-white shadow-[0_-4px_0_rgba(0,0,0,0.05)] select-none">
+    <nav className="fixed bottom-0 left-0 right-0 z-50 border-t-2 border-gray-200 bg-white shadow-[0_-4px_0_rgba(0,0,0,0.05)] select-none">
       <div className="flex items-center justify-around max-w-lg mx-auto h-18 px-2 pt-1" style={{ paddingBottom: "calc(0.5rem + env(safe-area-inset-bottom, 0px))" }}>
         {tabs.map((tab) => {
           const isActive = currentPath.startsWith(tab.path);
@@ -33,7 +33,7 @@ export default function BottomNav() {
               >
                 <div className={`px-3 py-1.5 rounded-2xl border-2 transition-all select-none ${
                   isActive
-                    ? "bg-[#58CC02] border-black shadow-[0_3px_0_#000]"
+                    ? "bg-[#58CC02] border-gray-400 shadow-[0_3px_0_#999]"
                     : "border-transparent"
                 }`}>
                   <Icon
