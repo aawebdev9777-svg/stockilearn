@@ -20,11 +20,7 @@ export default function AppLayout() {
 
   return (
     <div
-      className="min-h-screen pb-24 select-none"
-      style={{
-        background: "linear-gradient(135deg, #dce8ee 0%, #e8ddd8 40%, #d8e4dc 70%, #e0dbe8 100%)",
-        backgroundAttachment: "fixed",
-      }}
+      className="min-h-screen pb-24 select-none bg-white font-nunito"
     >
       <div className="max-w-lg mx-auto">
         <Outlet />

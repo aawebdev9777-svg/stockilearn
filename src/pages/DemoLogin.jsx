@@ -2,8 +2,7 @@ import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useDemo } from "@/lib/DemoContext";
 import { useNavigate } from "react-router-dom";
-import { ArrowRight } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { ArrowRight, TrendingUp } from "lucide-react";
 
 export default function DemoLogin() {
   const { loginDemo, signupDemo } = useDemo();
@@ -73,8 +72,10 @@ export default function DemoLogin() {
     }
   };
 
+  const inputClass = "w-full px-4 py-4 rounded-2xl border-2 border-black bg-white text-[#1B1B1B] text-sm font-bold focus:outline-none focus:border-[#58CC02] transition-colors";
+
   return (
-    <div className="min-h-screen bg-background flex flex-col items-center justify-center px-6">
+    <div className="min-h-screen bg-white flex flex-col items-center justify-center px-6 font-nunito">
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
@@ -85,29 +86,29 @@ export default function DemoLogin() {
           <motion.div
             animate={{ y: [0, -10, 0] }}
             transition={{ duration: 2, repeat: Infinity }}
-            className="text-7xl"
+            className="w-20 h-20 rounded-3xl bg-[#58CC02] border-2 border-black flex items-center justify-center shadow-[0_5px_0_#000]"
           >
-            📈
+            <TrendingUp className="w-10 h-10 text-white" strokeWidth={3} />
           </motion.div>
           <div>
-            <h1 className="text-3xl font-black text-foreground">
-              Stocki<span className="text-primary">Learn</span>
+            <h1 className="text-3xl font-black text-[#1B1B1B]">
+              Stocki<span className="text-[#58CC02]">Learn</span>
             </h1>
-            <p className="text-sm font-bold text-primary mt-1">Turn confusion into confidence.</p>
-            <p className="text-xs text-muted-foreground mt-0.5">Learn investing the fun way.</p>
+            <p className="text-sm font-black text-[#58CC02] mt-1">Turn confusion into confidence.</p>
+            <p className="text-xs text-[#1B1B1B]/50 mt-0.5 font-bold">Learn investing the fun way.</p>
           </div>
         </div>
 
         {/* Tab switcher */}
-        <div className="flex bg-card border border-border rounded-2xl p-1">
+        <div className="flex bg-gray-100 border-2 border-black rounded-2xl p-1">
           {[["signin", "Sign In"], ["signup", "Create Account"]].map(([t, l]) => (
             <button
               key={t}
               onClick={() => { setTab(t); setSiError(""); setSuError(""); }}
               className={`flex-1 py-2.5 rounded-xl text-sm font-black transition-all ${
                 tab === t
-                  ? "bg-primary text-primary-foreground shadow-sm"
-                  : "text-muted-foreground hover:text-foreground"
+                  ? "bg-[#58CC02] text-white border-2 border-black shadow-[0_3px_0_#000]"
+                  : "text-[#1B1B1B]/50 hover:text-[#1B1B1B] border-2 border-transparent"
               }`}
             >
               {l}
@@ -127,40 +128,40 @@ export default function DemoLogin() {
               className="flex flex-col gap-4"
             >
               <div className="flex flex-col gap-1">
-                <label className="text-xs font-black text-muted-foreground uppercase tracking-wider">Username</label>
+                <label className="text-xs font-black text-[#1B1B1B]/50 uppercase tracking-wider">Username</label>
                 <input
                   type="text"
                   value={siUsername}
                   onChange={e => { setSiUsername(e.target.value); setSiError(""); }}
                   placeholder="Enter your username"
-                  className="w-full px-4 py-4 rounded-2xl border-2 border-border bg-card text-foreground text-sm font-bold focus:outline-none focus:border-primary transition-colors"
+                  className={inputClass}
                   autoComplete="username"
                 />
               </div>
 
               <div className="flex flex-col gap-1">
-                <label className="text-xs font-black text-muted-foreground uppercase tracking-wider">Password</label>
+                <label className="text-xs font-black text-[#1B1B1B]/50 uppercase tracking-wider">Password</label>
                 <input
                   type="password"
                   value={siPassword}
                   onChange={e => { setSiPassword(e.target.value); setSiError(""); }}
                   placeholder="Enter your password"
-                  className="w-full px-4 py-4 rounded-2xl border-2 border-border bg-card text-foreground text-sm font-bold focus:outline-none focus:border-primary transition-colors"
+                  className={inputClass}
                   autoComplete="current-password"
                 />
               </div>
 
               {siError && (
-                <p className="text-xs font-bold text-destructive bg-destructive/10 px-4 py-2 rounded-xl">{siError}</p>
+                <p className="text-xs font-black text-[#FF4B4B] bg-[#FF4B4B]/10 border-2 border-[#FF4B4B]/30 px-4 py-2 rounded-xl">{siError}</p>
               )}
 
-              <Button
+              <button
                 type="submit"
                 disabled={siLoading}
-                className="w-full h-14 rounded-2xl text-base font-black gap-2 mt-2"
+                className="w-full h-14 rounded-2xl text-base font-black text-white bg-[#58CC02] border-2 border-black shadow-[0_5px_0_#000] hover:shadow-[0_2px_0_#000] hover:translate-y-[3px] transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 mt-2"
               >
-                {siLoading ? "Signing in..." : <><span>SIGN IN</span><ArrowRight className="w-5 h-5" /></>}
-              </Button>
+                {siLoading ? "Signing in..." : <><span>SIGN IN</span><ArrowRight className="w-5 h-5" strokeWidth={3} /></>}
+              </button>
             </motion.form>
           ) : (
             <motion.form
@@ -174,56 +175,56 @@ export default function DemoLogin() {
             >
               <div className="text-center mb-1">
                 <div className="text-4xl mb-2">🚀</div>
-                <p className="text-xs text-muted-foreground">Free forever · No credit card needed</p>
+                <p className="text-xs text-[#1B1B1B]/50 font-bold">Free forever · No credit card needed</p>
               </div>
 
               <div className="flex flex-col gap-1">
-                <label className="text-xs font-black text-muted-foreground uppercase tracking-wider">Username</label>
+                <label className="text-xs font-black text-[#1B1B1B]/50 uppercase tracking-wider">Username</label>
                 <input
                   type="text"
                   value={suName}
                   onChange={e => { setSuName(e.target.value); setSuError(""); }}
                   placeholder="Choose a username"
-                  className="w-full px-4 py-4 rounded-2xl border-2 border-border bg-card text-foreground text-sm font-bold focus:outline-none focus:border-primary transition-colors"
+                  className={inputClass}
                   autoComplete="username"
                 />
               </div>
 
               <div className="flex flex-col gap-1">
-                <label className="text-xs font-black text-muted-foreground uppercase tracking-wider">Password</label>
+                <label className="text-xs font-black text-[#1B1B1B]/50 uppercase tracking-wider">Password</label>
                 <input
                   type="password"
                   value={suPassword}
                   onChange={e => { setSuPassword(e.target.value); setSuError(""); }}
                   placeholder="At least 4 characters"
-                  className="w-full px-4 py-4 rounded-2xl border-2 border-border bg-card text-foreground text-sm font-bold focus:outline-none focus:border-primary transition-colors"
+                  className={inputClass}
                   autoComplete="new-password"
                 />
               </div>
 
               <div className="flex flex-col gap-1">
-                <label className="text-xs font-black text-muted-foreground uppercase tracking-wider">Confirm Password</label>
+                <label className="text-xs font-black text-[#1B1B1B]/50 uppercase tracking-wider">Confirm Password</label>
                 <input
                   type="password"
                   value={suPassword2}
                   onChange={e => { setSuPassword2(e.target.value); setSuError(""); }}
                   placeholder="Repeat your password"
-                  className="w-full px-4 py-4 rounded-2xl border-2 border-border bg-card text-foreground text-sm font-bold focus:outline-none focus:border-primary transition-colors"
+                  className={inputClass}
                   autoComplete="new-password"
                 />
               </div>
 
               {suError && (
-                <p className="text-xs font-bold text-destructive bg-destructive/10 px-4 py-2 rounded-xl">{suError}</p>
+                <p className="text-xs font-black text-[#FF4B4B] bg-[#FF4B4B]/10 border-2 border-[#FF4B4B]/30 px-4 py-2 rounded-xl">{suError}</p>
               )}
 
-              <Button
+              <button
                 type="submit"
                 disabled={suLoading}
-                className="w-full h-14 rounded-2xl text-base font-black gap-2 mt-2"
+                className="w-full h-14 rounded-2xl text-base font-black text-white bg-[#58CC02] border-2 border-black shadow-[0_5px_0_#000] hover:shadow-[0_2px_0_#000] hover:translate-y-[3px] transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 mt-2"
               >
-                {suLoading ? "Creating account..." : <><span>CREATE ACCOUNT</span><ArrowRight className="w-5 h-5" /></>}
-              </Button>
+                {suLoading ? "Creating account..." : <><span>CREATE ACCOUNT</span><ArrowRight className="w-5 h-5" strokeWidth={3} /></>}
+              </button>
             </motion.form>
           )}
         </AnimatePresence>
