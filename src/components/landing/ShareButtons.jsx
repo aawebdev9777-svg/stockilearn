@@ -92,18 +92,21 @@ export default function ShareButtons() {
       <p className="text-sm text-gray-500 mb-6">Know someone who should learn investing? Share it with one tap.</p>
 
       <div className="flex flex-wrap justify-center gap-3 mb-4">
-        {shareLinks.map((link) => (
-          <a
-            key={link.label}
-            href={link.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className={`w-12 h-12 rounded-2xl border-b-4 flex items-center justify-center transition-all active:border-b-0 ${link.color}`}
-            aria-label={`Share on ${link.label}`}
-          >
-            <link.Icon />
-          </a>
-        ))}
+        {shareLinks.map((link) => {
+          const Icon = link.Icon;
+          return (
+            <a
+              key={link.label}
+              href={link.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={`w-12 h-12 rounded-2xl border-b-4 flex items-center justify-center transition-all active:border-b-0 ${link.color}`}
+              aria-label={`Share on ${link.label}`}
+            >
+              <Icon />
+            </a>
+          );
+        })}
       </div>
 
       <button
