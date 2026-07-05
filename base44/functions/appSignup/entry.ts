@@ -45,9 +45,6 @@ Deno.serve(async (req) => {
       return withHeaders({ ok: false, error: "Username already taken. Try another." });
     }
 
-    const allUsers = await base44.asServiceRole.entities.AppUser.list();
-    const isFirst = !allUsers || allUsers.length === 0;
-
     const passwordHash = await hashPassword(password);
 
     const sessionToken = crypto.randomUUID();
@@ -56,7 +53,7 @@ Deno.serve(async (req) => {
       display_name: username,
       password_hash: passwordHash,
       session_token: sessionToken,
-      role: isFirst ? "admin" : "user",
+      role: "user",
       xp_total: 0, level: 1, streak_current: 0, streak_longest: 0,
       hearts_current: 5, gems: 0, daily_xp_earned_today: 0,
       daily_goal_xp: 50, league_tier: 1, league_xp: 0,
