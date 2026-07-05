@@ -95,16 +95,17 @@ export default function ShareButtons() {
         {shareLinks.map((link) => {
           const Icon = link.Icon;
           return (
-            <a
+            <motion.a
               key={link.label}
               href={link.url}
               target="_blank"
               rel="noopener noreferrer"
+              whileTap={{ scale: 0.85 }}
               className={`w-12 h-12 rounded-2xl border-b-4 flex items-center justify-center transition-all active:border-b-0 ${link.color}`}
               aria-label={`Share on ${link.label}`}
             >
               <Icon />
-            </a>
+            </motion.a>
           );
         })}
       </div>
