@@ -28,7 +28,7 @@ const RedditLogo = () => (
 );
 
 const glass = {
-  background: "rgba(255,255,255,0.55)",
+  background: "rgba(255,255,255,0.03)",
   backdropFilter: "blur(16px)",
   WebkitBackdropFilter: "blur(16px)",
 };
@@ -81,15 +81,15 @@ export default function ShareButtons() {
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
-      className="rounded-3xl p-8 border border-white/50 text-center"
+      className="rounded-3xl p-8 border border-white/5 text-center"
       style={glass}
     >
       <div className="flex items-center justify-center gap-2 mb-2">
         <Share2 className="w-5 h-5 text-[#58CC02]" />
-        <p className="text-xs font-black tracking-widest uppercase text-[#58CC02]">Spread the word</p>
+        <p className="text-xs font-bold tracking-widest uppercase text-[#58CC02]">Spread the word</p>
       </div>
-      <h3 className="text-2xl font-black text-gray-900 mb-2">Share StockiLearn</h3>
-      <p className="text-sm text-gray-500 mb-6">Know someone who should learn investing? Share it with one tap.</p>
+      <h3 className="text-2xl font-black text-white mb-2">Share StockiLearn</h3>
+      <p className="text-sm text-white/40 mb-6">Know someone who should learn investing? Share it with one tap.</p>
 
       <div className="flex flex-wrap justify-center gap-3 mb-4">
         {shareLinks.map((link) => {
@@ -112,7 +112,7 @@ export default function ShareButtons() {
 
       <button
         onClick={copyLink}
-        className="inline-flex items-center gap-2 text-sm font-bold text-gray-600 hover:text-gray-900 transition-colors px-4 py-2 rounded-xl hover:bg-white/40"
+        className="inline-flex items-center gap-2 text-sm font-bold text-white/60 hover:text-white transition-colors px-4 py-2 rounded-xl hover:bg-white/5"
       >
         {copied ? <Check className="w-4 h-4 text-[#58CC02]" /> : <Copy className="w-4 h-4" />}
         {copied ? "Link copied!" : "Copy link"}
