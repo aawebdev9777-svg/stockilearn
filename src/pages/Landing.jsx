@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { ArrowRight, Check, Flame, Zap, Trophy, Bot, TrendingUp, Sparkles } from "lucide-react";
 import ShareButtons from "@/components/landing/ShareButtons";
+import FounderSpotlight from "@/components/landing/FounderSpotlight";
 
 export default function Landing() {
   const [scrolled, setScrolled] = useState(false);
@@ -244,6 +245,9 @@ export default function Landing() {
         </div>
       </section>
 
+      {/* ── Founders Spotlight ── */}
+      <FounderSpotlight />
+
       {/* ── Gamification showcase ── */}
       <section className="py-16 px-6">
         <div className="max-w-6xl mx-auto flex flex-col lg:flex-row items-center gap-12">
@@ -334,46 +338,6 @@ export default function Landing() {
       <section className="py-12 px-6">
         <div className="max-w-2xl mx-auto">
           <ShareButtons />
-        </div>
-      </section>
-
-      {/* ── Founders ── */}
-      <section className="py-16 px-6">
-        <div className="max-w-5xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center mb-12"
-          >
-            <p className="text-xs font-black tracking-widest uppercase text-[#58CC02] mb-2">The Team</p>
-            <h2 className="text-4xl md:text-5xl font-black tracking-tight">Meet the Founders</h2>
-          </motion.div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {[
-              { emoji: "🚀", name: "Ahmetzhan Aldiyar", title: "CEO & Co-Founder", bio: "Leads StockiLearn's vision and product strategy — turning the mission of making investing accessible into a gamified, habit-forming experience." },
-              { emoji: "⚙️", name: "Sander Andrieu Rosingholm", title: "COO & Co-Founder", bio: "Oversees operations and partnerships — ensuring StockiLearn runs smoothly as it scales to reach more learners across the UK." },
-            ].map((f, i) => (
-              <motion.div
-                key={f.name}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1 }}
-                className="bg-white border-2 border-gray-300 rounded-3xl p-6 flex flex-col items-center text-center shadow-[0_5px_0_#999] hover:shadow-[0_7px_0_#999] transition-all"
-              >
-                <div className="w-16 h-16 rounded-2xl bg-gray-100 border-2 border-gray-300 flex items-center justify-center text-3xl mb-4">{f.emoji}</div>
-                <h3 className="text-lg font-black">{f.name}</h3>
-                <p className="text-sm font-black text-[#58CC02] mb-2">{f.title}</p>
-                <p className="text-sm text-[#1B1B1B]/60 leading-relaxed">{f.bio}</p>
-              </motion.div>
-            ))}
-          </div>
-          <div className="text-center mt-8">
-            <Link to="/founders" className="inline-flex items-center gap-2 text-sm font-black text-[#58CC02] hover:text-[#46A302] transition-colors">
-              Learn more about the founders <ArrowRight className="w-4 h-4" strokeWidth={3} />
-            </Link>
-          </div>
         </div>
       </section>
 
