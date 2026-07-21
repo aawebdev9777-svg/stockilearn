@@ -97,7 +97,7 @@ export default function StockDetail() {
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
-      <div className="sticky top-0 z-40 bg-background/90 backdrop-blur-md px-4 py-3 flex items-center justify-between border-b border-border/50">
+      <div className="sticky top-0 z-40 bg-background/90 backdrop-blur-md px-4 py-3 flex items-center justify-between border-b border-border/50 pt-safe-area-top">
         <button onClick={() => navigate(-1)} className="text-foreground p-1 -ml-1">
           <ArrowLeft className="w-5 h-5" />
         </button>

@@ -10,6 +10,7 @@ import { TrendingUp, TrendingDown, Wallet, ChevronDown, ChevronUp } from "lucide
 import { Link } from "react-router-dom";
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from "recharts";
 import { motion, AnimatePresence } from "framer-motion";
+import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
 
 const DONUT_COLORS = ["#00FF87","#38BDF8","#FFB800","#7C3AED","#FF4B4B","#F97316","#EC4899","#14B8A6","#84CC16","#6366F1"];
 
@@ -192,16 +193,17 @@ export default function PortfolioTab({ onNavigateToMarket }) {
             <h3 className="text-sm font-bold text-foreground">
               MY HOLDINGS ({enrichedHoldings.length} positions)
             </h3>
-            <select
-              value={sortBy}
-              onChange={(e) => setSortBy(e.target.value)}
-              className="text-[10px] font-bold bg-muted text-muted-foreground rounded-xl px-2 py-1 border-0 outline-none"
-            >
-              <option value="value">Value ↓</option>
-              <option value="gain">% Gain ↓</option>
-              <option value="loss">% Loss ↓</option>
-              <option value="az">A–Z</option>
-            </select>
+            <Select value={sortBy} onValueChange={setSortBy}>
+              <SelectTrigger className="text-[10px] font-bold bg-muted text-muted-foreground rounded-xl px-2 py-1 h-7 w-[110px] border-0 shadow-none focus:ring-0">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="value">Value ↓</SelectItem>
+                <SelectItem value="gain">% Gain ↓</SelectItem>
+                <SelectItem value="loss">% Loss ↓</SelectItem>
+                <SelectItem value="az">A–Z</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
 
           {sortedHoldings.map((h) => {

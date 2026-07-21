@@ -20,7 +20,7 @@ export default function AppLayout() {
 
   return (
     <div
-      className="min-h-screen pb-24 select-none bg-white font-nunito"
+      className="min-h-screen pb-24 bg-white font-nunito"
     >
       <div className="max-w-lg mx-auto">
         <Outlet />

@@ -36,6 +36,10 @@ export default function Settings() {
         localStorage.removeItem("stockilearn_lesson_progress");
         window.location.replace("/login");
       } else {
+        const currentUser = await base44.auth.me();
+        if (currentUser?.id) {
+          await base44.entities.AppUser.delete(currentUser.id);
+        }
         await base44.auth.logout("/login");
       }
     } catch (error) {
