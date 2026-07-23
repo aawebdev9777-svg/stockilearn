@@ -355,6 +355,7 @@ export default function Landing() {
             <Link to="/about" className="hover:text-[#1B1B1B] transition-colors">About</Link>
             <Link to="/founders" className="hover:text-[#1B1B1B] transition-colors">Founders</Link>
             <Link to="/contact" className="hover:text-[#1B1B1B] transition-colors">Contact</Link>
+            <Link to="/privacy" className="hover:text-[#1B1B1B] transition-colors">Privacy</Link>
             <Link to="/login" className="hover:text-[#1B1B1B] transition-colors">Sign In</Link>
           </div>
         </div>

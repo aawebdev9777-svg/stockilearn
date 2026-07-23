@@ -144,6 +144,7 @@ export default function About() {
           <div className="flex items-center gap-4 text-xs text-gray-400">
             <Link to="/about" className="hover:text-gray-700 transition-colors font-bold text-[#58CC02]">About</Link>
             <Link to="/contact" className="hover:text-gray-700 transition-colors">Contact</Link>
+            <Link to="/privacy" className="hover:text-gray-700 transition-colors">Privacy</Link>
           </div>
         </div>
       </footer>

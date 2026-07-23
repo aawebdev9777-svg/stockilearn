@@ -29,6 +29,7 @@ import About from '@/pages/About';
 import Contact from '@/pages/Contact';
 import Claude from '@/pages/Claude';
 import Founders from '@/pages/Founders';
+import Privacy from '@/pages/Privacy';
 
 // Guard: only admin users can access wrapped routes
 const AdminOnly = ({ children }) => {
@@ -65,6 +66,7 @@ const AuthenticatedApp = () => {
         <Route path="/admin" element={<Admin />} />
         <Route path="/admin/analytics" element={<AdminOnly><AdminAnalytics /></AdminOnly>} />
         <Route path="/about" element={<About />} />
+        <Route path="/privacy" element={<Privacy />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/claude" element={<Claude />} />
         <Route path="/founders" element={<Founders />} />
@@ -101,6 +103,7 @@ const AuthenticatedApp = () => {
           <Route path="/" element={<Landing />} />
           <Route path="/login" element={<DemoLogin />} />
           <Route path="/about" element={<About />} />
+        <Route path="/privacy" element={<Privacy />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/founders" element={<Founders />} />
           <Route path="*" element={<Navigate to="/" replace />} />
@@ -122,6 +125,7 @@ const AuthenticatedApp = () => {
       <Route path="/present" element={<Present />} />
       <Route path="/admin" element={<Admin />} />
       <Route path="/about" element={<About />} />
+        <Route path="/privacy" element={<Privacy />} />
       <Route path="/contact" element={<Contact />} />
       <Route path="/claude" element={<Claude />} />
       <Route path="/founders" element={<Founders />} />

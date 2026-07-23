@@ -29,12 +29,12 @@ export default function Upgrade() {
   const handleUpgrade = () => {
     // In demo mode, just show success message
     if (isDemoMode) {
-      alert("🎉 In production, this would open Stripe checkout for £6.99/month");
+      alert("🎉 This would open the App Store to purchase StockiLearn Pro at £6.99/month");
       navigate("/home");
       return;
     }
-    // Production: would integrate Stripe here
-    alert("🎉 In production, this would open Stripe checkout for £6.99/month");
+    // Production: must use Apple's StoreKit in-app purchase (not external payment)
+    alert("🎉 This would open the App Store to purchase StockiLearn Pro at £6.99/month");
   };
 
   return (
@@ -71,6 +71,9 @@ export default function Upgrade() {
 
             <p className="text-[10px] text-muted-foreground text-center mt-3">
               Cancel anytime · 7-day free trial · No hidden fees
+            </p>
+            <p className="text-[10px] text-muted-foreground text-center mt-1">
+              Payment is handled by Apple's App Store. Subscription auto-renews monthly at £6.99 until cancelled in your iPhone Settings.
             </p>
           </div>
         </Card>
@@ -133,9 +136,10 @@ export default function Upgrade() {
         <div className="space-y-3">
           <h3 className="text-sm font-bold text-foreground">Common questions</h3>
           {[
-            { q: "Can I cancel anytime?", a: "Yes! Cancel in one click from your account settings." },
-            { q: "Is there a free trial?", a: "Yes! 7-day free trial, then £6.99/month." },
-            { q: "What payment methods?", a: "All major credit cards, Apple Pay, and Google Pay." },
+            { q: "Can I cancel anytime?", a: "Yes — cancel anytime via iPhone Settings → App Store → Subscriptions." },
+            { q: "Is there a free trial?", a: "Yes! 7-day free trial, then £6.99/month auto-renewing subscription." },
+            { q: "How am I billed?", a: "Payment is processed securely by Apple through the App Store using your Apple ID payment method." },
+            { q: "Can I restore my purchase?", a: "Yes — tap 'Restore Purchases' on this screen after reinstalling to re-enable Pro on your account." },
           ].map((faq, i) => (
             <Card key={i} className="p-3 bg-card/80 border-border/50">
               <p className="text-xs font-bold text-foreground mb-1">{faq.q}</p>
@@ -144,7 +148,10 @@ export default function Upgrade() {
           ))}
         </div>
 
-        <button onClick={() => navigate(-1)} className="text-xs text-muted-foreground hover:text-foreground transition-colors">
+        <button onClick={() => alert("Restore Purchases: this would query the App Store to re-apply your active Pro subscription.")} className="text-xs text-muted-foreground hover:text-foreground transition-colors block mx-auto">
+          Restore Purchases
+        </button>
+        <button onClick={() => navigate(-1)} className="text-xs text-muted-foreground hover:text-foreground transition-colors block mx-auto">
           ← Maybe later
         </button>
       </div>

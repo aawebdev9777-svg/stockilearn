@@ -171,6 +171,7 @@ export default function Settings() {
         <div className="text-center text-[10px] text-muted-foreground space-y-1 pt-4">
           <p>StockiLearn v1.0 · Your data is saved to the cloud ☁️</p>
           <p>For educational purposes only. Not financial advice.</p>
+          <Link to="/privacy" className="text-primary font-bold hover:underline">Privacy Policy</Link>
         </div>
       </div>
     </div>
