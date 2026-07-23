@@ -24,7 +24,7 @@ export default function AppLayout() {
     <div
       className="min-h-screen pb-24 bg-white font-nunito"
     >
-      <div className="max-w-lg mx-auto">
+      <div className="max-w-lg mx-auto pt-safe-area-top">
         <AnimatePresence mode="wait">
           <motion.div
             key={location.pathname}

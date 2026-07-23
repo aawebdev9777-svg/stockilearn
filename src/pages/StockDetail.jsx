@@ -80,13 +80,26 @@ export default function StockDetail() {
   const isUp = stock.change >= 0;
 
   const toggleWatchlist = async () => {
+    const queryKey = ["watchlist", userId];
+    const previousWatchlist = queryClient.getQueryData(queryKey) || [];
     if (isWatchlisted) {
       const item = watchlist.find(w => w.ticker === ticker);
-      if (item) await base44.entities.Watchlist.delete(item.id);
+      queryClient.setQueryData(queryKey, previousWatchlist.filter(w => w.ticker !== ticker));
+      try {
+        if (item) await base44.entities.Watchlist.delete(item.id);
+      } catch (error) {
+        console.error("Watchlist delete failed, rolling back:", error);
+        queryClient.setQueryData(queryKey, previousWatchlist);
+      }
     } else {
-      await base44.entities.Watchlist.create({ ticker });
+      queryClient.setQueryData(queryKey, [...previousWatchlist, { ticker, id: "temp-" + ticker, created_date: new Date().toISOString() }]);
+      try {
+        await base44.entities.Watchlist.create({ ticker });
+      } catch (error) {
+        console.error("Watchlist create failed, rolling back:", error);
+        queryClient.setQueryData(queryKey, previousWatchlist);
+      }
     }
-    queryClient.invalidateQueries({ queryKey: ["watchlist"] });
   };
 
   const holdingValue = holding ? holding.shares * stock.current_price : 0;

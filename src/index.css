@@ -114,6 +114,16 @@
   padding-bottom: env(safe-area-inset-bottom, 0px);
 }
 
+/* Disable native blue tap highlights on interactive elements */
+button, select, input, a, .card, [role='button'] {
+  -webkit-tap-highlight-color: transparent;
+}
+/* Prevent text selection on non-content UI; keep fields/paragraphs selectable */
+button, select, a, [role='button'], .card {
+  -webkit-user-select: none;
+  user-select: none;
+}
+
 /* Custom scrollbar */
 ::-webkit-scrollbar {
   width: 4px;

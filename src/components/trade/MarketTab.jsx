@@ -5,6 +5,8 @@ import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
 import { Search, ChevronDown } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Drawer, DrawerTrigger, DrawerContent, DrawerHeader, DrawerTitle } from "@/components/ui/drawer";
+import { useIsMobile } from "@/hooks/use-mobile";
 import { getAllStocks, getTopMovers, searchStocks, generateSparkline, getIndices, getStocksByCategory, formatPrice } from "@/lib/stockData";
 import MiniSparkline from "@/components/common/MiniSparkline";
 import PullToRefresh from "@/components/common/PullToRefresh";
@@ -66,9 +68,11 @@ function MarketStatusBanner() {
 }
 
 export default function MarketTab() {
+  const isMobile = useIsMobile();
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState("popular");
   const [refreshKey, setRefreshKey] = useState(0);
+  const [categoryDrawerOpen, setCategoryDrawerOpen] = useState(false);
 
   const handleRefresh = async () => {
     // Trigger data refresh
@@ -151,16 +155,45 @@ export default function MarketTab() {
             ))}
           </div>
           <div className="sm:hidden">
-            <Select value={category} onValueChange={setCategory}>
-              <SelectTrigger className="h-10 text-xs font-bold">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                {CATEGORIES.map(tab => (
-                  <SelectItem key={tab.key} value={tab.key}>{tab.label}</SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+            {isMobile ? (
+              <Drawer open={categoryDrawerOpen} onOpenChange={setCategoryDrawerOpen}>
+                <DrawerTrigger asChild>
+                  <button className="w-full h-10 flex items-center justify-between px-3 rounded-2xl bg-muted/50 border border-border/50 text-xs font-bold text-foreground">
+                    {CATEGORIES.find(c => c.key === category)?.label}
+                    <ChevronDown className="w-4 h-4 opacity-50" />
+                  </button>
+                </DrawerTrigger>
+                <DrawerContent>
+                  <DrawerHeader>
+                    <DrawerTitle>Select Category</DrawerTitle>
+                  </DrawerHeader>
+                  <div className="px-4 pb-6 space-y-1 overflow-y-auto max-h-[60vh]">
+                    {CATEGORIES.map(tab => (
+                      <button
+                        key={tab.key}
+                        onClick={() => { setCategory(tab.key); setCategoryDrawerOpen(false); }}
+                        className={`w-full text-left text-sm font-bold px-4 py-3 rounded-xl ${
+                          category === tab.key ? "bg-primary text-primary-foreground" : "bg-muted/50 text-foreground"
+                        }`}
+                      >
+                        {tab.label}
+                      </button>
+                    ))}
+                  </div>
+                </DrawerContent>
+              </Drawer>
+            ) : (
+              <Select value={category} onValueChange={setCategory}>
+                <SelectTrigger className="h-10 text-xs font-bold">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  {CATEGORIES.map(tab => (
+                    <SelectItem key={tab.key} value={tab.key}>{tab.label}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            )}
           </div>
         </>
       )}
