@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Home, BookOpen, Gamepad2, Trophy, User } from "lucide-react";
 
@@ -13,7 +13,18 @@ const tabs = [
 
 export default function BottomNav() {
   const location = useLocation();
+  const navigate = useNavigate();
   const currentPath = location.pathname;
+
+  const handleTabClick = (tabPath) => {
+    const isActive = currentPath.startsWith(tabPath);
+    if (isActive && currentPath !== tabPath) {
+      // Already on this tab but in a nested child route — reset to root
+      navigate(tabPath, { replace: true });
+    } else if (!isActive) {
+      navigate(tabPath);
+    }
+  };
 
   return (
     <nav className="fixed bottom-0 left-0 right-0 z-50 border-t-2 border-gray-200 bg-white shadow-[0_-4px_0_rgba(0,0,0,0.05)] select-none">
@@ -22,9 +33,9 @@ export default function BottomNav() {
           const isActive = currentPath.startsWith(tab.path);
           const Icon = tab.icon;
           return (
-            <Link
+            <button
               key={tab.path}
-              to={tab.path}
+              onClick={() => handleTabClick(tab.path)}
               className="flex flex-col items-center justify-center flex-1"
             >
               <motion.div
@@ -45,7 +56,7 @@ export default function BottomNav() {
                   {tab.label}
                 </span>
               </motion.div>
-            </Link>
+            </button>
           );
         })}
       </div>

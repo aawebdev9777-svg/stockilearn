@@ -1,9 +1,11 @@
 import React, { useEffect } from "react";
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
+import { motion, AnimatePresence } from "framer-motion";
 import BottomNav from "./BottomNav";
 import BrunoWidget from "@/components/common/BrunoWidget";
 
 export default function AppLayout() {
+  const location = useLocation();
   useEffect(() => {
     const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
     const handleChange = () => {
@@ -23,7 +25,17 @@ export default function AppLayout() {
       className="min-h-screen pb-24 bg-white font-nunito"
     >
       <div className="max-w-lg mx-auto">
-        <Outlet />
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={location.pathname}
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -8 }}
+            transition={{ duration: 0.2, ease: "easeOut" }}
+          >
+            <Outlet />
+          </motion.div>
+        </AnimatePresence>
       </div>
       <BottomNav />
       <BrunoWidget />

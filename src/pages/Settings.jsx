@@ -24,8 +24,14 @@ export default function Settings() {
 
   const handleToggle = async (field, value) => {
     if (isDemoMode) { setUser(prev => ({ ...prev, [field]: value })); return; }
-    await base44.auth.updateMe({ [field]: value });
+    const previousValue = user?.[field];
     setUser(prev => ({ ...prev, [field]: value }));
+    try {
+      await base44.auth.updateMe({ [field]: value });
+    } catch (error) {
+      console.error("Toggle failed, rolling back:", error);
+      setUser(prev => ({ ...prev, [field]: previousValue }));
+    }
   };
 
   const handleDeleteAccount = async () => {
