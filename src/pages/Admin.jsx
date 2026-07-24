@@ -2,16 +2,19 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
 import { motion } from "framer-motion";
-import { Users, BookOpen, Trophy, BarChart3, Shield, Zap, Settings, ChevronDown, ChevronUp, Ban, CheckCircle, Trash2, Play, Crown, RefreshCw } from "lucide-react";
+import { Users, BookOpen, Trophy, BarChart3, Shield, Zap, Settings, Server, ChevronDown, ChevronUp, Ban, CheckCircle, Trash2, Play, Crown, RefreshCw } from "lucide-react";
 import { useDemo } from "@/lib/DemoContext";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { LESSONS, BADGES, LEVEL_TITLES } from "@/lib/lessonData";
 import ServerSetter from "@/components/admin/ServerSetter";
 
+const ADMIN_PASSWORD = "AA9777";
+
 const TABS = [
   { id: "overview",     label: "Overview",    icon: BarChart3 },
   { id: "users",        label: "Users",       icon: Users },
+  { id: "servers",      label: "Servers",     icon: Server },
   { id: "content",      label: "Content",     icon: BookOpen },
   { id: "gamification", label: "Gamification",icon: Trophy },
   { id: "moderation",   label: "Moderation",  icon: Shield },
@@ -298,6 +301,65 @@ function PitchTab() {
   );
 }
 
+// ── Servers Tab ───────────────────────────────────────────────
+function ServersTab() {
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    let cancelled = false;
+    base44.functions.invoke('getServersOverview', { password: ADMIN_PASSWORD })
+      .then(res => { if (!cancelled && res.data?.ok) setData(res.data.servers); })
+      .catch(() => {})
+      .finally(() => { if (!cancelled) setLoading(false); });
+    return () => { cancelled = true; };
+  }, []);
+
+  if (loading) {
+    return <div className="flex justify-center py-8"><div className="w-6 h-6 border-4 border-primary/30 border-t-primary rounded-full animate-spin" /></div>;
+  }
+  if (!data || data.length === 0) {
+    return <p className="text-xs text-muted-foreground text-center py-8">No servers found.</p>;
+  }
+
+  const totalPlayers = data.reduce((s, sv) => s + sv.count, 0);
+
+  return (
+    <div className="space-y-4">
+      <div className="grid grid-cols-2 gap-3">
+        <StatCard label="Active Servers" value={data.length} sub="League instances" color="text-primary" icon={Server} />
+        <StatCard label="Total Players" value={totalPlayers} sub="Across all servers" color="text-blue-400" icon={Users} />
+      </div>
+      {data.map(sv => (
+        <Section key={sv.instance} title={`Server #${sv.instance} · ${sv.count} players`}>
+          <div className="mb-3">
+            <div className="flex items-center justify-between text-[10px] text-muted-foreground mb-1">
+              <span className="font-black uppercase tracking-wider">Capacity</span>
+              <span className="font-bold">{sv.count}/30</span>
+            </div>
+            <div className="h-2 rounded-full bg-muted overflow-hidden">
+              <div className={`h-full rounded-full ${sv.count >= 30 ? "bg-orange-400" : "bg-primary"}`} style={{ width: `${Math.min(100, (sv.count / 30) * 100)}%` }} />
+            </div>
+          </div>
+          <div className="space-y-1">
+            {sv.players.map((p, i) => (
+              <div key={i} className="flex items-center gap-2 py-1.5 border-b border-border/20 text-xs">
+                <span className="text-muted-foreground w-6 text-center font-bold">{i + 1}</span>
+                <div className="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
+                  <span className="text-[10px] font-black text-primary">{(p.name || "?")[0].toUpperCase()}</span>
+                </div>
+                <span className="flex-1 font-bold text-foreground truncate">{p.name}</span>
+                {p.streak > 0 && <span className="text-orange-400">🔥{p.streak}</span>}
+                <span className="text-primary font-black">{p.xp} XP</span>
+              </div>
+            ))}
+          </div>
+        </Section>
+      ))}
+    </div>
+  );
+}
+
 // ── Main ─────────────────────────────────────────────────────
 export default function Admin() {
   const { isDemoMode, demoUser } = useDemo();
@@ -307,10 +369,24 @@ export default function Admin() {
   const [tab, setTab] = useState("overview");
   const [loading, setLoading] = useState(true);
   const [toast, setToast] = useState(null);
+  const [unlocked, setUnlocked] = useState(() => localStorage.getItem("stockilearn_admin_pw") === ADMIN_PASSWORD);
+  const [pwInput, setPwInput] = useState("");
+  const [pwError, setPwError] = useState("");
+  const hasAccess = user?.role === "admin" || unlocked;
 
   const showToast = (msg, type = "success") => {
     setToast({ msg, type });
     setTimeout(() => setToast(null), 3000);
+  };
+
+  const handlePwSubmit = () => {
+    if (pwInput.trim() === ADMIN_PASSWORD) {
+      localStorage.setItem("stockilearn_admin_pw", ADMIN_PASSWORD);
+      setUnlocked(true);
+      setPwInput("");
+    } else {
+      setPwError("Incorrect password.");
+    }
   };
 
   useEffect(() => {
@@ -380,23 +456,23 @@ export default function Admin() {
     );
   }
 
-  if (!user || user.role !== "admin") {
+  if (!hasAccess) {
     return (
       <div className="min-h-screen flex items-center justify-center px-6">
         <Card className="p-8 text-center max-w-sm w-full space-y-4">
-          <Shield className="w-12 h-12 text-destructive mx-auto mb-3" />
-          <h2 className="text-xl font-black text-foreground">Access Denied</h2>
-          <p className="text-sm text-muted-foreground">This area is restricted to admin users only.</p>
-          <div className="pt-4 border-t border-border/50">
-            <p className="text-xs font-bold text-foreground mb-2">How to Create First Admin:</p>
-            <ol className="text-xs text-muted-foreground text-left space-y-1">
-              <li>1. Go to Base44 Dashboard</li>
-              <li>2. Click "Database" → "User" entity</li>
-              <li>3. Find your user account</li>
-              <li>4. Set <code className="bg-muted px-1 rounded">role</code> to <code className="bg-primary/10 text-primary px-1 rounded">admin</code></li>
-              <li>5. Save and return here</li>
-            </ol>
-          </div>
+          <Shield className="w-12 h-12 text-primary mx-auto mb-3" />
+          <h2 className="text-xl font-black text-foreground">Admin Access</h2>
+          <p className="text-sm text-muted-foreground">Enter the admin password to continue.</p>
+          <input
+            type="password"
+            value={pwInput}
+            onChange={e => { setPwInput(e.target.value); setPwError(""); }}
+            onKeyDown={e => e.key === "Enter" && handlePwSubmit()}
+            placeholder="Password"
+            className="w-full text-sm bg-card border border-border rounded-xl px-3 py-2.5 text-center text-foreground placeholder:text-muted-foreground outline-none focus:border-primary"
+          />
+          <Button onClick={handlePwSubmit} className="w-full">Unlock</Button>
+          {pwError && <p className="text-xs text-destructive font-bold">{pwError}</p>}
         </Card>
       </div>
     );
@@ -406,6 +482,7 @@ export default function Admin() {
     switch (tab) {
       case "overview":     return <OverviewTab users={users} />;
       case "users":        return <UsersTab users={users} onBan={handleBan} onUnban={handleUnban} onMakeAdmin={handleMakeAdmin} onRemoveAdmin={handleRemoveAdmin} onSetServer={handleSetServer} loading={usersLoading} />;
+      case "servers":      return <ServersTab />;
       case "content":      return <ContentTab />;
       case "gamification": return <GamificationTab />;
       case "moderation":   return <ModerationTab />;
