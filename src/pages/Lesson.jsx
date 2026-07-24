@@ -10,6 +10,7 @@ import { X, ArrowRight, Check, Heart } from "lucide-react";
 import LessonSlide from "@/components/lesson/LessonSlide";
 import QuizQuestion from "@/components/lesson/QuizQuestion";
 import LessonComplete from "@/components/lesson/LessonComplete";
+import BrunoWidget from "@/components/common/BrunoWidget";
 import { useDemo, saveDemoLessonProgress } from "@/lib/DemoContext";
 
 export default function Lesson() {
@@ -239,6 +240,7 @@ export default function Lesson() {
           )}
         </AnimatePresence>
       </div>
+      <BrunoWidget />
     </div>
   );
 }
