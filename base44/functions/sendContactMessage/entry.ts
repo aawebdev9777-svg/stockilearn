@@ -61,11 +61,6 @@ Deno.serve(async (req) => {
       return json({ ok: false, error: 'Too many requests. Please try again later.' }, 429);
     }
 
-    const recipient = Deno.env.get('CONTACT_RECIPIENT_EMAIL');
-    if (!recipient) {
-      return json({ ok: false, error: 'Contact form is not configured.' }, 500);
-    }
-
     // Log the submission (acts as the durable rate-limit counter) and prune
     // stale entries for this IP to keep the table bounded.
     await base44.asServiceRole.entities.ContactSubmission.create({ ip, email });
@@ -74,12 +69,43 @@ Deno.serve(async (req) => {
       created_date: { $lt: windowStart },
     });
 
-    await base44.integrations.Core.SendEmail({
-      to: recipient,
-      from_name: 'StockiLearn Contact Form',
-      subject: `New message from ${name}`,
-      body: `Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`,
+    // Deliver the message to the connected Outlook inbox via Microsoft Graph.
+    const { accessToken } = await base44.asServiceRole.connectors.getConnection('outlook');
+    const graphHeaders = {
+      Authorization: `Bearer ${accessToken}`,
+      'Content-Type': 'application/json',
+    };
+
+    // Resolve the connected account's own email address (the recipient).
+    const meRes = await fetch('https://graph.microsoft.com/v1.0/me?$select=mail,userPrincipalName', {
+      headers: graphHeaders,
     });
+    if (!meRes.ok) {
+      return json({ ok: false, error: 'Unable to resolve Outlook account.' }, 502);
+    }
+    const me = await meRes.json();
+    const recipient = me.mail || me.userPrincipalName;
+
+    const sendRes = await fetch('https://graph.microsoft.com/v1.0/me/sendMail', {
+      method: 'POST',
+      headers: graphHeaders,
+      body: JSON.stringify({
+        message: {
+          subject: `New message from ${name}`,
+          body: {
+            contentType: 'Text',
+            content: `Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`,
+          },
+          toRecipients: [{ emailAddress: { address: recipient } }],
+          replyTo: [{ emailAddress: { address: email } }],
+        },
+        saveToSentItems: true,
+      }),
+    });
+    if (!sendRes.ok) {
+      const detail = await sendRes.text();
+      return json({ ok: false, error: `Outlook delivery failed: ${sendRes.status} ${detail}` }, 502);
+    }
 
     return json({ ok: true });
   } catch (error) {
