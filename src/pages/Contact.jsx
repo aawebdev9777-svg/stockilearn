@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import { ArrowRight, Mail, Send } from "lucide-react";
+import { ArrowRight, Send } from "lucide-react";
 import Logo from "@/components/common/Logo";
 import { base44 } from "@/api/base44Client";
 
@@ -10,18 +10,28 @@ export default function Contact() {
   const [sent, setSent] = useState(false);
   const [sending, setSending] = useState(false);
 
+  const [error, setError] = useState("");
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!form.name || !form.email || !form.message) return;
     setSending(true);
-    await base44.integrations.Core.SendEmail({
-      to: "aa.web.dev9777@gmail.com",
-      from_name: "StockiLearn Contact Form",
-      subject: `New message from ${form.name}`,
-      body: `Name: ${form.name}\nEmail: ${form.email}\n\nMessage:\n${form.message}`,
-    });
+    setError("");
+    try {
+      const res = await base44.functions.invoke('sendContactMessage', {
+        name: form.name,
+        email: form.email,
+        message: form.message,
+      });
+      if (res.data?.ok) {
+        setSent(true);
+      } else {
+        setError(res.data?.error || "Something went wrong. Please try again.");
+      }
+    } catch {
+      setError("Something went wrong. Please try again.");
+    }
     setSending(false);
-    setSent(true);
   };
 
   return (
@@ -51,24 +61,6 @@ export default function Contact() {
           <h1 className="text-5xl font-black text-gray-900 leading-tight">Contact Us</h1>
           <p className="text-gray-500 mt-3 text-lg">Questions, feedback, bugs — we read everything.</p>
         </motion.div>
-
-        {/* Direct email card */}
-        <motion.a
-          href="mailto:aa.web.dev@outlook.com"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1 }}
-          className="flex items-center gap-4 bg-green-50 border-b-4 border-green-200 rounded-2xl p-6 mb-8 hover:brightness-95 transition-all"
-        >
-          <div className="w-12 h-12 rounded-2xl bg-[#58CC02] flex items-center justify-center shrink-0">
-            <Mail className="w-6 h-6 text-white" />
-          </div>
-          <div>
-            <p className="text-xs font-black uppercase tracking-wide text-[#46A302] mb-0.5">Email Us Directly</p>
-            <p className="text-lg font-black text-gray-900">aa.web.dev@outlook.com</p>
-            <p className="text-xs text-gray-400">We aim to reply within 48 hours</p>
-          </div>
-        </motion.a>
 
         {/* Contact form */}
         {sent ? (
@@ -122,6 +114,9 @@ export default function Contact() {
                 required
               />
             </div>
+            {error && (
+              <p className="text-sm font-bold text-[#FF4B4B] bg-[#FF4B4B]/10 border-2 border-[#FF4B4B]/30 px-4 py-3 rounded-2xl">{error}</p>
+            )}
             <button
               type="submit"
               disabled={sending}
