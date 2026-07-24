@@ -32,7 +32,7 @@ const DAILY_GOALS = [
 
 export default function Onboarding() {
   const navigate = useNavigate();
-  const { isDemoMode, updateDemoUser } = useDemo();
+  const { isDemoMode, demoUser } = useDemo();
   const [step, setStep] = useState(0);
   const [goal, setGoal] = useState(null);
   const [level, setLevel] = useState(null);
@@ -40,12 +40,26 @@ export default function Onboarding() {
 
   const handleComplete = async () => {
     if (isDemoMode) {
-      await updateDemoUser({
-        goal_type: goal,
-        knowledge_level: level,
-        daily_goal_xp: dailyGoal,
-        onboarding_complete: true,
-      });
+      try {
+        const res = await base44.functions.invoke('completeOnboarding', {
+          session_token: demoUser?.session_token,
+          goal_type: goal,
+          knowledge_level: level,
+          daily_goal_xp: dailyGoal,
+        });
+        if (res.data?.ok) {
+          const session = JSON.parse(localStorage.getItem("stockilearn_session") || "{}");
+          localStorage.setItem("stockilearn_session", JSON.stringify({
+            ...session,
+            goal_type: goal,
+            knowledge_level: level,
+            daily_goal_xp: dailyGoal,
+            onboarding_complete: true,
+          }));
+        }
+      } catch (e) {
+        console.error(e);
+      }
       navigate("/home");
       return;
     }
