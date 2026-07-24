@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useState, useEffect } from "react";
 import { base44 } from "@/api/base44Client";
 
 const DemoContext = createContext(null);
@@ -53,6 +53,33 @@ export function DemoProvider({ children }) {
     if (!session) return null;
     try { return JSON.parse(session); } catch { return null; }
   });
+  // True while verifying a stored demo session against the backend on load.
+  const [isValidating, setIsValidating] = useState(() => !!localStorage.getItem(STORAGE_KEY));
+
+  // On mount, validate any stored demo session so a stale/localStorage session
+  // left by a previous user on this browser doesn't impersonate them. Invalid
+  // sessions are cleared and the visitor falls through to the landing page.
+  useEffect(() => {
+    if (!demoUser?.session_token) { setIsValidating(false); return; }
+    let cancelled = false;
+    (async () => {
+      try {
+        const res = await base44.functions.invoke('validateSession', { session_token: demoUser.session_token });
+        if (cancelled) return;
+        if (!res.data?.ok) {
+          localStorage.removeItem(STORAGE_KEY);
+          setIsDemoMode(false);
+          setDemoUser(null);
+        }
+      } catch (e) {
+        // Transient failure — keep the session rather than logging someone out.
+        console.error("Session validation error:", e);
+      } finally {
+        if (!cancelled) setIsValidating(false);
+      }
+    })();
+    return () => { cancelled = true; };
+  }, []);
 
   // Sign in: use backend function (avoids RLS on unauthenticated client)
   const loginDemo = async (username, password) => {
@@ -213,7 +240,7 @@ export function DemoProvider({ children }) {
   };
 
   return (
-    <DemoContext.Provider value={{ isDemoMode, demoUser, loginDemo, signupDemo, logoutDemo, resetAllDemoData, updateDemoUser, saveLessonProgress, getDemoLessonProgress, saveDemoLessonProgress }}>
+    <DemoContext.Provider value={{ isDemoMode, isValidating, demoUser, loginDemo, signupDemo, logoutDemo, resetAllDemoData, updateDemoUser, saveLessonProgress, getDemoLessonProgress, saveDemoLessonProgress }}>
       {children}
     </DemoContext.Provider>
   );

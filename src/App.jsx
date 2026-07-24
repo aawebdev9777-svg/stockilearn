@@ -48,7 +48,20 @@ import { base44 } from '@/api/base44Client';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
-  const { isDemoMode } = useDemo();
+  const { isDemoMode, isValidating } = useDemo();
+
+  // While verifying a stored demo session against the backend, show the loading
+  // screen so stale sessions don't flash an account before being cleared.
+  if (isDemoMode && isValidating) {
+    return (
+      <div className="fixed inset-0 flex items-center justify-center bg-background">
+        <div className="flex flex-col items-center gap-4">
+          <div className="text-4xl animate-bounce">📈</div>
+          <div className="w-8 h-8 border-4 border-primary/30 border-t-primary rounded-full animate-spin"></div>
+        </div>
+      </div>
+    );
+  }
 
   // If demo mode is active, skip platform auth entirely
   if (isDemoMode) {
