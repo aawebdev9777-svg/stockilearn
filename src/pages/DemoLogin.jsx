@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useDemo } from "@/lib/DemoContext";
+import { LogoMark } from "@/components/common/Logo";
 import { useNavigate } from "react-router-dom";
 import { ArrowRight, TrendingUp } from "lucide-react";
 
@@ -86,9 +87,8 @@ export default function DemoLogin() {
           <motion.div
             animate={{ y: [0, -10, 0] }}
             transition={{ duration: 2, repeat: Infinity }}
-            className="w-20 h-20 rounded-3xl bg-[#58CC02] border-2 border-gray-300 flex items-center justify-center shadow-[0_5px_0_#999]"
           >
-            <TrendingUp className="w-10 h-10 text-white" strokeWidth={3} />
+            <LogoMark size={80} className="rounded-3xl" />
           </motion.div>
           <div>
             <h1 className="text-3xl font-black text-[#1B1B1B]">

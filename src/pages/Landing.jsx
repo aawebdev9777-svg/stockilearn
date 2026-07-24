@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
+import Logo from "@/components/common/Logo";
 import { ArrowRight, Check, Flame, Zap, Trophy, Bot, TrendingUp, Sparkles } from "lucide-react";
 import ShareButtons from "@/components/landing/ShareButtons";
 import FounderSpotlight from "@/components/landing/FounderSpotlight";
@@ -19,12 +20,7 @@ export default function Landing() {
       {/* ── Nav ── */}
       <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? "bg-white/90 backdrop-blur-md border-b-2 border-gray-300" : "bg-white"}`}>
         <div className="max-w-6xl mx-auto px-6 py-3 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <div className="w-9 h-9 rounded-xl bg-[#58CC02] border-2 border-gray-300 flex items-center justify-center shadow-[0_3px_0_#999]">
-              <TrendingUp className="w-5 h-5 text-white" strokeWidth={3} />
-            </div>
-            <span className="text-xl font-black tracking-tight">Stocki<span className="text-[#58CC02]">Learn</span></span>
-          </div>
+          <Logo to="/" size={36} textClass="text-xl" />
           <div className="flex items-center gap-2">
             <Link to="/about" className="text-sm font-bold text-[#1B1B1B]/70 hover:text-[#1B1B1B] transition-colors px-3 py-2 rounded-xl hover:bg-gray-100 hidden sm:block">About</Link>
             <Link to="/founders" className="text-sm font-bold text-[#1B1B1B]/70 hover:text-[#1B1B1B] transition-colors px-3 py-2 rounded-xl hover:bg-gray-100 hidden sm:block">Founders</Link>
@@ -344,12 +340,7 @@ export default function Landing() {
       {/* ── Footer ── */}
       <footer className="border-t-2 border-gray-300 py-8 px-6 bg-white">
         <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div className="flex items-center gap-2">
-            <div className="w-7 h-7 rounded-lg bg-[#58CC02] border-2 border-gray-300 flex items-center justify-center">
-              <TrendingUp className="w-4 h-4 text-white" strokeWidth={3} />
-            </div>
-            <span className="font-black">Stocki<span className="text-[#58CC02]">Learn</span></span>
-          </div>
+          <Logo to="/" size={28} textClass="text-base" />
           <p className="text-xs text-[#1B1B1B]/40">© 2026 StockiLearn · Educational purposes only</p>
           <div className="flex items-center gap-4 text-xs text-[#1B1B1B]/40 font-bold">
             <Link to="/about" className="hover:text-[#1B1B1B] transition-colors">About</Link>

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { ArrowRight, Mail, Send } from "lucide-react";
+import Logo from "@/components/common/Logo";
 import { base44 } from "@/api/base44Client";
 
 export default function Contact() {
@@ -29,10 +30,7 @@ export default function Contact() {
       {/* Nav */}
       <nav className="border-b-2 border-gray-100 bg-white">
         <div className="max-w-4xl mx-auto px-6 py-3 flex items-center justify-between">
-          <Link to="/" className="flex items-center gap-2">
-            <span className="text-2xl">📈</span>
-            <span className="text-xl font-black text-gray-800">Stocki<span className="text-[#58CC02]">Learn</span></span>
-          </Link>
+          <Logo to="/" size={32} textClass="text-xl" />
           <Link to="/login"
             className="text-sm font-black px-5 py-2.5 rounded-xl bg-[#58CC02] text-white border-b-4 border-[#46A302] hover:brightness-105 transition-all">
             Get Started
@@ -138,10 +136,7 @@ export default function Contact() {
       {/* Footer */}
       <footer className="border-t-2 border-gray-100 py-8 px-6 bg-white mt-8">
         <div className="max-w-4xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
-          <Link to="/" className="flex items-center gap-2">
-            <span className="text-xl">📈</span>
-            <span className="font-black text-gray-800">Stocki<span className="text-[#58CC02]">Learn</span></span>
-          </Link>
+          <Logo to="/" size={28} textClass="text-base" />
           <p className="text-xs text-gray-400">© 2026 StockiLearn · Educational purposes only</p>
           <div className="flex items-center gap-4 text-xs text-gray-400">
             <Link to="/about" className="hover:text-gray-700 transition-colors">About</Link>
