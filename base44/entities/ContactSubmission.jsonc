@@ -1,0 +1,40 @@
+{
+  "name": "ContactSubmission",
+  "type": "object",
+  "properties": {
+    "ip": {
+      "type": "string",
+      "description": "Client IP used for persistent rate limiting"
+    },
+    "email": {
+      "type": "string",
+      "description": "Submitter email (for audit / rate limiting)"
+    }
+  },
+  "required": [
+    "ip",
+    "email"
+  ],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "read": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

@@ -9,23 +9,14 @@ function json(body, status = 200) {
   return Response.json(body, { status, headers: SECURITY_HEADERS });
 }
 
-// Basic in-memory rate limiting: max 5 submissions per IP per hour.
+// Database-backed rate limiting (persists across serverless isolates):
+// max 5 submissions per IP per hour, counted via the ContactSubmission entity.
 const WINDOW_MS = 60 * 60 * 1000;
 const MAX_PER_WINDOW = 5;
-const hits = new Map();
-
-function rateLimited(ip) {
-  const now = Date.now();
-  const arr = (hits.get(ip) || []).filter((t) => now - t < WINDOW_MS);
-  if (arr.length >= MAX_PER_WINDOW) return true;
-  arr.push(now);
-  hits.set(ip, arr);
-  return false;
-}
 
 function clientIp(req) {
   // Use the rightmost X-Forwarded-For entry — this is the one appended by the
-  // trusted edge proxy. The leftmost entries are client-supplied and spoofable.
+  // trusted edge proxy. Leftmost entries are client-supplied and spoofable.
   const fwd = req.headers.get('x-forwarded-for');
   if (fwd) {
     const parts = fwd.split(',').map((s) => s.trim()).filter(Boolean);
@@ -38,10 +29,8 @@ const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 Deno.serve(async (req) => {
   try {
+    const base44 = createClientFromRequest(req);
     const ip = clientIp(req);
-    if (rateLimited(ip)) {
-      return json({ ok: false, error: 'Too many requests. Please try again later.' }, 429);
-    }
 
     let body;
     try {
@@ -61,12 +50,30 @@ Deno.serve(async (req) => {
       return json({ ok: false, error: 'Please provide a valid email address.' }, 400);
     }
 
+    // Persistent, cross-isolate rate limiting: count this IP's submissions in
+    // the rolling window before accepting a new one.
+    const windowStart = new Date(Date.now() - WINDOW_MS).toISOString();
+    const recent = await base44.asServiceRole.entities.ContactSubmission.filter({
+      ip,
+      created_date: { $gte: windowStart },
+    });
+    if (recent && recent.length >= MAX_PER_WINDOW) {
+      return json({ ok: false, error: 'Too many requests. Please try again later.' }, 429);
+    }
+
     const recipient = Deno.env.get('CONTACT_RECIPIENT_EMAIL');
     if (!recipient) {
       return json({ ok: false, error: 'Contact form is not configured.' }, 500);
     }
 
-    const base44 = createClientFromRequest(req);
+    // Log the submission (acts as the durable rate-limit counter) and prune
+    // stale entries for this IP to keep the table bounded.
+    await base44.asServiceRole.entities.ContactSubmission.create({ ip, email });
+    await base44.asServiceRole.entities.ContactSubmission.deleteMany({
+      ip,
+      created_date: { $lt: windowStart },
+    });
+
     await base44.integrations.Core.SendEmail({
       to: recipient,
       from_name: 'StockiLearn Contact Form',
