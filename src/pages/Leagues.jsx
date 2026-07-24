@@ -126,11 +126,23 @@ function LeaderboardRow({ player }) {
 export default function Leagues() {
   const { isDemoMode, demoUser } = useDemo();
   const [user, setUser] = useState(isDemoMode ? demoUser : null);
+  const [realBoard, setRealBoard] = useState(null);
 
   useEffect(() => {
     if (isDemoMode) { setUser(demoUser); return; }
     base44.auth.me().then(setUser).catch(() => {});
   }, [isDemoMode, demoUser]);
+
+  // Fetch the real leaderboard (other players in this league server) once we
+  // have a session token. Falls back to a simulated board if unavailable.
+  useEffect(() => {
+    if (!user?.session_token) return;
+    let cancelled = false;
+    base44.functions.invoke('getLeagueLeaderboard', { session_token: user.session_token })
+      .then(res => { if (!cancelled && res.data?.ok && res.data.board?.length) setRealBoard(res.data.board); })
+      .catch(() => {});
+    return () => { cancelled = true; };
+  }, [user?.session_token]);
 
   const tier = user?.league_tier || 1;
   const leagueInfo = LEAGUE_TIERS.find(l => l.tier === tier) || LEAGUE_TIERS[0];
@@ -143,8 +155,10 @@ export default function Leagues() {
   const serverFull = serverFill >= 30;
 
   const leaderboard = useMemo(
-    () => generateLeaderboard(seasonXp, user?.username || user?.full_name?.split(" ")[0]),
-    [seasonXp, user]
+    () => realBoard && realBoard.length > 0
+      ? realBoard
+      : generateLeaderboard(seasonXp, user?.username || user?.full_name?.split(" ")[0]),
+    [realBoard, seasonXp, user]
   );
 
   const userRank = leaderboard.find(p => p.isUser)?.rank || 15;
@@ -152,7 +166,7 @@ export default function Leagues() {
 
   const stats = [
     { label: "XP Earned", value: `${seasonXp} XP`, Icon: TrendingUp, color: "text-[#58CC02]" },
-    { label: "Current Rank", value: `#${userRank} / 30`, Icon: Trophy, color: "text-yellow-500" },
+    { label: "Current Rank", value: `#${userRank} / ${leaderboard.length}`, Icon: Trophy, color: "text-yellow-500" },
     { label: "League", value: `${leagueInfo.name.replace(" League", "")} · S${serverNumber}`, Icon: Shield, color: tierColors.text },
     { label: "Days Left", value: `${daysLeft} days`, Icon: Flame, color: "text-orange-400" },
   ];
@@ -181,7 +195,7 @@ export default function Leagues() {
             <div className="flex items-center gap-3 mt-1.5">
               <div className="flex items-center gap-1 text-gray-500">
                 <Shield className="w-3 h-3" />
-                <span className="text-xs font-bold">Rank #{userRank} of 30</span>
+                <span className="text-xs font-bold">Rank #{userRank} of {leaderboard.length}</span>
               </div>
               <div className="flex items-center gap-1 text-gray-500">
                 <TrendingUp className="w-3 h-3" />
