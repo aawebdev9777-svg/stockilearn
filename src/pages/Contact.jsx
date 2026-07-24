@@ -14,7 +14,7 @@ export default function Contact() {
     if (!form.name || !form.email || !form.message) return;
     setSending(true);
     await base44.integrations.Core.SendEmail({
-      to: "aa.web.dev@outlook.com",
+      to: "aa.web.dev9777@gmail.com",
       from_name: "StockiLearn Contact Form",
       subject: `New message from ${form.name}`,
       body: `Name: ${form.name}\nEmail: ${form.email}\n\nMessage:\n${form.message}`,
