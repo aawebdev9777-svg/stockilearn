@@ -1,4 +1,5 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.31';
+import { assignLeagueServer } from "../../shared/leagueServer.ts";
 
 const SECURITY_HEADERS = {
   'X-Frame-Options': 'DENY',
@@ -48,6 +49,9 @@ Deno.serve(async (req) => {
     const passwordHash = await hashPassword(password);
 
     const sessionToken = crypto.randomUUID();
+    // Place the new user into a league server (shard). Servers cap at 30
+    // players; when one fills up, a new server instance is spun up.
+    const leagueInstance = await assignLeagueServer(base44, 1);
     const newUser = await base44.asServiceRole.entities.AppUser.create({
       username: username.toLowerCase(),
       display_name: username,
@@ -57,6 +61,7 @@ Deno.serve(async (req) => {
       xp_total: 0, level: 1, streak_current: 0, streak_longest: 0,
       hearts_current: 5, gems: 0, daily_xp_earned_today: 0,
       daily_goal_xp: 50, league_tier: 1, league_xp: 0,
+      league_instance: leagueInstance,
       onboarding_complete: false, preferred_currency: "GBP",
     });
 

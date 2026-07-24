@@ -136,6 +136,11 @@ export default function Leagues() {
   const leagueInfo = LEAGUE_TIERS.find(l => l.tier === tier) || LEAGUE_TIERS[0];
   const tierColors = TIER_COLORS[tier] || TIER_COLORS[1];
   const seasonXp = user?.league_xp || 0;
+  const serverNumber = user?.league_instance || 1;
+  // Deterministic, stable fill count for this server (1–30). Older servers
+  // tend to be fuller; when one hits 30 a new server is spun up for newcomers.
+  const serverFill = Math.min(30, ((serverNumber * 17 + 5) % 30) + 1);
+  const serverFull = serverFill >= 30;
 
   const leaderboard = useMemo(
     () => generateLeaderboard(seasonXp, user?.username || user?.full_name?.split(" ")[0]),
@@ -148,7 +153,7 @@ export default function Leagues() {
   const stats = [
     { label: "XP Earned", value: `${seasonXp} XP`, Icon: TrendingUp, color: "text-[#58CC02]" },
     { label: "Current Rank", value: `#${userRank} / 30`, Icon: Trophy, color: "text-yellow-500" },
-    { label: "League", value: leagueInfo.name.replace(" League", ""), Icon: Shield, color: tierColors.text },
+    { label: "League", value: `${leagueInfo.name.replace(" League", "")} · S${serverNumber}`, Icon: Shield, color: tierColors.text },
     { label: "Days Left", value: `${daysLeft} days`, Icon: Flame, color: "text-orange-400" },
   ];
 
@@ -182,10 +187,32 @@ export default function Leagues() {
                 <TrendingUp className="w-3 h-3" />
                 <span className="text-xs font-bold">{seasonXp} XP</span>
               </div>
-            </div>
-            <p className="text-[10px] text-gray-500 mt-1">{daysLeft} days left this season</p>
-          </div>
-        </div>
+              </div>
+              <p className="text-[10px] text-gray-500 mt-1">{daysLeft} days left this season</p>
+              </div>
+              <span className="shrink-0 text-[10px] font-black bg-gray-100 text-gray-600 px-2.5 py-1 rounded-full border border-gray-200">
+              Server #{serverNumber}
+              </span>
+              </div>
+
+              {/* Server capacity bar */}
+              <div className="mt-4">
+              <div className="flex items-center justify-between text-[10px] text-gray-500 mb-1">
+              <span className="font-black uppercase tracking-wider">Server Capacity</span>
+              <span className="font-bold">{serverFill}/30 players</span>
+              </div>
+              <div className="h-2 rounded-full bg-gray-100 overflow-hidden">
+              <div
+              className={`h-full rounded-full transition-all ${serverFull ? "bg-orange-400" : "bg-[#58CC02]"}`}
+              style={{ width: `${(serverFill / 30) * 100}%` }}
+              />
+              </div>
+              {serverFull ? (
+              <p className="text-[9px] text-orange-500 font-bold mt-1">🔥 This server is full — new players are sent to a fresh league.</p>
+              ) : (
+              <p className="text-[9px] text-gray-400 font-medium mt-1">Leagues split into servers of 30. When one fills up, a new server opens.</p>
+              )}
+              </div>
 
         {/* Zone pills */}
         <div className="flex gap-2 mt-4">

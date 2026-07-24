@@ -65,6 +65,11 @@
       "type": "number",
       "default": 0
     },
+    "league_instance": {
+      "type": "number",
+      "default": 1,
+      "description": "Which server instance (shard) the user competes in within their league tier. Servers cap at 30 players; when full, a new server is spun up."
+    },
     "onboarding_complete": {
       "type": "boolean",
       "default": false

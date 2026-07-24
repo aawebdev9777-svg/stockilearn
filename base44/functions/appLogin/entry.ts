@@ -1,4 +1,5 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.31';
+import { assignLeagueServer } from "../../shared/leagueServer.ts";
 
 const SECURITY_HEADERS = {
   'X-Frame-Options': 'DENY',
@@ -76,6 +77,13 @@ Deno.serve(async (req) => {
         failed_login_attempts: 0,
         locked_until: null,
       });
+    }
+    // Backfill league server assignment for users who predate the sharding
+    // feature — places them into the first non-full server in their tier.
+    if (!found.league_instance) {
+      const inst = await assignLeagueServer(base44, found.league_tier || 1);
+      await base44.asServiceRole.entities.AppUser.update(found.id, { league_instance: inst });
+      found.league_instance = inst;
     }
     const sessionToken = crypto.randomUUID();
     await base44.asServiceRole.entities.AppUser.update(found.id, { session_token: sessionToken });
