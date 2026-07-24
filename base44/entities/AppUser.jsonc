@@ -90,6 +90,16 @@
       },
       "default": [],
       "description": "Array of completed lesson IDs"
+    },
+    "failed_login_attempts": {
+      "type": "number",
+      "default": 0,
+      "description": "Consecutive failed password attempts, persisted for rate limiting"
+    },
+    "locked_until": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO timestamp until which the account is locked out from login"
     }
   },
   "required": [

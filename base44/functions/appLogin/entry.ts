@@ -9,29 +9,9 @@ function withHeaders(body, status = 200) {
   return Response.json(body, { status, headers: SECURITY_HEADERS });
 }
 
-// Simple in-memory rate limiting (per IP + username)
-const loginAttempts = new Map();
+// Database-backed rate limiting (persists across serverless isolates)
 const MAX_ATTEMPTS = 5;
 const BLOCK_MS = 15 * 60 * 1000;
-
-function checkRateLimit(key) {
-  const rec = loginAttempts.get(key);
-  if (!rec) return false;
-  if (rec.count >= MAX_ATTEMPTS && Date.now() - rec.lastAttempt < BLOCK_MS) return true;
-  if (rec.count >= MAX_ATTEMPTS) loginAttempts.delete(key);
-  return false;
-}
-
-function recordFailure(key) {
-  const rec = loginAttempts.get(key) || { count: 0, lastAttempt: 0 };
-  rec.count++;
-  rec.lastAttempt = Date.now();
-  loginAttempts.set(key, rec);
-}
-
-function clearFailures(key) {
-  loginAttempts.delete(key);
-}
 
 async function verifyPassword(password, stored) {
   const parts = stored.split('$');
@@ -60,25 +40,43 @@ Deno.serve(async (req) => {
       return withHeaders({ ok: false, error: "Missing credentials" }, 400);
     }
 
-    const clientIp = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 'unknown';
-    const rateKey = `${clientIp}:${username.toLowerCase()}`;
-    if (checkRateLimit(rateKey)) {
-      return withHeaders({ ok: false, error: "Too many attempts. Try again later." }, 429);
-    }
-
     const users = await base44.asServiceRole.entities.AppUser.filter({ username: username.toLowerCase() });
     if (!users || users.length === 0) {
       return withHeaders({ ok: false, error: "User not found" });
     }
     const found = users[0];
 
+    // Check persistent account lockout
+    if (found.locked_until) {
+      const lockedUntil = new Date(found.locked_until).getTime();
+      if (Date.now() < lockedUntil) {
+        return withHeaders({ ok: false, error: "Too many attempts. Try again later." }, 429);
+      }
+    }
+
     const valid = await verifyPassword(password, found.password_hash || '');
     if (!valid) {
-      recordFailure(rateKey);
+      const attempts = (found.failed_login_attempts || 0) + 1;
+      if (attempts >= MAX_ATTEMPTS) {
+        await base44.asServiceRole.entities.AppUser.update(found.id, {
+          failed_login_attempts: attempts,
+          locked_until: new Date(Date.now() + BLOCK_MS).toISOString(),
+        });
+      } else {
+        await base44.asServiceRole.entities.AppUser.update(found.id, {
+          failed_login_attempts: attempts,
+        });
+      }
       return withHeaders({ ok: false, error: "Wrong password" });
     }
 
-    clearFailures(rateKey);
+    // Clear failures on success
+    if (found.failed_login_attempts || found.locked_until) {
+      await base44.asServiceRole.entities.AppUser.update(found.id, {
+        failed_login_attempts: 0,
+        locked_until: null,
+      });
+    }
     const sessionToken = crypto.randomUUID();
     await base44.asServiceRole.entities.AppUser.update(found.id, { session_token: sessionToken });
     const { password_hash, ...safeUser } = found;
