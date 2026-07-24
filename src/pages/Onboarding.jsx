@@ -55,6 +55,9 @@ export default function Onboarding() {
             knowledge_level: level,
             daily_goal_xp: dailyGoal,
             onboarding_complete: true,
+            // Persist the rotated token returned by the backend so the
+            // single-use onboarding credential is replaced server-side.
+            ...(res.data.session_token ? { session_token: res.data.session_token } : {}),
           }));
         }
       } catch (e) {
