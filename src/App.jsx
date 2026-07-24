@@ -30,6 +30,7 @@ import Contact from '@/pages/Contact';
 import Claude from '@/pages/Claude';
 import Founders from '@/pages/Founders';
 import Privacy from '@/pages/Privacy';
+import GameLogicPdf from '@/pages/GameLogicPdf';
 
 // Guard: only admin users can access wrapped routes
 const AdminOnly = ({ children }) => {
@@ -70,6 +71,7 @@ const AuthenticatedApp = () => {
         <Route path="/contact" element={<Contact />} />
         <Route path="/claude" element={<Claude />} />
         <Route path="/founders" element={<Founders />} />
+        <Route path="/pdf" element={<GameLogicPdf />} />
         <Route element={<AppLayout />}>
           <Route path="/home" element={<Home />} />
           <Route path="/learn" element={<Learn />} />
@@ -106,6 +108,7 @@ const AuthenticatedApp = () => {
         <Route path="/privacy" element={<Privacy />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/founders" element={<Founders />} />
+        <Route path="/pdf" element={<GameLogicPdf />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       );
@@ -129,6 +132,7 @@ const AuthenticatedApp = () => {
       <Route path="/contact" element={<Contact />} />
       <Route path="/claude" element={<Claude />} />
       <Route path="/founders" element={<Founders />} />
+        <Route path="/pdf" element={<GameLogicPdf />} />
       <Route element={<AppLayout />}>
         <Route path="/home" element={<Home />} />
         <Route path="/learn" element={<Learn />} />
