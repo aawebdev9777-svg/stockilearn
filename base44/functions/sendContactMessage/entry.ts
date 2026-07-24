@@ -24,8 +24,13 @@ function rateLimited(ip) {
 }
 
 function clientIp(req) {
+  // Use the rightmost X-Forwarded-For entry — this is the one appended by the
+  // trusted edge proxy. The leftmost entries are client-supplied and spoofable.
   const fwd = req.headers.get('x-forwarded-for');
-  if (fwd) return fwd.split(',')[0].trim();
+  if (fwd) {
+    const parts = fwd.split(',').map((s) => s.trim()).filter(Boolean);
+    if (parts.length) return parts[parts.length - 1];
+  }
   return req.headers.get('x-real-ip') || 'unknown';
 }
 
