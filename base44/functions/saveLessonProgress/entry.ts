@@ -1,4 +1,4 @@
-import { createClientFromRequest } from 'npm:@base44/sdk@0.8.31';
+import { createClientFromRequest } from 'npm:@base44/sdk@0.8.40';
 
 const SECURITY_HEADERS = {
   'X-Frame-Options': 'DENY',
@@ -35,41 +35,51 @@ function calculateXp(lessonId: string, score: number): number {
   return Math.round((maxXp * clampedScore) / 100);
 }
 
+// These are custom-auth (demo) users with no platform session, so
+// base44.auth.me() is not applicable — the session_token issued at login/signup
+// is the bearer credential. Validate it strictly before any service-role lookup.
+// The token is NOT rotated here: lesson completion is a frequent operation and
+// rotating on every save would force the client to capture a new credential
+// each time, risking lockout if a response is lost.
+const TOKEN_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
 Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
+    const { session_token, lessonId, score } = await req.json();
 
-    // Identify the authenticated user via platform auth — identity comes
-    // from the request's auth context, never from a client-provided token.
-    const user = await base44.auth.me();
-    if (!user) {
-      return withHeaders({ ok: false, error: "Unauthorized" }, 401);
+    if (!session_token || !TOKEN_RE.test(session_token)) {
+      return withHeaders({ ok: false, error: "Invalid session" }, 401);
     }
 
-    // Only lessonId and score are accepted from the client. xpEarned is
-    // NEVER trusted from the request — it is derived server-side.
-    const { lessonId, score } = await req.json();
+    const users = await base44.asServiceRole.entities.AppUser.filter({ session_token });
+    if (!users || users.length !== 1) {
+      // 0 → no such token; >1 → token collision (must not happen with random
+      // UUIDs). Either way, refuse to act on an ambiguous identity.
+      return withHeaders({ ok: false, error: "Invalid session" }, 401);
+    }
+    const appUser = users[0];
 
+    // Reject locked accounts (reuse the login lockout mechanism).
+    if (appUser.locked_until) {
+      const lockedUntil = new Date(appUser.locked_until).getTime();
+      if (Date.now() < lockedUntil) {
+        return withHeaders({ ok: false, error: "Account temporarily locked." }, 403);
+      }
+    }
+
+    // Only lessonId + score are accepted from the client. xpEarned is NEVER
+    // trusted from the request — it is derived server-side.
     if (!lessonId || typeof lessonId !== "string") {
       return withHeaders({ ok: false, error: "Missing or invalid lessonId" }, 400);
     }
-
     if (LESSON_XP[lessonId] === undefined) {
       return withHeaders({ ok: false, error: "Unknown lesson" }, 400);
     }
 
-    // Find the AppUser record owned by this authenticated user.
-    const users = await base44.asServiceRole.entities.AppUser.filter({ created_by_id: user.id });
-    if (!users || users.length === 0) {
-      return withHeaders({ ok: false, error: "User profile not found" }, 404);
-    }
-    const appUser = users[0];
-
     // Prevent XP farming: if the lesson was already completed, award 0 XP.
     const completedLessons = appUser.completed_lessons || [];
     const alreadyCompleted = completedLessons.includes(lessonId);
-
-    // Server-authoritative XP calculation — client cannot inflate this.
     const xpEarned = alreadyCompleted ? 0 : calculateXp(lessonId, score);
 
     if (!alreadyCompleted) {
@@ -91,7 +101,7 @@ Deno.serve(async (req) => {
       league_xp: (appUser.league_xp || 0) + xpEarned,
     });
 
-    const { password_hash, ...safeUser } = updated;
+    const { password_hash, session_token: _st, ...safeUser } = updated;
     return withHeaders({ ok: true, user: safeUser, xpEarned });
   } catch (error) {
     return withHeaders({ ok: false, error: error.message }, 500);

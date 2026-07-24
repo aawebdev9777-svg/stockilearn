@@ -142,6 +142,18 @@ export function DemoProvider({ children }) {
     }
   };
 
+  // Update the in-memory + localStorage demoUser WITHOUT a backend call — used
+  // to sync credentials (e.g. a rotated session_token) and profile fields that
+  // were already persisted server-side by a backend function.
+  const setLocalDemoUser = (updates) => {
+    setDemoUser(prev => {
+      if (!prev) return prev;
+      const updated = { ...prev, ...updates };
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
+      return updated;
+    });
+  };
+
   const logoutDemo = () => {
     localStorage.removeItem(STORAGE_KEY);
     setIsDemoMode(false);
@@ -175,9 +187,11 @@ export function DemoProvider({ children }) {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedProfile));
     setDemoUser(updatedProfile);
 
-    // Persist to backend — the function identifies the user via base44.auth.me()
+    // Persist to backend — the function identifies the custom-auth user via
+    // their session_token (no platform auth session exists for demo users).
     try {
       const res = await base44.functions.invoke('saveLessonProgress', {
+        session_token: demoUser.session_token,
         lessonId,
         score,
         xpEarned,
@@ -210,7 +224,7 @@ export function DemoProvider({ children }) {
   };
 
   return (
-    <DemoContext.Provider value={{ isDemoMode, demoUser, loginDemo, signupDemo, logoutDemo, resetAllDemoData, updateDemoUser, saveLessonProgress, getDemoLessonProgress, saveDemoLessonProgress }}>
+    <DemoContext.Provider value={{ isDemoMode, demoUser, loginDemo, signupDemo, logoutDemo, resetAllDemoData, updateDemoUser, setLocalDemoUser, saveLessonProgress, getDemoLessonProgress, saveDemoLessonProgress }}>
       {children}
     </DemoContext.Provider>
   );

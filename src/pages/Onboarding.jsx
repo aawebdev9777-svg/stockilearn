@@ -32,7 +32,7 @@ const DAILY_GOALS = [
 
 export default function Onboarding() {
   const navigate = useNavigate();
-  const { isDemoMode, demoUser } = useDemo();
+  const { isDemoMode, demoUser, setLocalDemoUser } = useDemo();
   const [step, setStep] = useState(0);
   const [goal, setGoal] = useState(null);
   const [level, setLevel] = useState(null);
@@ -48,17 +48,16 @@ export default function Onboarding() {
           daily_goal_xp: dailyGoal,
         });
         if (res.data?.ok) {
-          const session = JSON.parse(localStorage.getItem("stockilearn_session") || "{}");
-          localStorage.setItem("stockilearn_session", JSON.stringify({
-            ...session,
+          // Sync the rotated token + onboarding fields into the in-memory
+          // demoUser (and localStorage) so subsequent authenticated calls
+          // (e.g. saveLessonProgress) use the current credential.
+          setLocalDemoUser({
             goal_type: goal,
             knowledge_level: level,
             daily_goal_xp: dailyGoal,
             onboarding_complete: true,
-            // Persist the rotated token returned by the backend so the
-            // single-use onboarding credential is replaced server-side.
             ...(res.data.session_token ? { session_token: res.data.session_token } : {}),
-          }));
+          });
         }
       } catch (e) {
         console.error(e);
