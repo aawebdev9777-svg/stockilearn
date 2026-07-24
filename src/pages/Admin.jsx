@@ -7,6 +7,7 @@ import { useDemo } from "@/lib/DemoContext";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { LESSONS, BADGES, LEVEL_TITLES } from "@/lib/lessonData";
+import ServerSetter from "@/components/admin/ServerSetter";
 
 const TABS = [
   { id: "overview",     label: "Overview",    icon: BarChart3 },
@@ -96,7 +97,7 @@ function OverviewTab({ users }) {
 }
 
 // ── Users Tab ─────────────────────────────────────────────────
-function UsersTab({ users, onBan, onUnban, onMakeAdmin, onRemoveAdmin, loading }) {
+function UsersTab({ users, onBan, onUnban, onMakeAdmin, onRemoveAdmin, onSetServer, loading }) {
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState("all"); // all | banned | admin
 
@@ -154,9 +155,11 @@ function UsersTab({ users, onBan, onUnban, onMakeAdmin, onRemoveAdmin, loading }
                   {u.xp_total ? ` · ${u.xp_total} XP` : ""}
                   {u.streak_current ? ` · 🔥${u.streak_current}` : ""}
                   {u.level ? ` · Lv${u.level}` : ""}
+                  {` · S${u.league_instance || 1}`}
                 </p>
               </div>
               <div className="flex flex-col gap-1 shrink-0">
+                <ServerSetter value={u.league_instance || 1} onSet={(n) => onSetServer(u, n)} />
                 {u.is_banned ? (
                   <Button size="sm" variant="outline" onClick={() => onUnban(u)}
                     className="h-7 text-[10px] px-2 gap-1 text-primary border-primary/30">
@@ -363,6 +366,12 @@ export default function Admin() {
     showToast(`${u.display_name || u.username} is no longer an admin.`);
   };
 
+  const handleSetServer = async (u, server) => {
+    await base44.entities.AppUser.update(u.id, { league_instance: server });
+    setUsers(prev => prev.map(x => x.id === u.id ? { ...x, league_instance: server } : x));
+    showToast(`${u.display_name || u.username} moved to server ${server}.`);
+  };
+
   if (loading) {
     return (
       <div className="flex items-center justify-center h-screen">
@@ -396,7 +405,7 @@ export default function Admin() {
   const renderTab = () => {
     switch (tab) {
       case "overview":     return <OverviewTab users={users} />;
-      case "users":        return <UsersTab users={users} onBan={handleBan} onUnban={handleUnban} onMakeAdmin={handleMakeAdmin} onRemoveAdmin={handleRemoveAdmin} loading={usersLoading} />;
+      case "users":        return <UsersTab users={users} onBan={handleBan} onUnban={handleUnban} onMakeAdmin={handleMakeAdmin} onRemoveAdmin={handleRemoveAdmin} onSetServer={handleSetServer} loading={usersLoading} />;
       case "content":      return <ContentTab />;
       case "gamification": return <GamificationTab />;
       case "moderation":   return <ModerationTab />;
