@@ -297,7 +297,7 @@ function PitchTab() {
 
 // ── Main ─────────────────────────────────────────────────────
 export default function Admin() {
-  const { demoUser } = useDemo();
+  const { isDemoMode, demoUser } = useDemo();
   const [user, setUser] = useState(null);
   const [users, setUsers] = useState([]);
   const [usersLoading, setUsersLoading] = useState(false);
@@ -311,11 +311,19 @@ export default function Admin() {
   };
 
   useEffect(() => {
+    // Custom-auth app: in demo mode the user profile lives in DemoContext,
+    // not in the platform User entity. Calling base44.auth.me() here would
+    // fire a User entity request that fails with a network error.
+    if (isDemoMode) {
+      setUser(demoUser);
+      setLoading(false);
+      return;
+    }
     base44.auth.me().then(u => {
       setUser(u);
       setLoading(false);
     }).catch(() => setLoading(false));
-  }, []);
+  }, [isDemoMode, demoUser]);
 
   useEffect(() => {
     if (user?.role === "admin" && (tab === "users" || tab === "overview")) {

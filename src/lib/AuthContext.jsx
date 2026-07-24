@@ -39,7 +39,12 @@ export const AuthProvider = ({ children }) => {
         setAppPublicSettings(publicSettings);
         
         // If we got the app public settings successfully, check if user is authenticated
-        if (appParams.token) {
+        // This app uses custom auth (AppUser + session tokens via DemoContext).
+        // When a demo session is active, skip platform auth entirely — calling
+        // base44.auth.me() would fire a User entity request that fails with a
+        // network error because no platform session exists in this model.
+        const demoSessionActive = typeof window !== 'undefined' && !!window.localStorage.getItem('stockilearn_session');
+        if (appParams.token && !demoSessionActive) {
           await checkUserAuth();
         } else {
           setIsLoadingAuth(false);
