@@ -22,18 +22,21 @@ function getGreeting(name) {
 }
 
 export default function Home() {
-  const { isDemoMode } = useDemo();
-  const { demoUser } = useDemo();
+  const { isDemoMode, demoUser } = useDemo();
   const [user, setUser] = useState(isDemoMode ? demoUser : null);
   const [loading, setLoading] = useState(!isDemoMode);
 
   useEffect(() => {
-    if (isDemoMode) return;
+    if (isDemoMode) {
+      setUser(demoUser);
+      setLoading(false);
+      return;
+    }
     base44.auth.me().then(u => {
       setUser(u);
       setLoading(false);
     }).catch(() => setLoading(false));
-  }, [isDemoMode]);
+  }, [isDemoMode, demoUser]);
 
   if (loading) {
     return (

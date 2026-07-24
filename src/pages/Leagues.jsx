@@ -128,9 +128,9 @@ export default function Leagues() {
   const [user, setUser] = useState(isDemoMode ? demoUser : null);
 
   useEffect(() => {
-    if (isDemoMode) return;
+    if (isDemoMode) { setUser(demoUser); return; }
     base44.auth.me().then(setUser).catch(() => {});
-  }, [isDemoMode]);
+  }, [isDemoMode, demoUser]);
 
   const tier = user?.league_tier || 1;
   const leagueInfo = LEAGUE_TIERS.find(l => l.tier === tier) || LEAGUE_TIERS[0];

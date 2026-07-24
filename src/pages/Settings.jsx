@@ -18,9 +18,9 @@ export default function Settings() {
   const [isDeleting, setIsDeleting] = useState(false);
 
   useEffect(() => {
-    if (isDemoMode) return;
+    if (isDemoMode) { setUser(demoUser); return; }
     base44.auth.me().then(setUser).catch(() => {});
-  }, [isDemoMode]);
+  }, [isDemoMode, demoUser]);
 
   const handleToggle = async (field, value) => {
     if (isDemoMode) { setUser(prev => ({ ...prev, [field]: value })); return; }

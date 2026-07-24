@@ -19,9 +19,13 @@ export default function Profile() {
   const [loading, setLoading] = useState(!isDemoMode);
 
   useEffect(() => {
-    if (isDemoMode) return;
+    if (isDemoMode) {
+      setUser(demoUser);
+      setLoading(false);
+      return;
+    }
     base44.auth.me().then(u => { setUser(u); setLoading(false); }).catch(() => setLoading(false));
-  }, [isDemoMode]);
+  }, [isDemoMode, demoUser]);
 
   const userId = user?.id || null;
 
