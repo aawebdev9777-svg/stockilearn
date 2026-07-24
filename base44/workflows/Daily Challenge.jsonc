@@ -1,0 +1,67 @@
+{
+  "trigger": {
+    "condition": null,
+    "config": {
+      "trigger_type": "scheduled",
+      "events": [],
+      "schedule_mode": "recurring",
+      "cron_expression": "0 9 * * *",
+      "one_time_date": null,
+      "timezone": "Europe/Rome",
+      "interval_value": null,
+      "interval_unit": null,
+      "interval_anchor": null,
+      "ends_type": "never",
+      "ends_on_date": null,
+      "ends_after_count": null
+    }
+  },
+  "definition": {
+    "document": {
+      "dsl": "1.0.0",
+      "name": "daily_challenge",
+      "version": "1.0",
+      "namespace": "base44"
+    },
+    "do": [
+      {
+        "dispatch": {
+          "call": "invoke_backend_function",
+          "with": {
+            "function_name": "dispatchDailyChallenges"
+          },
+          "then": "wait_for_reminder",
+          "x-base44": {
+            "title": "Send morning challenge nudge",
+            "description": "9 AM \u2014 email all users"
+          }
+        }
+      },
+      {
+        "wait_for_reminder": {
+          "wait": "PT12H",
+          "then": "process",
+          "x-base44": {
+            "title": "Wait 12 hours",
+            "description": "Until 9 PM"
+          }
+        }
+      },
+      {
+        "process": {
+          "call": "invoke_backend_function",
+          "with": {
+            "function_name": "processDailyChallengeReminders"
+          },
+          "then": "end",
+          "x-base44": {
+            "title": "Check completion & remind",
+            "description": "Update TopicMastery or send reminder"
+          }
+        }
+      }
+    ]
+  },
+  "name": "Daily Challenge",
+  "description": "Every morning at 9 AM, emails users that today's daily challenge is ready. 12 hours later, updates TopicMastery for users who completed it and sends a gentle reminder to those who didn't."
+}
