@@ -1,18 +1,10 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.40';
 import { getTodaysChallenge } from "../../shared/dailyChallenge.ts";
-
-const SECURITY_HEADERS = {
-  'X-Frame-Options': 'DENY',
-  'Permissions-Policy': 'camera=(), microphone=(), geolocation=(), payment=()',
-};
-
-function withHeaders(body, status = 200) {
-  return Response.json(body, { status, headers: SECURITY_HEADERS });
-}
+import { authorizeAdmin, json } from "../../shared/cronAuth.ts";
 
 Deno.serve(async (req) => {
   try {
-    const base44 = createClientFromRequest(req);
+    const base44 = await authorizeAdmin(req);
 
     const users = await base44.asServiceRole.entities.User.list();
     const today = new Date().toISOString().split("T")[0];
@@ -69,8 +61,9 @@ Open StockiLearn to play now.
       }
     }
 
-    return withHeaders({ ok: true, completed: completedCount, reminded: remindedCount, total: users.length });
+    return json({ ok: true, completed: completedCount, reminded: remindedCount, total: users.length });
   } catch (error) {
-    return withHeaders({ ok: false, error: error.message }, 500);
+    const status = error.message === 'Unauthorized' ? 401 : 500;
+    return json({ ok: false, error: error.message }, status);
   }
 });
