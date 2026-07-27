@@ -45,27 +45,18 @@ export const DEMO_BADGES = [];
 
 
 export function DemoProvider({ children }) {
-  // Restore an existing demo session on load so logged-in users stay logged in
-  // across refresh. Leftover guest sessions (guest mode was removed) are purged
-  // so they can't drop anyone into an empty "guest" dashboard.
+  // Never auto-restore a demo session on load — visitors must sign in each
+  // session, and any app URL they hit redirects to /login. Leftover guest
+  // sessions (guest mode was removed) are purged so they can't drop anyone into
+  // an empty "guest" dashboard.
   const [isDemoMode, setIsDemoMode] = useState(() => {
     try {
       const stored = localStorage.getItem(STORAGE_KEY);
-      if (!stored) return false;
-      const parsed = JSON.parse(stored);
-      if (parsed?.isGuest) { localStorage.removeItem(STORAGE_KEY); return false; }
-      return !!parsed?.session_token;
-    } catch { return false; }
+      if (stored && JSON.parse(stored)?.isGuest) localStorage.removeItem(STORAGE_KEY);
+    } catch { /* ignore */ }
+    return false;
   });
-  const [demoUser, setDemoUser] = useState(() => {
-    try {
-      const stored = localStorage.getItem(STORAGE_KEY);
-      if (!stored) return null;
-      const parsed = JSON.parse(stored);
-      if (parsed?.isGuest || !parsed?.session_token) return null;
-      return parsed;
-    } catch { return null; }
-  });
+  const [demoUser, setDemoUser] = useState(null);
 
   // Sign in: use backend function (avoids RLS on unauthenticated client)
   const loginDemo = async (username, password) => {

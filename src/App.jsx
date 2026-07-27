@@ -119,13 +119,6 @@ const AuthenticatedApp = () => {
     <Routes>
     <Route path="/" element={<Landing />} />
     <Route path="/login" element={<DemoLogin />} />
-    <Route path="/onboarding" element={<Onboarding />} />
-      <Route path="/learn/lesson/:lessonId" element={<Lesson />} />
-      <Route path="/flashcards" element={<Flashcards />} />
-      <Route path="/trade/stock/:ticker" element={<StockDetail />} />
-      <Route path="/settings" element={<Settings />} />
-      <Route path="/upgrade" element={<Upgrade />} />
-      <Route path="/present" element={<Present />} />
       <Route path="/admin" element={<Admin />} />
       <Route path="/about" element={<About />} />
         <Route path="/privacy" element={<Privacy />} />
@@ -133,14 +126,9 @@ const AuthenticatedApp = () => {
       <Route path="/claude" element={<Claude />} />
       <Route path="/founders" element={<Founders />} />
         <Route path="/pdf" element={<GameLogicPdf />} />
-      <Route element={<AppLayout />}>
-        <Route path="/home" element={<Home />} />
-        <Route path="/learn" element={<Learn />} />
-        <Route path="/play" element={<Play />} />
-        <Route path="/leagues" element={<Leagues />} />
-        <Route path="/profile" element={<Profile />} />
-      </Route>
-      <Route path="*" element={<PageNotFound />} />
+      <Route path="/present" element={<Present />} />
+      <Route path="/upgrade" element={<Upgrade />} />
+      <Route path="*" element={<Navigate to="/login" replace />} />
     </Routes>
   );
 };
