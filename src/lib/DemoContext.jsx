@@ -45,11 +45,23 @@ export const DEMO_BADGES = [];
 
 
 export function DemoProvider({ children }) {
-  // Never auto-restore a demo session from localStorage on load — visitors who
-  // haven't signed in this session always see the landing page, never a stale
-  // account left in the browser by a previous user.
-  const [isDemoMode, setIsDemoMode] = useState(false);
-  const [demoUser, setDemoUser] = useState(null);
+  // Never auto-restore a REAL demo session from localStorage on load — visitors
+  // who haven't signed in this session always see the landing page, never a
+  // stale account left in the browser by a previous user. Guest sessions ARE
+  // restored so a guest doesn't lose their local progress on refresh.
+  const [isDemoMode, setIsDemoMode] = useState(() => {
+    try {
+      const stored = localStorage.getItem(STORAGE_KEY);
+      return stored ? JSON.parse(stored)?.isGuest === true : false;
+    } catch { return false; }
+  });
+  const [demoUser, setDemoUser] = useState(() => {
+    try {
+      const stored = localStorage.getItem(STORAGE_KEY);
+      const parsed = stored ? JSON.parse(stored) : null;
+      return parsed?.isGuest ? parsed : null;
+    } catch { return null; }
+  });
 
   // Sign in: use backend function (avoids RLS on unauthenticated client)
   const loginDemo = async (username, password) => {
@@ -131,6 +143,36 @@ export function DemoProvider({ children }) {
     }
   };
 
+  // Guest mode: enter the app with a local-only profile — no account, no signup,
+  // no backend. Progress (XP, streaks, completed lessons) is tracked in
+  // localStorage only and never sent to a shared demo account.
+  const startGuest = () => {
+    const guestProfile = {
+      id: "guest",
+      full_name: "Guest Investor",
+      email: "",
+      role: "user",
+      xp_total: 0,
+      level: 1,
+      streak_current: 0,
+      streak_longest: 0,
+      hearts_current: 5,
+      gems: 0,
+      daily_xp_earned_today: 0,
+      daily_goal_xp: 50,
+      league_tier: 1,
+      league_xp: 0,
+      league_instance: 1,
+      onboarding_complete: true,
+      preferred_currency: "GBP",
+      completed_lessons: [],
+      isGuest: true,
+    };
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(guestProfile));
+    setIsDemoMode(true);
+    setDemoUser(guestProfile);
+  };
+
   // Update the current user's profile in DB and session
   const updateDemoUser = async (updates) => {
     if (!demoUser?.db_id) return;
@@ -165,7 +207,7 @@ export function DemoProvider({ children }) {
   // Save completed lesson — updates local profile immediately, then tries
   // to persist to the backend (which requires platform auth via base44.auth.me()).
   const saveLessonProgress = async (lessonId, score, xpEarned) => {
-    if (!demoUser?.db_id) return { ok: false };
+    if (!demoUser) return { ok: false };
 
     // Optimistically update local profile so demo UX is preserved even
     // when the backend call is unavailable (e.g. no platform auth session).
@@ -189,32 +231,34 @@ export function DemoProvider({ children }) {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedProfile));
     setDemoUser(updatedProfile);
 
-    // Persist to backend — the function identifies the custom-auth user via
-    // their session_token (no platform auth session exists for demo users).
-    try {
-      const res = await base44.functions.invoke('saveLessonProgress', {
-        session_token: demoUser.session_token,
-        lessonId,
-        score,
-        xpEarned,
-      });
-      if (res.data?.ok && res.data.user) {
-        const u = res.data.user;
-        const backendProfile = {
-          ...updatedProfile,
-          completed_lessons: u.completed_lessons || [],
-          xp_total: u.xp_total || 0,
-          streak_current: u.streak_current || 0,
-          streak_longest: u.streak_longest || 0,
-          daily_xp_earned_today: u.daily_xp_earned_today || 0,
-          league_xp: u.league_xp || 0,
-          last_active_date: u.last_active_date,
-        };
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(backendProfile));
-        setDemoUser(backendProfile);
+    // Persist to backend only for real accounts (guests have no session_token,
+    // so their progress stays local — nothing is sent to a shared demo account).
+    if (demoUser.session_token) {
+      try {
+        const res = await base44.functions.invoke('saveLessonProgress', {
+          session_token: demoUser.session_token,
+          lessonId,
+          score,
+          xpEarned,
+        });
+        if (res.data?.ok && res.data.user) {
+          const u = res.data.user;
+          const backendProfile = {
+            ...updatedProfile,
+            completed_lessons: u.completed_lessons || [],
+            xp_total: u.xp_total || 0,
+            streak_current: u.streak_current || 0,
+            streak_longest: u.streak_longest || 0,
+            daily_xp_earned_today: u.daily_xp_earned_today || 0,
+            league_xp: u.league_xp || 0,
+            last_active_date: u.last_active_date,
+          };
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(backendProfile));
+          setDemoUser(backendProfile);
+        }
+      } catch (e) {
+        console.error("Save lesson progress error:", e);
       }
-    } catch (e) {
-      console.error("Save lesson progress error:", e);
     }
     return { ok: true };
   };
@@ -226,7 +270,7 @@ export function DemoProvider({ children }) {
   };
 
   return (
-    <DemoContext.Provider value={{ isDemoMode, demoUser, loginDemo, signupDemo, logoutDemo, resetAllDemoData, updateDemoUser, setLocalDemoUser, saveLessonProgress, getDemoLessonProgress, saveDemoLessonProgress }}>
+    <DemoContext.Provider value={{ isDemoMode, isGuest: demoUser?.isGuest === true, demoUser, loginDemo, signupDemo, startGuest, logoutDemo, resetAllDemoData, updateDemoUser, setLocalDemoUser, saveLessonProgress, getDemoLessonProgress, saveDemoLessonProgress }}>
       {children}
     </DemoContext.Provider>
   );

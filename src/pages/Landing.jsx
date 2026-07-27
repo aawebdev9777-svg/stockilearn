@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useDemo } from "@/lib/DemoContext";
 import Logo from "@/components/common/Logo";
 import { ArrowRight, Check, Flame, Zap, Trophy, Bot, TrendingUp, Sparkles } from "lucide-react";
 import ShareButtons from "@/components/landing/ShareButtons";
@@ -8,6 +9,8 @@ import FounderSpotlight from "@/components/landing/FounderSpotlight";
 
 export default function Landing() {
   const [scrolled, setScrolled] = useState(false);
+  const navigate = useNavigate();
+  const { startGuest } = useDemo();
 
   useEffect(() => {
     const handler = () => setScrolled(window.scrollY > 40);
@@ -89,6 +92,16 @@ export default function Landing() {
               I have an account
             </Link>
           </motion.div>
+
+          <motion.button
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.4 }}
+            onClick={() => { startGuest(); navigate("/home"); }}
+            className="text-sm font-bold text-[#1B1B1B]/50 hover:text-[#58CC02] transition-colors"
+          >
+            or continue as guest →
+          </motion.button>
 
           <motion.div
             initial={{ opacity: 0 }}
