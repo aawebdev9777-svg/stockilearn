@@ -1,4 +1,27 @@
+# Allow all search engines to crawl public pages
 User-agent: *
 Allow: /
+Allow: /about
+Allow: /founders
+Allow: /contact
+Allow: /privacy
+Allow: /login
 
+# Keep private, account-only app pages out of the index
+Disallow: /admin
+Disallow: /home
+Disallow: /learn
+Disallow: /play
+Disallow: /leagues
+Disallow: /profile
+Disallow: /flashcards
+Disallow: /onboarding
+Disallow: /trade
+Disallow: /settings
+Disallow: /upgrade
+Disallow: /present
+Disallow: /claude
+Disallow: /pdf
+
+# Sitemap location — read by Google, Bing, Yandex, DuckDuckGo and others
 Sitemap: https://stockilearn.com/sitemap.xml
