@@ -18,8 +18,6 @@ Disallow: /flashcards
 Disallow: /onboarding
 Disallow: /trade
 Disallow: /settings
-Disallow: /upgrade
-Disallow: /present
 Disallow: /claude
 Disallow: /pdf
 
