@@ -8,6 +8,7 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { LESSONS, BADGES, LEVEL_TITLES } from "@/lib/lessonData";
 import ServerSetter from "@/components/admin/ServerSetter";
+import LiveTraffic from "@/components/admin/LiveTraffic";
 
 const ADMIN_PASSWORD = "AA9777";
 
@@ -69,6 +70,7 @@ function OverviewTab({ users }) {
       <div className="grid grid-cols-2 gap-3">
         {stats.map(s => <StatCard key={s.label} {...s} />)}
       </div>
+      <LiveTraffic />
       <Link to="/admin/analytics" className="block">
         <Card className="p-4 bg-card/80 border-border/50 flex items-center gap-3 hover:bg-muted/30 transition-colors">
           <BarChart3 className="w-5 h-5 text-[#58CC02]" />
