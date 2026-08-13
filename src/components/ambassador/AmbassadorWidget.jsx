@@ -7,6 +7,7 @@ import { useDemo } from "@/lib/DemoContext";
 
 export default function AmbassadorWidget() {
   const { isDemoMode, demoUser } = useDemo();
+  const [dismissed, setDismissed] = useState(() => localStorage.getItem("stockilearn_ambassador_dismissed") === "1");
   const [open, setOpen] = useState(false);
   const [mode, setMode] = useState(null); // 'apply' | 'report'
   const [title, setTitle] = useState("");
@@ -23,6 +24,13 @@ export default function AmbassadorWidget() {
     setCategory("feature");
     setSubmitted(false);
     setError("");
+  };
+
+  // Once the user has opened the widget, mark it dismissed so the button
+  // never comes back — persisted across sessions.
+  const markDismissed = () => {
+    localStorage.setItem("stockilearn_ambassador_dismissed", "1");
+    setDismissed(true);
   };
 
   const handleSubmit = async () => {
@@ -64,12 +72,13 @@ export default function AmbassadorWidget() {
 
   return (
     <>
-      {/* Floating button */}
+      {/* Floating button — hidden permanently after first interaction */}
+      {!dismissed && (
       <motion.button
         initial={{ scale: 0, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         transition={{ delay: 0.5, type: "spring", stiffness: 400, damping: 20 }}
-        onClick={() => setOpen(true)}
+        onClick={() => { setOpen(true); markDismissed(); }}
         className="fixed bottom-20 left-4 z-40 w-14 h-14 rounded-full text-white shadow-lg active:scale-95 flex items-center justify-center"
         style={{
           background: "conic-gradient(from 0deg, #ff0080, #ff8c00, #ffe600, #58CC02, #00d4ff, #7b2ff7, #ff0080)",
@@ -82,6 +91,7 @@ export default function AmbassadorWidget() {
           <Sparkles className="w-2 h-2 text-amber-500" />
         </span>
       </motion.button>
+      )}
 
       {/* Modal */}
       <AnimatePresence>
