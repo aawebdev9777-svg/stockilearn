@@ -3,6 +3,7 @@ import { Outlet, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import BottomNav from "./BottomNav";
 import BrunoWidget from "@/components/common/BrunoWidget";
+import AmbassadorWidget from "@/components/ambassador/AmbassadorWidget";
 
 export default function AppLayout() {
   const location = useLocation();
@@ -39,6 +40,7 @@ export default function AppLayout() {
       </div>
       <BottomNav />
       <BrunoWidget />
+      <AmbassadorWidget />
     </div>
   );
 }
