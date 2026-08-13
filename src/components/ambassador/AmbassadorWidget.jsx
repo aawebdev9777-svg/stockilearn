@@ -70,12 +70,16 @@ export default function AmbassadorWidget() {
         animate={{ scale: 1, opacity: 1 }}
         transition={{ delay: 0.5, type: "spring", stiffness: 400, damping: 20 }}
         onClick={() => setOpen(true)}
-        className="fixed bottom-20 right-4 z-40 w-14 h-14 rounded-full bg-primary text-primary-foreground shadow-[0_6px_0_hsl(0_0%_40%)] active:translate-y-[2px] active:shadow-[0_4px_0_hsl(0_0%_40%)] flex items-center justify-center"
+        className="fixed bottom-20 left-4 z-40 w-14 h-14 rounded-full text-white shadow-lg active:scale-95 flex items-center justify-center"
+        style={{
+          background: "conic-gradient(from 0deg, #ff0080, #ff8c00, #ffe600, #58CC02, #00d4ff, #7b2ff7, #ff0080)",
+          boxShadow: "0 0 14px rgba(255,255,255,0.5), 0 4px 12px rgba(0,0,0,0.25)",
+        }}
         aria-label="Become an ambassador or report a change"
       >
-        <Megaphone className="w-6 h-6" />
-        <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-amber-400 border-2 border-white flex items-center justify-center">
-          <Sparkles className="w-2 h-2 text-white" />
+        <Megaphone className="w-6 h-6 drop-shadow" />
+        <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-white border-2 border-amber-400 flex items-center justify-center">
+          <Sparkles className="w-2 h-2 text-amber-500" />
         </span>
       </motion.button>
 
