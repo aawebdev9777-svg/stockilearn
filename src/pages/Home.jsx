@@ -13,6 +13,7 @@ import ContinueCard from "@/components/home/ContinueCard";
 import NewsFeed from "@/components/home/NewsFeed";
 import { Gem, RefreshCw } from "lucide-react";
 import PullToRefresh from "@/components/common/PullToRefresh";
+import AmbassadorWidget from "@/components/ambassador/AmbassadorWidget";
 
 function getGreeting(name) {
   const hour = new Date().getHours();
@@ -139,6 +140,7 @@ export default function Home() {
       )}
         <p className="text-center text-[10px] text-gray-400 font-bold pt-2">Created by Ahmetzhan Aldiyar</p>
       </div>
+      <AmbassadorWidget />
     </PullToRefresh>
   );
 }

@@ -30,6 +30,13 @@ export default function Ambassador() {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
 
+  // Apply form (for non-approved visitors)
+  const [applyTitle, setApplyTitle] = useState("");
+  const [applyDesc, setApplyDesc] = useState("");
+  const [applySubmitting, setApplySubmitting] = useState(false);
+  const [applyError, setApplyError] = useState("");
+  const [applySuccess, setApplySuccess] = useState(false);
+
   const fetchStatus = async () => {
     if (!demoUser?.session_token) { setLoading(false); return; }
     try {
@@ -73,6 +80,30 @@ export default function Ambassador() {
     setSubmitting(false);
   };
 
+  const handleApply = async () => {
+    if (!applyTitle.trim() || !applyDesc.trim()) { setApplyError("Please fill in all fields."); return; }
+    setApplySubmitting(true); setApplyError(""); setApplySuccess(false);
+    try {
+      const res = await base44.functions.invoke("manageAmbassadors", {
+        action: "submit",
+        session_token: demoUser.session_token,
+        type: "ambassador_application",
+        title: applyTitle.trim(),
+        description: applyDesc.trim(),
+      });
+      if (res.data?.ok) {
+        setApplySuccess(true);
+        setApplyTitle(""); setApplyDesc("");
+        fetchStatus();
+      } else {
+        setApplyError(res.data?.error || "Failed to submit.");
+      }
+    } catch (e) {
+      setApplyError("Something went wrong.");
+    }
+    setApplySubmitting(false);
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-background">
@@ -81,26 +112,72 @@ export default function Ambassador() {
     );
   }
 
+  const pendingApp = reports.find(r => r.type === "ambassador_application");
+  const appPending = pendingApp && (pendingApp.status === "pending" || pendingApp.status === "reviewing");
+
   if (!approved) {
     return (
-      <div className="min-h-screen bg-background flex items-center justify-center px-6">
-        <Card className="max-w-sm w-full p-8 text-center space-y-4 border-2 border-border">
-          <div className="w-16 h-16 mx-auto rounded-full bg-destructive/10 flex items-center justify-center">
-            <XCircle className="w-9 h-9 text-destructive" />
-          </div>
-          <h1 className="text-xl font-black text-foreground">Ambassadors Only</h1>
-          <p className="text-sm text-muted-foreground">
-            This portal is for approved StockiLearn ambassadors. Apply via the floating ambassador button — once an admin approves your application, you'll get full access here.
-          </p>
-          {reports.some(r => r.type === "ambassador_application" && r.status === "pending") && (
-            <p className="text-xs text-amber-500 font-bold">Your application is under review ⏳</p>
-          )}
-          <Link to="/home">
-            <Button variant="outline" className="w-full gap-1.5">
-              <ArrowLeft className="w-4 h-4" /> Back to Home
-            </Button>
+      <div className="min-h-screen bg-background pb-24">
+        <div className="max-w-md mx-auto px-4 py-6 pt-safe-area-top">
+          <Link to="/home" className="text-muted-foreground hover:text-foreground inline-flex items-center gap-1.5 text-xs font-bold mb-4">
+            <ArrowLeft className="w-4 h-4" /> Back to Home
           </Link>
-        </Card>
+
+          <Card className="p-6 text-center space-y-3 border-2 border-border mb-4">
+            <div className="w-14 h-14 mx-auto rounded-full flex items-center justify-center" style={{ background: "conic-gradient(from 0deg, #ff0080, #ff8c00, #ffe600, #58CC02, #00d4ff, #7b2ff7, #ff0080)" }}>
+              <Megaphone className="w-7 h-7 text-white drop-shadow" />
+            </div>
+            <h1 className="text-xl font-black text-foreground">Become an Ambassador</h1>
+            <p className="text-xs text-muted-foreground">
+              This portal is for approved StockiLearn ambassadors. Apply below — once an admin approves you, you'll get full access to submit change requests and shape the platform.
+            </p>
+          </Card>
+
+          {appPending ? (
+            <Card className="p-5 border-2 border-amber-300 bg-amber-50/50 text-center space-y-2">
+              <Clock className="w-8 h-8 text-amber-500 mx-auto" />
+              <p className="text-sm font-black text-foreground">Application under review ⏳</p>
+              <p className="text-xs text-muted-foreground">
+                We've received your application "{pendingApp.title}". Our team will review it and grant access once approved.
+              </p>
+            </Card>
+          ) : applySuccess ? (
+            <Card className="p-5 border-2 border-primary/40 bg-primary/5 text-center space-y-2">
+              <CheckCircle2 className="w-8 h-8 text-primary mx-auto" />
+              <p className="text-sm font-black text-foreground">Application sent!</p>
+              <p className="text-xs text-muted-foreground">You'll get access once an admin approves it.</p>
+            </Card>
+          ) : (
+            <Card className="p-4 border-2 border-border space-y-3">
+              <h2 className="text-sm font-black text-foreground flex items-center gap-1.5">
+                <Sparkles className="w-4 h-4 text-primary" /> Apply for Ambassador Access
+              </h2>
+              <div>
+                <label className="text-[11px] font-bold text-muted-foreground uppercase tracking-wider">Why you?</label>
+                <input
+                  value={applyTitle}
+                  onChange={(e) => setApplyTitle(e.target.value)}
+                  placeholder="Short pitch — why you'd be a great ambassador"
+                  className="w-full mt-1 text-sm bg-background border-2 border-border rounded-xl px-3 py-2.5 text-foreground placeholder:text-muted-foreground outline-none focus:border-primary"
+                />
+              </div>
+              <div>
+                <label className="text-[11px] font-bold text-muted-foreground uppercase tracking-wider">Tell us more</label>
+                <textarea
+                  value={applyDesc}
+                  onChange={(e) => setApplyDesc(e.target.value)}
+                  rows={4}
+                  placeholder="Your goals, availability, and ideas for StockiLearn..."
+                  className="w-full mt-1 text-sm bg-background border-2 border-border rounded-xl px-3 py-2.5 text-foreground placeholder:text-muted-foreground outline-none focus:border-primary resize-none"
+                />
+              </div>
+              {applyError && <p className="text-xs text-destructive font-bold">{applyError}</p>}
+              <Button onClick={handleApply} disabled={applySubmitting} className="w-full gap-1.5">
+                <Send className="w-4 h-4" /> {applySubmitting ? "Sending..." : "Submit Application"}
+              </Button>
+            </Card>
+          )}
+        </div>
       </div>
     );
   }
