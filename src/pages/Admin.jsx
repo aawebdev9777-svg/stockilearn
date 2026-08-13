@@ -2,13 +2,14 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { base44 } from "@/api/base44Client";
 import { motion } from "framer-motion";
-import { Users, BookOpen, Trophy, BarChart3, Shield, Zap, Settings, Server, ChevronDown, ChevronUp, Ban, CheckCircle, Trash2, Play, Crown, RefreshCw } from "lucide-react";
+import { Users, BookOpen, Trophy, BarChart3, Shield, Zap, Settings, Server, ChevronDown, ChevronUp, Ban, CheckCircle, Trash2, Play, Crown, RefreshCw, Megaphone } from "lucide-react";
 import { useDemo } from "@/lib/DemoContext";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { LESSONS, BADGES, LEVEL_TITLES } from "@/lib/lessonData";
 import ServerSetter from "@/components/admin/ServerSetter";
 import LiveTraffic from "@/components/admin/LiveTraffic";
+import AmbassadorsTab from "@/components/admin/AmbassadorsTab";
 
 const ADMIN_PASSWORD = "AA9777";
 
@@ -19,6 +20,7 @@ const TABS = [
   { id: "content",      label: "Content",     icon: BookOpen },
   { id: "gamification", label: "Gamification",icon: Trophy },
   { id: "moderation",   label: "Moderation",  icon: Shield },
+  { id: "ambassadors",  label: "Ambassadors", icon: Megaphone },
   { id: "pitch",        label: "Pitch Deck",  icon: Play },
 ];
 
@@ -488,6 +490,7 @@ export default function Admin() {
       case "content":      return <ContentTab />;
       case "gamification": return <GamificationTab />;
       case "moderation":   return <ModerationTab />;
+      case "ambassadors":  return <AmbassadorsTab />;
       case "pitch":        return <PitchTab />;
       default:             return <OverviewTab users={users} />;
     }

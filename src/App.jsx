@@ -31,6 +31,7 @@ import Claude from '@/pages/Claude';
 import Founders from '@/pages/Founders';
 import Privacy from '@/pages/Privacy';
 import GameLogicPdf from '@/pages/GameLogicPdf';
+import Ambassador from '@/pages/Ambassador';
 
 // Guard: only admin users can access wrapped routes
 const AdminOnly = ({ children }) => {
@@ -64,6 +65,7 @@ const AuthenticatedApp = () => {
         <Route path="/settings" element={<Settings />} />
         <Route path="/upgrade" element={<Upgrade />} />
         <Route path="/present" element={<Present />} />
+        <Route path="/ambassador" element={<Ambassador />} />
         <Route path="/admin" element={<Admin />} />
         <Route path="/admin/analytics" element={<AdminOnly><AdminAnalytics /></AdminOnly>} />
         <Route path="/about" element={<About />} />

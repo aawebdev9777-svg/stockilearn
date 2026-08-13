@@ -41,8 +41,22 @@ export default function AmbassadorWidget() {
     setSubmitting(true);
     setError("");
     try {
-      if (isDemoMode) {
-        // Demo mode: store locally so the feature is usable without backend auth
+      if (demoUser?.session_token) {
+        const res = await base44.functions.invoke("manageAmbassadors", {
+          action: "submit",
+          session_token: demoUser.session_token,
+          type: mode,
+          title: title.trim(),
+          description: description.trim(),
+          category,
+        });
+        if (!res.data?.ok) {
+          setError(res.data?.error || "Something went wrong. Please try again.");
+          setSubmitting(false);
+          return;
+        }
+      } else {
+        // No session: store locally so the feature is usable without backend auth
         const key = "stockilearn_ambassador_reports";
         const existing = JSON.parse(localStorage.getItem(key) || "[]");
         existing.push({
@@ -55,13 +69,6 @@ export default function AmbassadorWidget() {
           by: demoUser?.username || "demo",
         });
         localStorage.setItem(key, JSON.stringify(existing));
-      } else {
-        await base44.entities.AmbassadorReport.create({
-          type: mode,
-          title: title.trim(),
-          description: description.trim(),
-          category,
-        });
       }
       setSubmitted(true);
     } catch (e) {
