@@ -40,6 +40,18 @@
         "implemented"
       ],
       "default": "pending"
+    },
+    "app_user_id": {
+      "type": "string",
+      "description": "The AppUser id of the submitter (custom-auth user, since platform User differs)"
+    },
+    "username": {
+      "type": "string",
+      "description": "Submitter username for quick display"
+    },
+    "admin_note": {
+      "type": "string",
+      "description": "Optional note left by an admin when approving/rejecting"
     }
   },
   "required": [
@@ -49,43 +61,24 @@
   ],
   "rls": {
     "create": {
-      "created_by_id": "{{user.id}}"
+      "user_condition": {
+        "role": "admin"
+      }
     },
     "read": {
-      "$or": [
-        {
-          "created_by_id": "{{user.id}}"
-        },
-        {
-          "user_condition": {
-            "role": "admin"
-          }
-        }
-      ]
+      "user_condition": {
+        "role": "admin"
+      }
     },
     "update": {
-      "$or": [
-        {
-          "created_by_id": "{{user.id}}"
-        },
-        {
-          "user_condition": {
-            "role": "admin"
-          }
-        }
-      ]
+      "user_condition": {
+        "role": "admin"
+      }
     },
     "delete": {
-      "$or": [
-        {
-          "created_by_id": "{{user.id}}"
-        },
-        {
-          "user_condition": {
-            "role": "admin"
-          }
-        }
-      ]
+      "user_condition": {
+        "role": "admin"
+      }
     }
   }
 }
