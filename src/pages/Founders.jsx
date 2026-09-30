@@ -22,6 +22,12 @@ const FOUNDERS = [
     title: "COO & Co-Founder",
     bio: "Oversees operations, partnerships, and execution — ensuring StockiLearn runs smoothly as it scales to reach more learners across the UK and beyond.",
   },
+  {
+    emoji: "📊",
+    name: "Inaan Advani",
+    title: "CFO",
+    bio: "Leads StockiLearn's finances — managing budgets, forecasts, and fundraising to keep the platform sustainable as it grows.",
+  },
 ];
 
 export default function Founders() {
@@ -44,9 +50,9 @@ export default function Founders() {
           className="text-center mb-12"
         >
           <p className="text-xs font-black tracking-widest uppercase text-[#58CC02] mb-2">The Team</p>
-          <h1 className="text-4xl font-black text-gray-900 leading-tight">Meet the Founders</h1>
+          <h1 className="text-4xl font-black text-gray-900 leading-tight">Meet the Team</h1>
           <p className="text-gray-500 mt-3 max-w-md mx-auto">
-            The duo behind StockiLearn — on a mission to make investing education free, fun, and accessible.
+            The team behind StockiLearn — on a mission to make investing education free, fun, and accessible.
           </p>
         </motion.div>
 

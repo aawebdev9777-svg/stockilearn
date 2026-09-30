@@ -1,7 +1,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import { ArrowRight, Rocket, Settings, TrendingUp, Sparkles } from "lucide-react";
+import { ArrowRight, Rocket, Settings, TrendingUp, Sparkles, Landmark } from "lucide-react";
 
 const founders = [
   {
@@ -28,6 +28,18 @@ const founders = [
     accentSoft: "bg-blue-100",
     iconColor: "text-blue-500",
   },
+  {
+    emoji: "📊",
+    icon: Landmark,
+    name: "Inaan Advani",
+    title: "CFO",
+    tagline: "The Financier",
+    bio: "Leads StockiLearn's finances — managing budgets, forecasts, and fundraising to keep the platform sustainable as it grows.",
+    highlights: ["Finance & Budgeting", "Fundraising", "Forecasting"],
+    accent: "bg-purple-500",
+    accentSoft: "bg-purple-100",
+    iconColor: "text-purple-500",
+  },
 ];
 
 export default function FounderSpotlight() {
@@ -50,12 +62,12 @@ export default function FounderSpotlight() {
             Meet the <span className="text-[#58CC02]">Founders</span>
           </h2>
           <p className="text-lg text-[#1B1B1B]/60 max-w-2xl mx-auto leading-relaxed font-bold">
-            Two passionate entrepreneurs on a mission to make financial literacy fun, accessible, and habit-forming for teens everywhere.
+            Three passionate entrepreneurs on a mission to make financial literacy fun, accessible, and habit-forming for teens everywhere.
           </p>
         </motion.div>
 
         {/* Founder Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
           {founders.map((f, i) => {
             const Icon = f.icon;
             return (

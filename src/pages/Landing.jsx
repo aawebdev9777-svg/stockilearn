@@ -354,6 +354,7 @@ export default function Landing() {
           <p className="text-[10px] font-black uppercase tracking-widest text-[#1B1B1B]/40">Created by</p>
           <p className="text-xs font-bold text-[#1B1B1B]/60">Ahmetzhan Aldiyar <span className="text-[#1B1B1B]/40 font-medium">· CEO &amp; Co-Founder</span></p>
           <p className="text-xs font-bold text-[#1B1B1B]/60">Sander Andrieu Rosingholm <span className="text-[#1B1B1B]/40 font-medium">· COO &amp; Co-Founder</span></p>
+          <p className="text-xs font-bold text-[#1B1B1B]/60">Inaan Advani <span className="text-[#1B1B1B]/40 font-medium">· CFO</span></p>
         </div>
       </footer>
     </div>
